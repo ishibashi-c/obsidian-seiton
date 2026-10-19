@@ -1,0 +1,596 @@
+.seiton-react-organize-prototype {
+  min-height: 100vh;
+  padding: clamp(22px, 4vw, 56px) clamp(16px, 4vw, 56px) 72px;
+  overflow: clip;
+  color: var(--seiton-color-text);
+  background: var(--seiton-color-body);
+}
+
+.seiton-react-organize-prototype,
+.seiton-react-organize-prototype * {
+  box-sizing: border-box;
+}
+
+.seiton-react-organize-prototype .react-organize-header,
+.seiton-react-organize-prototype main,
+.seiton-react-organize-prototype .react-organize-footer {
+  width: min(1120px, 100%);
+  margin-inline: auto;
+}
+
+.react-organize-header {
+  display: flex;
+  gap: 24px;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--seiton-color-default-border);
+}
+.react-organize-heading {
+  margin-top: 8px;
+  letter-spacing: -0.05em;
+}
+.react-organize-header-actions {
+  align-items: center;
+}
+.react-organize-workspace {
+  margin-top: 38px;
+}
+.react-organize-section-heading {
+  display: flex;
+  gap: 16px;
+  align-items: end;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+.react-organize-section-heading h2 {
+  margin-top: 5px;
+  letter-spacing: -0.04em;
+}
+.react-organize-card {
+  padding: clamp(18px, 3vw, 30px);
+  background: var(--seiton-color-body);
+  border: 1px solid var(--seiton-color-default-border);
+  border-radius: var(--seiton-radius-lg);
+}
+.react-organize-card-header {
+  display: flex;
+  gap: 16px;
+  align-items: start;
+  justify-content: space-between;
+}
+
+.react-organize-card-header-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  justify-content: flex-end;
+}
+.react-organize-title-button {
+  display: block;
+  max-width: 680px;
+  padding: 0;
+  margin-top: 8px;
+  font: inherit;
+  font-size: clamp(22px, 3vw, 32px);
+  font-weight: 800;
+  line-height: 1.3;
+  color: var(--seiton-color-text);
+  text-align: left;
+  letter-spacing: -0.04em;
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+}
+.react-organize-title-button:hover {
+  color: var(--seiton-color-accent-7);
+}
+.react-organize-source {
+  display: block;
+  margin-top: 14px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: var(--seiton-font-size-sm);
+  color: var(--seiton-color-accent-7);
+  white-space: nowrap;
+}
+.react-organize-preview {
+  min-height: 150px;
+  padding: 18px;
+  margin: 26px 0 24px;
+  overflow: auto;
+  font: inherit;
+  line-height: 1.7;
+  color: var(--seiton-color-dimmed);
+  white-space: pre-wrap;
+  background: var(--seiton-color-default-hover);
+  border: 1px solid var(--seiton-color-default-border);
+  border-radius: var(--seiton-radius-md);
+}
+.react-organize-fields {
+  display: grid;
+  grid-template-columns: minmax(340px, 1.25fr) minmax(220px, 0.75fr);
+  gap: 18px;
+  align-items: start;
+}
+.react-organize-tag-field,
+.react-organize-type-field {
+  min-width: 0;
+  margin: 0;
+}
+.react-organize-tag-field {
+  display: grid;
+  gap: 8px;
+}
+.react-organize-tag-field > span,
+.react-organize-type-field legend {
+  display: block;
+  padding-inline: 4px;
+  font-size: var(--seiton-font-size-sm);
+  font-weight: 700;
+  color: var(--seiton-color-text);
+}
+.react-organize-type-field {
+  display: grid;
+  gap: 8px;
+  padding: 14px;
+  border: 1px solid var(--seiton-color-default-border);
+  border-radius: var(--seiton-radius-md);
+}
+.react-organize-current-type {
+  color: var(--seiton-color-dimmed);
+}
+.react-organize-destinations {
+  padding: 14px 16px 16px;
+  margin: 18px 0 0;
+  border: 1px solid var(--seiton-color-default-border);
+  border-radius: var(--seiton-radius-md);
+}
+.react-organize-destinations legend {
+  padding-inline: 4px;
+  font-size: var(--seiton-font-size-sm);
+  font-weight: 700;
+  color: var(--seiton-color-text);
+}
+.react-organize-destination-hint {
+  margin: 0 4px 12px;
+  color: var(--seiton-color-dimmed);
+}
+.react-organize-field-hint {
+  margin: 0 4px;
+  color: var(--seiton-color-dimmed);
+}
+.react-organize-destination-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 8px;
+}
+.react-organize-destination-option {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+  min-height: 74px;
+  padding: 12px;
+  text-align: left;
+}
+.react-organize-destination-option strong,
+.react-organize-destination-option span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.react-organize-destination-option span {
+  font-size: var(--seiton-font-size-xs);
+  color: var(--seiton-color-dimmed);
+}
+.react-organize-destination-applied {
+  display: block;
+  margin: 10px 4px 0;
+  color: var(--seiton-color-accent-7);
+}
+.react-organize-lists {
+  padding: 14px 16px 16px;
+  margin: 18px 0 0;
+  border: 1px solid var(--seiton-color-default-border);
+  border-radius: var(--seiton-radius-md);
+}
+.react-organize-lists legend {
+  padding-inline: 4px;
+  font-size: var(--seiton-font-size-sm);
+  font-weight: 700;
+  color: var(--seiton-color-dimmed);
+}
+.react-organize-lists > .react-organize-field-hint {
+  margin: 0 4px 12px;
+}
+.react-organize-lists > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.react-organize-actions {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 24px;
+}
+.react-organize-actions button {
+  min-height: 42px;
+}
+.react-organize-keyboard {
+  display: block;
+  margin-top: 14px;
+  color: var(--seiton-color-dimmed);
+  text-align: right;
+}
+.react-organize-empty {
+  display: grid;
+  gap: 10px;
+  place-content: center;
+  justify-items: center;
+  min-height: 300px;
+  padding: 24px;
+  color: var(--seiton-color-dimmed);
+  text-align: center;
+  border: 1px dashed var(--seiton-color-default-border);
+  border-radius: var(--seiton-radius-lg);
+}
+.react-organize-empty strong {
+  font-size: var(--seiton-font-size-lg);
+  color: var(--seiton-color-text);
+}
+.react-organize-feedback {
+  position: fixed;
+  right: clamp(16px, 4vw, 56px);
+  bottom: 24px;
+  z-index: 20;
+  width: min(420px, calc(100vw - 32px));
+}
+.react-organize-footer {
+  padding-top: 18px;
+  margin-top: 56px;
+  border-top: 1px solid var(--seiton-color-default-border);
+}
+.react-organize-muted {
+  color: var(--seiton-color-dimmed);
+}
+
+.react-organize-proposals {
+  display: grid;
+  gap: 18px;
+}
+.react-organize-proposal-bulkbar {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 10px 14px;
+  background: var(--seiton-color-surface);
+  border: 1px solid var(--seiton-color-default-border);
+  border-radius: var(--seiton-radius-md);
+}
+.react-organize-proposal-bulkbar .seiton-text {
+  margin-right: auto;
+  color: var(--seiton-color-dimmed);
+}
+.react-organize-proposal-review {
+  display: grid;
+  gap: 14px;
+}
+.react-organize-proposal-review-toolbar {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  border: 1px solid var(--seiton-color-default-border);
+  border-radius: var(--seiton-radius-md);
+}
+.react-organize-proposal-review-toolbar > div {
+  min-width: 0;
+}
+.react-organize-proposal-review-toolbar .seiton-text:last-child {
+  color: var(--seiton-color-dimmed);
+  overflow-wrap: anywhere;
+}
+.react-organize-proposals-empty {
+  display: grid;
+  place-items: center;
+  min-height: 260px;
+  padding: 24px;
+  color: var(--seiton-color-dimmed);
+  text-align: center;
+  border: 1px dashed var(--seiton-color-default-border);
+  border-radius: var(--seiton-radius-lg);
+}
+.react-organize-proposal {
+  display: grid;
+  gap: 16px;
+  padding: 20px;
+  background: var(--seiton-color-surface);
+  border: 1px solid var(--seiton-color-default-border);
+  border-radius: var(--seiton-radius-lg);
+}
+.react-organize-proposal-header,
+.react-organize-proposal-operation-heading,
+.react-organize-proposal-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+}
+.react-organize-proposal-header > div,
+.react-organize-proposal-operation-heading > div {
+  min-width: 0;
+}
+.react-organize-proposal-header-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.react-organize-proposal-header h3 {
+  margin: 0 0 4px;
+  font-size: var(--seiton-font-size-lg);
+}
+.react-organize-proposal-header .seiton-text,
+.react-organize-proposal-operation-heading .seiton-text {
+  color: var(--seiton-color-dimmed);
+  overflow-wrap: anywhere;
+}
+.react-organize-proposal-operations {
+  display: grid;
+  gap: 8px;
+}
+.react-organize-proposal-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+.react-organize-proposal-group {
+  display: grid;
+  gap: 10px;
+}
+.react-organize-proposal-group-header {
+  display: flex;
+  gap: 12px;
+  align-items: baseline;
+  justify-content: space-between;
+  padding-top: 4px;
+}
+.react-organize-proposal-group-header h4 {
+  margin: 0;
+  font-size: var(--seiton-font-size-md);
+}
+.react-organize-proposal-group-header .seiton-text {
+  color: var(--seiton-color-dimmed);
+}
+.react-organize-proposal-operation {
+  display: grid;
+  gap: 9px;
+  padding: 12px 14px;
+  background: var(--seiton-color-body);
+  border: 1px solid var(--seiton-color-default-border);
+  border-radius: var(--seiton-radius-md);
+}
+.react-organize-proposal-operation-heading {
+  justify-content: flex-start;
+}
+.react-organize-proposal-operation-heading > .seiton-ui-check {
+  flex: 0 0 auto;
+}
+.react-organize-proposal-operation-title {
+  flex: 1 1 auto;
+}
+.react-organize-proposal-operation-heading strong {
+  display: block;
+  overflow-wrap: anywhere;
+}
+.react-organize-proposal-route {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: baseline;
+  font-size: var(--seiton-font-size-sm);
+}
+.react-organize-proposal-route > span:nth-child(2) {
+  font-weight: 700;
+  color: var(--seiton-color-accent);
+}
+.react-organize-proposal-route-path {
+  color: var(--seiton-color-dimmed);
+  overflow-wrap: anywhere;
+}
+.react-organize-proposal-reason {
+  margin: 0;
+  color: var(--seiton-color-dimmed);
+  overflow-wrap: anywhere;
+}
+.react-organize-proposal-details {
+  color: var(--seiton-color-dimmed);
+}
+.react-organize-proposal-details summary {
+  width: fit-content;
+  cursor: pointer;
+}
+.react-organize-proposal-details[open] {
+  display: grid;
+  gap: 10px;
+}
+.react-organize-proposal-change-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+.react-organize-proposal-change-grid > div {
+  min-width: 0;
+  padding: 12px;
+  background: var(--seiton-color-surface);
+  border-radius: var(--seiton-radius-sm);
+}
+.react-organize-proposal-change-grid span {
+  display: block;
+  margin-bottom: 7px;
+  font-size: var(--seiton-font-size-xs);
+  font-weight: 700;
+  color: var(--seiton-color-dimmed);
+}
+.react-organize-proposal-change-grid p {
+  margin: 3px 0;
+  overflow-wrap: anywhere;
+}
+.react-organize-proposal-body {
+  max-height: 110px;
+  padding: 10px 12px;
+  margin: 0;
+  overflow: auto;
+  color: var(--seiton-color-dimmed);
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+  background: var(--seiton-color-surface);
+  border-radius: var(--seiton-radius-sm);
+}
+.react-organize-proposal-actions {
+  justify-content: flex-end;
+}
+.react-organize-proposal-held {
+  padding-top: 12px;
+  border-top: 1px solid var(--seiton-color-default-border);
+}
+.react-organize-proposal-holds {
+  display: grid;
+  gap: 8px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+.react-organize-proposal-holds li {
+  display: grid;
+  gap: 5px;
+  padding: 10px 12px;
+  border: 1px solid var(--seiton-color-default-border);
+  border-radius: var(--seiton-radius-sm);
+}
+.react-organize-proposal-holds strong,
+.react-organize-proposal-holds .seiton-text,
+.react-organize-proposal-holds p {
+  overflow-wrap: anywhere;
+}
+.react-organize-proposal-holds .seiton-text,
+.react-organize-proposal-holds p {
+  margin: 0;
+  color: var(--seiton-color-dimmed);
+}
+.react-organize-proposal-confirmation {
+  display: grid;
+  gap: 14px;
+}
+.react-organize-proposal-confirmation > p {
+  margin: 0;
+}
+.react-organize-proposal-confirmation ul {
+  display: grid;
+  gap: 8px;
+  max-height: min(42vh, 420px);
+  padding: 0;
+  margin: 0;
+  overflow: auto;
+  list-style: none;
+}
+.react-organize-proposal-confirmation li {
+  display: grid;
+  gap: 4px;
+  padding: 10px 12px;
+  border: 1px solid var(--seiton-color-default-border);
+  border-radius: var(--seiton-radius-sm);
+}
+.react-organize-proposal-confirmation li span,
+.react-organize-proposal-confirmation li small {
+  color: var(--seiton-color-dimmed);
+  overflow-wrap: anywhere;
+}
+.react-organize-proposal-confirmation-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+.react-organize-proposal-error {
+  margin: 0;
+  color: var(--seiton-color-error);
+}
+@media (max-width: 700px) {
+  .react-organize-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .react-organize-header-actions {
+    align-items: center;
+  }
+  .react-organize-section-heading {
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .react-organize-fields {
+    grid-template-columns: 1fr;
+  }
+  .react-organize-proposal-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .react-organize-proposal-bulkbar {
+    flex-wrap: wrap;
+    align-items: flex-start;
+  }
+  .react-organize-proposal-bulkbar .seiton-text {
+    margin-right: 0;
+  }
+  .react-organize-proposal-confirmation-actions {
+    flex-direction: column-reverse;
+  }
+  .react-organize-proposal-confirmation-actions .seiton-ui-button {
+    width: 100%;
+  }
+  .react-organize-proposal-change-grid {
+    grid-template-columns: 1fr;
+  }
+  .react-organize-card-header {
+    flex-direction: column;
+  }
+  .react-organize-destination-options {
+    grid-template-columns: 1fr;
+  }
+  .react-organize-actions {
+    position: sticky;
+    bottom: 0;
+    z-index: 2;
+    grid-template-columns: 1fr;
+    padding: 12px 0 2px;
+    margin-inline: -2px;
+    background: var(--seiton-color-body);
+    border-top: 1px solid var(--seiton-color-default-border);
+  }
+  .react-organize-keyboard {
+    text-align: left;
+  }
+}
+
+@media (max-width: 480px) {
+  .react-organize-card {
+    padding: 16px;
+  }
+  .react-organize-title-button {
+    font-size: 22px;
+  }
+  .react-organize-preview {
+    min-height: 170px;
+    padding: 14px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .react-organize-title-button {
+    transition: none;
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+  "files": {
+    "includes": ["!main.js", "!styles.css"]
+  },
+  "extends": [
+    "ultracite/biome/core",
+    "ultracite/biome/react",
+    "ultracite/biome/vitest"
+  ],
+  "linter": {
+    "rules": {
+      "a11y": {
+        "noNoninteractiveElementInteractions": "off",
+        "noStaticElementInteractions": "off"
+      },
+      "complexity": {
+        "noExcessiveCognitiveComplexity": "off",
+        "noVoid": "off"
+      },
+      "performance": {
+        "noAwaitInLoops": "off",
+        "noBarrelFile": "off",
+        "noJsxPropsBind": "off",
+        "useTopLevelRegex": "off"
+      },
+      "style": {
+        "noDescendingSpecificity": "off",
+        "noIncrementDecrement": "off",
+        "noNestedTernary": "off",
+        "noParameterProperties": "off",
+        "useConsistentMemberAccessibility": "off",
+        "useConsistentMethodSignatures": "off",
+        "useConsistentTypeDefinitions": "off",
+        "useDestructuring": "off",
+        "useFilenamingConvention": "off",
+        "useReadonlyClassProperties": "off"
+      },
+      "suspicious": {
+        "noBitwiseOperators": "off",
+        "noEmptyBlockStatements": "off",
+        "noUnnecessaryConditions": "off",
+        "useAwait": "off"
+      }
+    }
+  }
+}

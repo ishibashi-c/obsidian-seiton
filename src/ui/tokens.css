@@ -1,0 +1,474 @@
+/* All values here are mapped from the host's Obsidian variables at runtime. */
+.seiton-ui-root,
+.seiton-ui-root * {
+  box-sizing: border-box;
+}
+
+.seiton-ui-root {
+  --seiton-color-body: var(--background-primary, #ffffff);
+  --seiton-color-text: var(--text-normal, #222222);
+  --seiton-color-dimmed: var(--text-muted, #6f7782);
+  --seiton-color-default: var(--background-secondary, #f6f7f8);
+  --seiton-color-default-hover: var(--background-secondary-alt, #edf0f2);
+  --seiton-color-default-border: var(--background-modifier-border, #d5dbe2);
+  --seiton-color-disabled: var(--background-secondary-alt, #edf0f2);
+  --seiton-color-disabled-color: var(--text-faint, #9aa3ad);
+  --seiton-color-accent-0: color-mix(
+    in srgb,
+    var(--interactive-accent, #7d50ee) 7%,
+    var(--seiton-color-body)
+  );
+  --seiton-color-accent-1: color-mix(
+    in srgb,
+    var(--interactive-accent, #7d50ee) 14%,
+    var(--seiton-color-body)
+  );
+  --seiton-color-accent-2: color-mix(
+    in srgb,
+    var(--interactive-accent, #7d50ee) 22%,
+    var(--seiton-color-body)
+  );
+  --seiton-color-accent-3: color-mix(
+    in srgb,
+    var(--interactive-accent, #7d50ee) 36%,
+    var(--seiton-color-body)
+  );
+  --seiton-color-accent-4: color-mix(
+    in srgb,
+    var(--interactive-accent, #7d50ee) 55%,
+    var(--seiton-color-body)
+  );
+  --seiton-color-accent-5: var(--interactive-accent, #7d50ee);
+  --seiton-color-accent-6: var(--interactive-accent, #7d50ee);
+  --seiton-color-accent-7: var(--interactive-accent-hover, #6738d0);
+  --seiton-color-accent-8: var(--interactive-accent-hover, #6738d0);
+  --seiton-color-ink-4: var(--text-normal, #222222);
+  --seiton-color-ink-8: var(--text-normal, #222222);
+  --seiton-color-red-1: color-mix(
+    in srgb,
+    #c92a2a 12%,
+    var(--seiton-color-body)
+  );
+  --seiton-color-red-7: #c92a2a;
+  --seiton-color-white: #ffffff;
+  --seiton-font-size-xs: 12px;
+  --seiton-font-size-sm: 14px;
+  --seiton-font-size-md: 16px;
+  --seiton-font-size-lg: 20px;
+  --seiton-shadow-xs: 0 1px 2px rgb(0 0 0 / 8%);
+  --seiton-shadow-sm: 0 4px 12px rgb(0 0 0 / 10%);
+  --seiton-shadow-md: 0 12px 30px rgb(0 0 0 / 14%);
+  --seiton-radius-sm: 6px;
+  --seiton-radius-md: 10px;
+  --seiton-radius-lg: 16px;
+  min-height: 100%;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Noto Sans JP",
+    sans-serif;
+  color: var(--seiton-color-text);
+  color-scheme: light;
+}
+
+.seiton-ui-root[data-seiton-color-scheme="dark"] {
+  color-scheme: dark;
+}
+.seiton-ui-button,
+.seiton-ui-input,
+.seiton-ui-textarea,
+.seiton-ui-select {
+  font: inherit;
+}
+.seiton-ui-button {
+  min-height: 36px;
+  padding: 8px 14px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  border-radius: var(--seiton-radius-md);
+  transition:
+    background-color 140ms ease,
+    border-color 140ms ease,
+    color 140ms ease;
+}
+.seiton-ui-button:focus-visible,
+.seiton-ui-input:focus-visible,
+.seiton-ui-textarea:focus-visible,
+.seiton-ui-select:focus-visible {
+  outline: 2px solid var(--seiton-color-accent-5);
+  outline-offset: 2px;
+}
+.seiton-ui-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+.seiton-ui-icon {
+  display: block;
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.seiton-ui-button.seiton-ui-icon-button {
+  display: inline-grid;
+  flex: 0 0 32px;
+  place-items: center;
+  width: 32px;
+  min-width: 32px;
+  height: 32px;
+  min-height: 32px;
+  padding: 0;
+  line-height: 1;
+}
+.seiton-ui-icon-button[aria-pressed="true"] {
+  color: var(--seiton-color-accent-8);
+  background: var(--seiton-color-accent-1);
+  border-color: var(--seiton-color-accent-3);
+}
+.seiton-ui-icon-button[aria-pressed="true"]:hover:not(:disabled) {
+  background: var(--seiton-color-accent-2);
+}
+.seiton-ui-button[aria-disabled="true"] {
+  cursor: progress;
+  opacity: 0.55;
+}
+.seiton-ui-button-default {
+  color: var(--seiton-color-text);
+  background: var(--seiton-color-body);
+  border-color: var(--seiton-color-default-border);
+}
+.seiton-ui-button-default:hover:not(:disabled) {
+  background: var(--seiton-color-default-hover);
+}
+.seiton-ui-button-light {
+  color: var(--seiton-color-accent-8);
+  background: var(--seiton-color-accent-1);
+}
+.seiton-ui-button-outline {
+  color: var(--seiton-color-accent-7);
+  background: transparent;
+  border-color: currentColor;
+}
+.seiton-ui-button-subtle {
+  color: var(--seiton-color-text);
+  background: transparent;
+}
+.seiton-ui-button-ink {
+  color: var(--seiton-color-body);
+  background: var(--seiton-color-text);
+}
+.seiton-ui-button-accent {
+  color: #fff;
+  background: var(--seiton-color-accent-5);
+}
+.seiton-ui-button-red {
+  color: #fff;
+  background: #c92a2a;
+}
+.seiton-ui-button-full {
+  width: 100%;
+}
+.seiton-ui-button-xs {
+  min-height: 28px;
+  padding: 4px 8px;
+  font-size: var(--seiton-font-size-xs);
+}
+.seiton-ui-overflow-trigger[data-seiton-overflow-trigger] {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 32px;
+  min-width: 32px;
+  height: 32px;
+  min-height: 32px;
+  padding: 0;
+  line-height: 1;
+  color: var(--seiton-color-dimmed);
+  cursor: pointer;
+  list-style: none;
+  background: transparent;
+  border: 0;
+  border-radius: var(--seiton-radius-sm);
+  transition:
+    background-color 140ms ease,
+    color 140ms ease;
+}
+.seiton-ui-overflow-trigger[data-seiton-overflow-trigger]::-webkit-details-marker {
+  display: none;
+}
+.seiton-ui-overflow-trigger[data-seiton-overflow-trigger]:hover,
+.seiton-ui-overflow-trigger[data-seiton-overflow-trigger]:focus-visible,
+.seiton-ui-overflow-trigger[data-seiton-overflow-trigger][aria-expanded="true"],
+details[open] > .seiton-ui-overflow-trigger[data-seiton-overflow-trigger] {
+  color: var(--seiton-color-accent-8);
+  background: var(--seiton-color-default-hover);
+}
+.seiton-ui-overflow-trigger[data-seiton-overflow-trigger]:focus-visible {
+  outline: 2px solid var(--seiton-color-accent-5);
+  outline-offset: 2px;
+}
+.seiton-ui-button-sm,
+.seiton-ui-button-compact-sm {
+  min-height: 32px;
+  padding: 6px 10px;
+  font-size: var(--seiton-font-size-sm);
+}
+.seiton-ui-card {
+  min-width: 0;
+}
+.seiton-ui-card-bordered {
+  border: 1px solid var(--seiton-color-default-border);
+}
+.seiton-ui-radius-sm {
+  border-radius: var(--seiton-radius-sm);
+}
+.seiton-ui-radius-md {
+  border-radius: var(--seiton-radius-md);
+}
+.seiton-ui-radius-lg {
+  border-radius: var(--seiton-radius-lg);
+}
+.seiton-ui-padding-md,
+.seiton-ui-padding-lg,
+.seiton-ui-padding-xl {
+  padding: var(--seiton-space, 14px);
+}
+.seiton-ui-padding-lg {
+  --seiton-space: 20px;
+}
+.seiton-ui-padding-xl {
+  --seiton-space: 28px;
+}
+.seiton-ui-group {
+  display: flex;
+  flex-wrap: wrap;
+  min-width: 0;
+}
+.seiton-ui-stack {
+  display: grid;
+  min-width: 0;
+}
+.seiton-ui-text {
+  color: inherit;
+}
+.seiton-ui-text-xs {
+  font-size: var(--seiton-font-size-xs);
+}
+.seiton-ui-text-sm {
+  font-size: var(--seiton-font-size-sm);
+}
+.seiton-ui-text-md {
+  font-size: var(--seiton-font-size-md);
+}
+.seiton-ui-text-lg {
+  font-size: var(--seiton-font-size-lg);
+}
+.seiton-ui-title {
+  margin: 0;
+  color: inherit;
+}
+.seiton-ui-title-h2 {
+  font-size: 1.75rem;
+}
+.seiton-ui-title-h3 {
+  font-size: 1.35rem;
+}
+.seiton-ui-badge {
+  display: inline-flex;
+  gap: 5px;
+  align-items: center;
+  width: fit-content;
+  padding: 4px 10px;
+  font-size: var(--seiton-font-size-sm);
+  line-height: 1.2;
+  border-radius: 999px;
+}
+.seiton-ui-badge-light {
+  color: var(--seiton-color-accent-8);
+  background: var(--seiton-color-accent-1);
+}
+.seiton-ui-badge-outline {
+  color: var(--seiton-color-text);
+  border: 1px solid currentColor;
+}
+.seiton-ui-badge-lg {
+  padding: 7px 12px;
+}
+.seiton-ui-alert {
+  position: relative;
+  padding: 10px 38px 10px 12px;
+  border-radius: var(--seiton-radius-md);
+}
+.seiton-ui-alert-light {
+  color: var(--seiton-color-text);
+  background: var(--seiton-color-accent-1);
+}
+.seiton-ui-alert-light.seiton-color-red {
+  background: var(--seiton-color-red-1);
+  border-inline-start: 3px solid var(--seiton-color-red-7);
+}
+.seiton-ui-alert-close {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  font-size: 20px;
+  color: inherit;
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+}
+.seiton-ui-divider {
+  border: 0;
+  border-top: 1px solid var(--seiton-color-default-border);
+}
+.seiton-ui-field {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+  color: var(--seiton-color-text);
+}
+.seiton-ui-field-label {
+  font-weight: 700;
+}
+.seiton-ui-field-description {
+  font-size: var(--seiton-font-size-sm);
+  color: var(--seiton-color-dimmed);
+}
+.seiton-ui-field-error {
+  font-size: var(--seiton-font-size-sm);
+  color: #c92a2a;
+}
+.seiton-ui-input-wrap {
+  position: relative;
+  display: block;
+}
+.seiton-ui-input,
+.seiton-ui-textarea,
+.seiton-ui-select {
+  width: 100%;
+  min-height: 38px;
+  padding: 8px 10px;
+  color: var(--seiton-color-text);
+  background: var(--seiton-color-body);
+  border: 1px solid var(--seiton-color-default-border);
+  border-radius: var(--seiton-radius-md);
+}
+.seiton-ui-textarea {
+  min-height: 96px;
+  resize: vertical;
+}
+.seiton-ui-input-right {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+}
+.seiton-ui-check {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  min-height: 32px;
+  cursor: pointer;
+}
+.seiton-ui-check input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--seiton-color-accent-5);
+}
+.seiton-ui-switch input {
+  accent-color: var(--seiton-color-accent-5);
+}
+.seiton-ui-segmented {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  padding: 3px;
+  background: var(--seiton-color-default-hover);
+  border: 1px solid var(--seiton-color-default-border);
+  border-radius: var(--seiton-radius-md);
+}
+.seiton-ui-segmented-option {
+  min-height: 32px;
+  padding: 6px 10px;
+  font-weight: 600;
+  color: var(--seiton-color-text);
+  cursor: pointer;
+  background: transparent;
+  border: 2px solid transparent;
+  border-radius: var(--seiton-radius-sm);
+}
+.seiton-ui-segmented-option:hover {
+  background: var(--seiton-color-default);
+}
+.seiton-ui-segmented-option:focus-visible {
+  outline: 2px solid var(--seiton-color-accent-5);
+  outline-offset: 1px;
+}
+.seiton-ui-segmented-option.is-selected {
+  color: var(--seiton-color-accent-8);
+  background: var(--seiton-color-accent-1);
+  border-color: var(--seiton-color-accent-5);
+  box-shadow: none;
+}
+.seiton-ui-modal-root {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+.seiton-ui-modal-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgb(0 0 0 / 48%);
+}
+.seiton-ui-modal-content {
+  position: relative;
+  z-index: 1;
+  width: min(680px, 100%);
+  max-height: min(760px, calc(100vh - 48px));
+  overflow: auto;
+  color: var(--seiton-color-text);
+  background: var(--seiton-color-body);
+  border: 1px solid var(--seiton-color-default-border);
+  border-radius: var(--seiton-radius-lg);
+  box-shadow: var(--seiton-shadow-md);
+}
+.seiton-ui-modal-header {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 22px;
+  background: var(--seiton-color-default-hover);
+  border-bottom: 1px solid var(--seiton-color-default-border);
+}
+.seiton-ui-modal-header h2 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+.seiton-ui-modal-close {
+  width: 36px;
+  height: 36px;
+  font-size: 26px;
+  color: inherit;
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+  border-radius: var(--seiton-radius-md);
+}
+.seiton-ui-modal-body {
+  padding: 22px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .seiton-ui-root *,
+  .seiton-ui-root *::before,
+  .seiton-ui-root *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}

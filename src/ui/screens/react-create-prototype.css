@@ -1,0 +1,238 @@
+.seiton-react-create-prototype {
+  min-height: 100vh;
+  padding: clamp(22px, 4vw, 56px) clamp(16px, 4vw, 56px) 64px;
+  color: var(--seiton-color-text);
+  background: var(--seiton-color-body);
+}
+
+.seiton-react-create-prototype,
+.seiton-react-create-prototype * {
+  box-sizing: border-box;
+}
+
+.seiton-react-create-prototype .react-create-header,
+.seiton-react-create-prototype .react-create-main {
+  width: min(760px, 100%);
+  margin-inline: auto;
+}
+
+.react-create-header {
+  display: flex;
+  gap: 20px;
+  align-items: end;
+  justify-content: space-between;
+  padding-bottom: 22px;
+  border-bottom: 1px solid var(--seiton-color-default-border);
+}
+
+.react-create-heading {
+  margin-top: 8px;
+  letter-spacing: -0.04em;
+}
+.react-create-main {
+  padding-top: clamp(28px, 6vw, 64px);
+}
+.react-create-form {
+  background: var(--seiton-color-body);
+}
+
+.react-create-preset-manager {
+  display: grid;
+  gap: 18px;
+}
+
+.react-create-manager-intro {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.react-create-manager-intro h2,
+.react-create-manager-editor h3,
+.react-create-manager-list h3 {
+  margin: 0;
+}
+
+.react-create-manager-editor,
+.react-create-manager-list {
+  display: grid;
+  gap: 16px;
+  padding: 18px;
+  background: var(--seiton-color-default-hover);
+  border: 1px solid var(--seiton-color-default-border);
+  border-radius: var(--seiton-radius-md);
+}
+
+.react-create-manager-editor {
+  background: var(--seiton-color-accent-0);
+  border-color: var(--seiton-color-accent-2);
+}
+
+.react-create-section-heading {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.react-create-section-heading h3 {
+  margin: 0;
+}
+
+.react-create-location,
+.react-create-tags,
+.react-create-presets,
+.react-create-preset-save-section {
+  display: grid;
+  gap: 16px;
+  padding: 18px;
+  background: var(--seiton-color-default-hover);
+  border: 1px solid var(--seiton-color-default-border);
+  border-radius: 14px;
+}
+
+.react-create-presets {
+  background: var(--seiton-color-accent-0);
+  border-color: var(--seiton-color-accent-2);
+}
+
+.react-create-preset-save-section {
+  background: var(--seiton-color-accent-0);
+  border-color: var(--seiton-color-accent-2);
+}
+
+.react-create-preset-save-section h3 {
+  margin: 0;
+}
+
+.react-create-presets-heading {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.react-create-presets-heading h3 {
+  margin: 0;
+}
+
+.react-create-preset-list {
+  display: grid;
+  gap: 8px;
+}
+
+.react-create-preset-button {
+  display: grid;
+  gap: 3px;
+  justify-items: start;
+  min-width: 0;
+  padding: 10px 12px;
+  text-align: left;
+}
+
+.react-create-preset-button strong,
+.react-create-preset-button span {
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.react-create-preset-button span {
+  font-size: var(--seiton-font-size-xs);
+  color: var(--seiton-color-dimmed);
+}
+
+.react-create-preset-button.is-selected {
+  color: var(--seiton-color-accent-8);
+  background: var(--seiton-color-accent-1);
+  border-color: var(--seiton-color-accent-5);
+}
+
+.react-create-preset-save {
+  display: grid;
+  gap: 10px;
+}
+
+.react-create-preset-message {
+  color: var(--seiton-color-accent-8);
+}
+
+.react-create-presets-empty {
+  color: var(--seiton-color-dimmed);
+}
+
+.react-create-location .seiton-ui-field,
+.react-create-tags .seiton-ui-field {
+  gap: 6px;
+}
+
+.react-create-location .seiton-ui-input,
+.react-create-tags .seiton-ui-input {
+  background: var(--seiton-color-body);
+}
+
+.react-create-path-preview {
+  display: grid;
+  gap: 6px;
+  padding-top: 2px;
+  font-size: var(--seiton-font-size-xs);
+  color: var(--seiton-color-dimmed);
+}
+
+.react-create-path-preview code {
+  min-width: 0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: var(--seiton-font-size-sm);
+  color: var(--seiton-color-text);
+  overflow-wrap: anywhere;
+}
+
+.react-create-tag-preview {
+  min-height: 24px;
+}
+
+.react-create-muted {
+  color: var(--seiton-color-dimmed);
+}
+.react-create-actions {
+  align-items: center;
+}
+
+@media (max-width: 520px) {
+  .react-create-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .react-create-actions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+  .react-create-actions > button {
+    width: 100%;
+  }
+  .react-create-section-heading {
+    flex-direction: column;
+  }
+  .react-create-manager-intro {
+    flex-direction: column;
+  }
+  .react-create-presets-heading {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 520px) {
+  .react-create-location,
+  .react-create-tags {
+    gap: 12px;
+    padding: 14px;
+    border-radius: var(--seiton-radius-md);
+  }
+
+  .react-create-section-heading {
+    gap: 8px;
+  }
+}

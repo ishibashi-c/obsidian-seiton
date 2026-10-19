@@ -1,0 +1,56 @@
+@import "./tokens.css";
+@import "./settings.css";
+@import "./screens/react-home-prototype.css";
+@import "./screens/react-library-prototype.css";
+@import "./screens/react-search-prototype.css";
+@import "./screens/react-organize-prototype.css";
+@import "./screens/react-memo-prototype.css";
+@import "./screens/react-bookshelf-prototype.css";
+@import "./screens/react-create-prototype.css";
+@import "./screens/react-onboarding-prototype.css";
+@import "./screens/react-supporting-prototype.css";
+@import "./production.css";
+@import "./responsive.css";
+
+/* Section titles stay readable in both themes while the accent bar carries
+   Seiton's purple identity without repeating the heading in a kicker. */
+.seiton-ui-root
+  :is(
+    .react-home-section-heading,
+    .react-library-section-heading,
+    .react-search-section-heading,
+    .react-organize-section-heading,
+    .react-memo-section-heading,
+    .react-bookshelf-section-heading,
+    .react-onboarding-panel-heading,
+    .react-supporting-frame-heading
+  )
+  h2 {
+  display: inline-flex;
+  gap: 10px;
+  align-items: center;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Noto Sans JP",
+    sans-serif;
+  font-weight: 800;
+  color: var(--seiton-color-text);
+}
+
+.seiton-ui-root
+  :is(
+    .react-home-section-heading,
+    .react-library-section-heading,
+    .react-search-section-heading,
+    .react-organize-section-heading,
+    .react-memo-section-heading,
+    .react-bookshelf-section-heading,
+    .react-onboarding-panel-heading,
+    .react-supporting-frame-heading
+  )
+  h2::before {
+  width: 6px;
+  height: 1.05em;
+  content: "";
+  background: var(--seiton-color-accent-5);
+  border-radius: 999px;
+}

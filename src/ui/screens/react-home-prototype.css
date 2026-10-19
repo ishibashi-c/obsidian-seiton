@@ -1,0 +1,1424 @@
+.seiton-react-home-prototype {
+  min-height: 100vh;
+  padding: clamp(22px, 4vw, 56px) clamp(16px, 4vw, 56px) 96px;
+  overflow: clip;
+  color: var(--seiton-color-text);
+  background: var(--seiton-color-body);
+}
+
+.seiton-react-home-prototype,
+.seiton-react-home-prototype * {
+  box-sizing: border-box;
+}
+
+.seiton-react-home-prototype .react-home-header,
+.seiton-react-home-prototype main,
+.seiton-react-home-prototype .react-home-footer {
+  width: min(1120px, 100%);
+  margin-inline: auto;
+}
+
+.react-home-header {
+  display: flex;
+  gap: 24px;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--seiton-color-default-border);
+}
+
+.react-home-heading {
+  margin-top: 8px;
+  letter-spacing: -0.05em;
+}
+
+.react-home-section,
+.react-home-capture-section {
+  margin-top: 38px;
+}
+
+.react-home-section-heading {
+  display: flex;
+  gap: 20px;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.react-home-section-heading h2 {
+  margin-top: 3px;
+}
+
+.react-home-muted {
+  color: var(--seiton-color-dimmed);
+}
+
+.react-home-capture-panel {
+  background: var(--seiton-color-default-hover);
+}
+
+.react-home-capture-panel textarea {
+  min-height: 92px;
+  resize: none;
+}
+
+.react-home-memo-tag-picker {
+  margin-top: 10px;
+}
+
+.react-home-memo-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.react-home-memo-tag-remove {
+  padding: 0 0 0 4px;
+  color: inherit;
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+}
+
+.react-home-memo-tag-remove:focus-visible {
+  outline: 2px solid var(--seiton-color-accent-5);
+  outline-offset: 2px;
+}
+
+.react-home-capture-actions {
+  align-items: center;
+}
+
+.react-home-entry-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.react-home-entry {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  min-width: 0;
+  min-height: 214px;
+  color: var(--seiton-color-text);
+  text-align: left;
+  cursor: pointer;
+  background: var(--seiton-color-body);
+  border: 1px solid var(--seiton-color-default-border);
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
+}
+
+.react-home-entry:hover,
+.react-home-entry:focus-visible {
+  border-color: var(--seiton-color-accent-4);
+  box-shadow: var(--seiton-shadow-sm);
+}
+
+.react-home-entry:hover {
+  transform: translateY(-2px);
+}
+
+.react-home-entry-title-slot {
+  display: flex;
+  align-items: flex-end;
+  min-height: 48px;
+  margin-top: 0;
+  font-size: var(--seiton-font-size-lg);
+  line-height: 1.3;
+}
+
+.react-home-entry-title-slot strong {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+}
+
+.react-home-entry-description-slot {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  min-height: 66px;
+  margin-top: 12px;
+  overflow: hidden;
+  -webkit-line-clamp: 3;
+  font-size: var(--seiton-font-size-sm);
+  line-height: 1.55;
+  color: var(--seiton-color-dimmed);
+}
+
+.react-home-entry-action {
+  padding-top: 18px;
+  margin-top: auto;
+  font-size: var(--seiton-font-size-sm);
+  font-weight: 700;
+  color: var(--seiton-color-accent-7);
+}
+
+.react-home-shortcut-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(96px, 112px));
+  gap: 20px 24px;
+  justify-content: start;
+}
+
+.react-home-shortcut,
+.react-home-inbox-item {
+  font: inherit;
+  appearance: none;
+  border: 0;
+}
+
+.react-home-shortcut {
+  position: relative;
+  display: grid;
+  gap: 8px;
+  align-content: start;
+  justify-items: center;
+  min-width: 0;
+  min-height: 124px;
+  padding: 4px 6px 8px;
+  color: var(--seiton-color-text);
+  text-align: center;
+  cursor: pointer;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--seiton-radius-lg);
+}
+
+.react-home-shortcut-open {
+  display: grid;
+  gap: 8px;
+  align-content: start;
+  justify-items: center;
+  width: 100%;
+  min-width: 0;
+  padding: 4px 6px 8px;
+  font: inherit;
+  color: inherit;
+  text-align: center;
+  appearance: none;
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+}
+
+.react-home-shortcut:hover,
+.react-home-shortcut:focus-within {
+  outline: none;
+  background: var(--seiton-color-accent-0);
+  border-color: var(--seiton-color-accent-3);
+}
+
+.react-home-shortcut-group {
+  z-index: 1;
+}
+
+.react-home-shortcut-group[data-drop-target="true"] {
+  border-color: var(--seiton-color-accent-5);
+}
+
+.react-home-shortcut-folder-icon {
+  display: block;
+  flex: none;
+  width: 88px;
+  height: 72px;
+  overflow: visible;
+  filter: drop-shadow(0 2px 2px rgb(31 26 48 / 8%));
+}
+
+.react-home-shortcut-folder-back,
+.react-home-shortcut-folder-front {
+  stroke: var(--seiton-color-accent-6);
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+}
+
+.react-home-shortcut-folder-back {
+  fill: var(--seiton-color-accent-2);
+}
+
+.react-home-shortcut-folder-front {
+  fill: var(--seiton-color-accent-1);
+}
+
+.react-home-shortcut-folder-highlight {
+  fill: none;
+  stroke: var(--seiton-color-accent-3);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.react-home-shortcut-popover {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  z-index: 10;
+  display: grid;
+  gap: 12px;
+  width: min(300px, calc(100vw - 32px));
+  padding: 14px;
+  color: var(--seiton-color-text);
+  text-align: left;
+  background: var(--seiton-color-body);
+  border: 1px solid var(--seiton-color-default-border);
+  border-radius: var(--seiton-radius-md);
+  box-shadow: var(--seiton-shadow-md);
+}
+
+.react-home-shortcut-popover-heading {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--seiton-color-default-border);
+}
+
+.react-home-shortcut-popover-close {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  font: inherit;
+  font-size: 20px;
+  line-height: 1;
+  color: var(--seiton-color-dimmed);
+  cursor: pointer;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 50%;
+}
+
+.react-home-shortcut-popover-close:hover,
+.react-home-shortcut-popover-close:focus-visible {
+  color: var(--seiton-color-text);
+  outline: none;
+  background: var(--seiton-color-accent-1);
+  border-color: var(--seiton-color-accent-4);
+}
+
+.react-home-shortcut-popover-list {
+  display: grid;
+  gap: 4px;
+}
+
+.react-home-shortcut-popover-item-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 2px;
+  align-items: center;
+}
+
+.react-home-shortcut-popover-item {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+  width: 100%;
+  min-width: 0;
+  padding: 8px;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--seiton-radius-sm);
+}
+
+.react-home-shortcut-popover-item:hover,
+.react-home-shortcut-popover-item:focus-visible {
+  outline: none;
+  background: var(--seiton-color-accent-0);
+  border-color: var(--seiton-color-accent-3);
+}
+
+.react-home-shortcut-popover-item .react-home-shortcut-icon {
+  width: 34px;
+  height: 34px;
+  font-size: 15px;
+}
+
+.react-home-shortcut-popover-item .react-home-shortcut-icon img {
+  width: 22px;
+  height: 22px;
+}
+
+.react-home-shortcut-popover-edit {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  font: inherit;
+  font-size: 18px;
+  line-height: 1;
+  color: var(--seiton-color-dimmed);
+  cursor: pointer;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 50%;
+}
+
+.react-home-shortcut-popover-edit:hover,
+.react-home-shortcut-popover-edit:focus-visible {
+  color: var(--seiton-color-text);
+  outline: none;
+  background: var(--seiton-color-accent-1);
+  border-color: var(--seiton-color-accent-4);
+}
+
+.react-home-shortcut-popover-copy {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.react-home-shortcut-popover-copy strong,
+.react-home-shortcut-popover-copy small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.react-home-shortcut-popover-copy small,
+.react-home-shortcut-popover-hint {
+  font-size: var(--seiton-font-size-xs);
+  color: var(--seiton-color-dimmed);
+}
+
+.react-home-shortcut-popover-hint {
+  line-height: 1.45;
+}
+
+.react-home-shortcut-edit {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  font: inherit;
+  font-size: 18px;
+  line-height: 1;
+  color: var(--seiton-color-dimmed);
+  cursor: pointer;
+  background: var(--seiton-color-body);
+  border: 1px solid var(--seiton-color-default-border);
+  border-radius: 50%;
+  opacity: 0.82;
+}
+
+.react-home-shortcut-edit:hover,
+.react-home-shortcut-edit:focus-visible {
+  color: var(--seiton-color-text);
+  background: var(--seiton-color-accent-1);
+  border-color: var(--seiton-color-accent-5);
+  opacity: 1;
+}
+
+.react-home-shortcut[data-dragging="true"] {
+  opacity: 0.55;
+}
+
+.react-home-shortcut-icon {
+  display: grid;
+  place-items: center;
+  width: 76px;
+  height: 76px;
+  overflow: hidden;
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--seiton-color-accent-7);
+  background: var(--seiton-color-accent-1);
+  border-radius: 50%;
+}
+
+.react-home-shortcut-icon img {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.react-home-shortcut-copy {
+  display: grid;
+  gap: 4px;
+  justify-items: center;
+  width: 100%;
+  min-width: 0;
+}
+
+.react-home-shortcut-copy strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.react-home-shortcut-meta {
+  display: none;
+  font-size: var(--seiton-font-size-xs);
+  color: var(--seiton-color-dimmed);
+}
+
+.react-home-inbox-panel {
+  background: var(--seiton-color-default-hover);
+  border-style: dashed;
+}
+
+.react-home-inbox-heading {
+  align-items: center;
+  margin-bottom: 0;
+}
+
+.react-home-inbox-heading > button {
+  flex: 0 0 auto;
+  margin-left: auto;
+}
+
+.react-home-inbox-accordion {
+  margin-top: 20px;
+  border-top: 1px solid var(--seiton-color-default-border);
+}
+
+.react-home-inbox-toggle {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  min-height: 44px;
+  padding: 10px 0;
+  font-size: var(--seiton-font-size-sm);
+  font-weight: 700;
+  color: var(--seiton-color-text);
+  cursor: pointer;
+  list-style: none;
+}
+
+.react-home-inbox-toggle::-webkit-details-marker {
+  display: none;
+}
+
+.react-home-inbox-toggle::after {
+  margin-left: auto;
+  font-size: 18px;
+  line-height: 1;
+  color: var(--seiton-color-dimmed);
+  content: "⌄";
+  transform: rotate(0deg);
+  transition: transform 160ms ease;
+}
+
+.react-home-inbox-accordion[open] .react-home-inbox-toggle::after {
+  transform: rotate(180deg);
+}
+
+.react-home-inbox-toggle:focus-visible {
+  outline: 2px solid var(--seiton-color-accent-5);
+  outline-offset: 3px;
+}
+
+.react-home-inbox-list {
+  display: grid;
+  gap: 0;
+  margin-top: 0;
+}
+
+.react-home-inbox-item {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  justify-content: space-between;
+  min-width: 0;
+  min-height: 58px;
+  padding: 11px 0;
+  color: var(--seiton-color-text);
+  text-align: left;
+  cursor: pointer;
+  background: transparent;
+  border-bottom: 1px solid var(--seiton-color-default-border);
+}
+
+.react-home-inbox-item:hover,
+.react-home-inbox-item:focus-visible {
+  color: var(--seiton-color-accent-7);
+  outline: none;
+}
+
+.react-home-inbox-item-copy {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.react-home-inbox-item-copy strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.react-home-inbox-item-copy small,
+.react-home-inbox-item time {
+  font-size: var(--seiton-font-size-sm);
+  color: var(--seiton-color-dimmed);
+}
+
+.react-home-inbox-item time {
+  flex: 0 0 auto;
+}
+
+.react-home-secondary-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.react-home-secondary-panel {
+  min-height: 182px;
+  background: var(--seiton-color-body);
+}
+
+.react-home-secondary-lines,
+.react-home-list-lines {
+  display: grid;
+  align-content: space-evenly;
+  min-height: 112px;
+  margin-top: 12px;
+  font-size: var(--seiton-font-size-sm);
+  color: var(--seiton-color-dimmed);
+}
+
+.react-home-secondary-lines button,
+.react-home-list-lines button {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  min-width: 0;
+  padding: 4px 0;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+}
+
+.react-home-pinned-line {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  min-width: 0;
+}
+
+.react-home-pinned-line > button:first-child {
+  flex: 1 1 auto;
+}
+
+.react-home-pinned-line > button:last-child {
+  flex: 0 0 auto;
+  padding-inline: 6px;
+  font-size: var(--seiton-font-size-xs);
+}
+
+.react-home-secondary-lines button:hover,
+.react-home-secondary-lines button:focus-visible,
+.react-home-list-lines button:hover,
+.react-home-list-lines button:focus-visible {
+  color: var(--seiton-color-accent-7);
+  outline: none;
+}
+
+.react-home-secondary-lines button strong,
+.react-home-secondary-lines button small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.react-home-secondary-lines button small {
+  margin-left: auto;
+  color: var(--seiton-color-dimmed);
+}
+
+.react-home-list-lines span,
+.react-home-list-lines button {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.react-home-list-lines b {
+  width: 8px;
+  height: 8px;
+  background: var(--seiton-color-accent-5);
+  border-radius: 50%;
+}
+
+.react-home-list-lines small {
+  margin-left: auto;
+  color: var(--seiton-color-dimmed);
+}
+
+.react-home-feedback {
+  position: fixed;
+  right: clamp(16px, 4vw, 56px);
+  bottom: calc(32px + env(safe-area-inset-bottom, 0px));
+  z-index: 20;
+  width: min(420px, calc(100vw - 32px));
+}
+
+.react-home-dialog-error {
+  color: var(--seiton-color-red-7);
+  background: var(--seiton-color-red-1);
+}
+
+.react-home-capture-error {
+  margin-top: 8px;
+  color: var(--seiton-color-red-7);
+  background: var(--seiton-color-red-1);
+}
+
+.react-home-fab {
+  position: fixed;
+  right: clamp(16px, 4vw, 56px);
+  bottom: calc(32px + env(safe-area-inset-bottom, 0px));
+  z-index: 19;
+  width: 64px;
+  min-width: 64px;
+  height: 64px;
+  min-height: 64px;
+  padding: 0;
+  font-size: 30px;
+  line-height: 1;
+  box-shadow: var(--seiton-shadow-md);
+}
+
+.react-home-feedback + .react-home-fab {
+  bottom: calc(104px + env(safe-area-inset-bottom, 0px));
+}
+
+.react-home-modal-content {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  max-height: calc(100vh - 32px);
+  overflow: hidden;
+  border: 1px solid var(--seiton-color-default-border);
+}
+
+.react-home-create-modal-root {
+  place-items: center;
+  padding-block: 16px;
+}
+
+.react-home-modal-content .seiton-ui-modal-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.react-home-modal-header {
+  background: var(--seiton-color-default-hover);
+}
+
+.react-home-create-catalog {
+  min-width: 0;
+}
+
+.react-home-create-catalog-hint {
+  margin: 0;
+  font-size: var(--seiton-font-size-xs);
+  color: var(--seiton-color-dimmed);
+}
+
+.react-home-create-catalog-toolbar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(132px, 154px);
+  gap: 8px;
+  align-items: end;
+}
+
+.react-home-create-catalog-search {
+  position: relative;
+  min-width: 0;
+}
+
+.react-home-create-catalog-search .seiton-ui-input {
+  min-height: 42px;
+  padding-left: 38px;
+}
+
+.react-home-create-catalog-search-icon {
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  color: var(--seiton-color-dimmed);
+  pointer-events: none;
+  transform: translateY(-50%);
+}
+
+.react-home-create-catalog-filters,
+.react-home-create-catalog-density {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  align-items: center;
+  padding: 3px;
+  background: var(--seiton-color-default-hover);
+  border: 1px solid var(--seiton-color-default-border);
+  border-radius: var(--seiton-radius-md);
+}
+
+.react-home-create-catalog-filters,
+.react-home-create-catalog-density {
+  min-width: 0;
+  margin: 0;
+}
+
+.react-home-create-catalog-density-label {
+  float: left;
+  margin: 0 6px 0 2px;
+}
+
+.react-home-create-catalog-filter,
+.react-home-create-catalog-density-button {
+  min-height: 34px;
+  padding: 5px 9px;
+  color: var(--seiton-color-dimmed);
+  border-color: transparent;
+}
+
+.react-home-create-catalog-filter[aria-pressed="true"],
+.react-home-create-catalog-density-button[aria-pressed="true"] {
+  color: var(--seiton-color-accent-8);
+  background: var(--seiton-color-accent-1);
+  border-color: var(--seiton-color-accent-5);
+}
+
+.react-home-create-catalog-sort .seiton-ui-select {
+  min-height: 42px;
+}
+
+.react-home-create-catalog-meta {
+  min-height: 18px;
+}
+
+.react-home-create-catalog-meta strong {
+  color: var(--seiton-color-text);
+}
+
+.react-home-create-catalog-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  min-width: 0;
+}
+
+.react-home-create-catalog-list-list {
+  grid-template-columns: 1fr;
+}
+
+.react-home-create-catalog-list-list .react-home-create-type-option,
+.react-home-create-catalog-list-list .react-home-create-preset-option {
+  min-height: 64px;
+}
+
+.react-home-create-catalog-list-list .react-home-create-type-option {
+  justify-content: flex-start;
+}
+
+.react-home-create-catalog-empty {
+  grid-column: 1 / -1;
+  padding: 20px 14px;
+  color: var(--seiton-color-dimmed);
+  text-align: center;
+  border: 1px dashed var(--seiton-color-default-border);
+  border-radius: var(--seiton-radius-md);
+}
+
+.react-home-create-catalog-density {
+  justify-self: end;
+}
+
+.react-home-create-type-groups {
+  display: grid;
+  gap: 18px;
+}
+
+.react-home-create-preset-option {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  min-width: 0;
+  min-height: 84px;
+  padding: 0;
+  color: var(--seiton-color-text);
+  background: var(--seiton-color-body);
+  border: 1px solid var(--seiton-color-default-border);
+  transition:
+    border-color 160ms ease,
+    background-color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.react-home-create-preset-option:hover,
+.react-home-create-preset-option:focus-within {
+  background: var(--seiton-color-accent-0);
+  border-color: var(--seiton-color-accent-5);
+  box-shadow: var(--seiton-shadow-xs);
+}
+
+.react-home-create-preset-open {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-row: 1;
+  grid-column: 1 / -1;
+  gap: 5px 8px;
+  align-content: center;
+  min-width: 0;
+  min-height: 82px;
+  padding: 10px 44px 10px 12px;
+  color: var(--seiton-color-text);
+  text-align: left;
+  border-radius: var(--seiton-radius-md);
+}
+
+.react-home-create-preset-open:hover,
+.react-home-create-preset-open:focus-visible {
+  outline: none;
+  background: transparent;
+}
+
+.react-home-create-preset-main {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.react-home-create-preset-main strong,
+.react-home-create-preset-location,
+.react-home-create-preset-tags {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.react-home-create-preset-main strong {
+  font-size: var(--seiton-font-size-sm);
+}
+
+.react-home-create-preset-main span,
+.react-home-create-preset-location,
+.react-home-create-preset-tags {
+  font-size: var(--seiton-font-size-xs);
+  color: var(--seiton-color-dimmed);
+}
+
+.react-home-create-preset-location {
+  grid-column: 1 / -1;
+}
+
+.react-home-create-preset-tags {
+  grid-column: 1 / -1;
+  color: var(--seiton-color-accent-7);
+}
+
+.react-home-create-preset-edit {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  min-width: 32px;
+  min-height: 30px;
+  padding: 4px 5px;
+  line-height: 1;
+  color: var(--seiton-color-dimmed);
+}
+
+.react-home-create-preset-edit:hover,
+.react-home-create-preset-edit:focus-visible {
+  color: var(--seiton-color-accent-8);
+  background: var(--seiton-color-accent-1);
+  border-color: var(--seiton-color-accent-4);
+}
+
+.react-home-create-preset-add-option {
+  display: grid;
+  gap: 6px;
+  align-content: center;
+  justify-items: center;
+  min-width: 0;
+  min-height: 84px;
+  color: var(--seiton-color-accent-8);
+  text-align: center;
+  cursor: pointer;
+  background: var(--seiton-color-accent-0);
+  border-color: var(--seiton-color-accent-3);
+  transition:
+    border-color 160ms ease,
+    background-color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.react-home-create-preset-add-option:hover,
+.react-home-create-preset-add-option:focus-visible {
+  outline: none;
+  background: var(--seiton-color-accent-1);
+  border-color: var(--seiton-color-accent-5);
+  box-shadow: var(--seiton-shadow-xs);
+}
+
+.react-home-create-preset-add-icon {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  font-size: var(--seiton-font-size-lg);
+  line-height: 1;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+}
+
+.react-home-create-type-group {
+  display: grid;
+  gap: 8px;
+}
+
+.react-home-create-type-group-label {
+  font-size: var(--seiton-font-size-sm);
+  font-weight: 700;
+  color: var(--seiton-color-dimmed);
+}
+
+.react-home-create-type-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.react-home-create-type-option {
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  min-width: 0;
+  min-height: 78px;
+  color: var(--seiton-color-text);
+  text-align: center;
+  cursor: pointer;
+  background: var(--seiton-color-body);
+  border: 1px solid var(--seiton-color-default-border);
+  transition:
+    border-color 160ms ease,
+    background-color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.react-home-create-type-option:hover,
+.react-home-create-type-option:focus-visible {
+  background: var(--seiton-color-accent-0);
+  border-color: var(--seiton-color-accent-5);
+  box-shadow: var(--seiton-shadow-xs);
+}
+
+.react-home-create-type-option-content {
+  display: grid;
+  grid-template-columns: minmax(0, auto) auto;
+  gap: 3px 6px;
+  align-items: center;
+  max-width: 100%;
+}
+
+.react-home-create-type-option-content strong {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: var(--seiton-font-size-sm);
+  white-space: nowrap;
+}
+
+.react-home-create-type-option-kind,
+.react-home-create-preset-kind {
+  width: fit-content;
+  padding: 2px 6px;
+  font-size: var(--seiton-font-size-xs);
+  line-height: 1.2;
+  color: var(--seiton-color-dimmed);
+  background: var(--seiton-color-default-hover);
+  border-radius: 999px;
+}
+
+.react-home-create-type-option-hint {
+  grid-column: 1 / -1;
+  max-width: 100%;
+  font-size: var(--seiton-font-size-xs);
+  color: var(--seiton-color-dimmed);
+  overflow-wrap: anywhere;
+}
+
+.react-home-create-preset-kind {
+  display: inline-flex;
+  vertical-align: 1px;
+}
+
+.react-home-order-modal-content {
+  max-width: min(760px, calc(100vw - 32px));
+  border: 1px solid var(--seiton-color-default-border);
+}
+
+.react-home-order-modal-body {
+  max-height: min(70vh, 620px);
+  overflow: auto;
+}
+
+.react-home-shortcut-add {
+  gap: 8px;
+  text-align: center;
+}
+
+.react-home-shortcut-add .react-home-shortcut-icon {
+  margin: 0;
+  font-size: var(--seiton-font-size-lg);
+}
+
+.react-home-shortcut-add strong {
+  font-size: var(--seiton-font-size-sm);
+  font-weight: 700;
+}
+
+.react-home-shortcut-add-modal-content {
+  width: min(560px, calc(100vw - 32px));
+  border: 1px solid var(--seiton-color-default-border);
+}
+
+.react-home-shortcut-create-tabs,
+.react-home-shortcut-target-tabs {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  background: var(--seiton-color-accent-0);
+  border: 1px solid var(--seiton-color-accent-2);
+  border-radius: var(--seiton-radius-md);
+}
+
+.react-home-shortcut-create-tab,
+.react-home-shortcut-target-tab {
+  flex: 1;
+  min-width: 0;
+  padding: 9px 10px;
+  font: inherit;
+  font-size: var(--seiton-font-size-sm);
+  font-weight: 700;
+  color: var(--seiton-color-dimmed);
+  cursor: pointer;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--seiton-radius-sm);
+}
+
+.react-home-shortcut-create-tab[aria-selected="true"],
+.react-home-shortcut-target-tab[aria-selected="true"] {
+  color: var(--seiton-color-accent-7);
+  background: var(--seiton-color-body);
+  border-color: var(--seiton-color-accent-4);
+  box-shadow: var(--seiton-shadow-xs);
+}
+
+.react-home-shortcut-create-tab:hover,
+.react-home-shortcut-create-tab:focus-visible,
+.react-home-shortcut-target-tab:hover,
+.react-home-shortcut-target-tab:focus-visible {
+  color: var(--seiton-color-text);
+  outline: none;
+  border-color: var(--seiton-color-accent-4);
+}
+
+.react-home-shortcut-target-tabs {
+  background: var(--seiton-color-body);
+}
+
+.react-home-order-fieldset {
+  min-width: 0;
+  padding: 14px;
+  margin: 0;
+  border: 1px solid var(--seiton-color-default-border);
+  border-radius: var(--seiton-radius-md);
+}
+
+.react-home-order-fieldset legend {
+  padding-inline: 4px;
+  font-size: var(--seiton-font-size-sm);
+  font-weight: 700;
+  color: var(--seiton-color-text);
+}
+
+.react-home-order-list {
+  display: grid;
+  gap: 8px;
+  padding: 0;
+  margin: 8px 0 0;
+  list-style: none;
+}
+
+.react-home-order-row {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  min-width: 0;
+  min-height: 60px;
+  padding: 8px 10px;
+  background: var(--seiton-color-body);
+  border: 1px solid var(--seiton-color-default-border);
+  border-radius: var(--seiton-radius-sm);
+}
+
+.react-home-order-shortcut-row {
+  grid-template-columns: minmax(0, 1fr) minmax(132px, 0.65fr) auto;
+}
+
+.react-home-order-shortcut-group {
+  width: 100%;
+}
+
+.react-home-order-row[data-dragging="true"] {
+  opacity: 0.55;
+}
+
+.react-home-order-row:focus-within,
+.react-home-order-row:hover {
+  border-color: var(--seiton-color-accent-5);
+}
+
+.react-home-order-handle {
+  font-size: 18px;
+  line-height: 1;
+  color: var(--seiton-color-dimmed);
+  letter-spacing: -4px;
+  cursor: grab;
+  user-select: none;
+}
+
+.react-home-order-copy {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+.react-home-order-copy strong,
+.react-home-order-copy small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.react-home-order-copy small {
+  font-size: var(--seiton-font-size-xs);
+  color: var(--seiton-color-dimmed);
+}
+
+.react-home-order-controls {
+  display: flex;
+  gap: 4px;
+}
+
+.react-home-order-controls button {
+  min-width: 34px;
+  min-height: 34px;
+}
+
+.react-home-footer {
+  padding-top: 18px;
+  margin-top: 56px;
+  border-top: 1px solid var(--seiton-color-default-border);
+}
+
+@media (max-width: 1040px) {
+  .react-home-entry-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .react-home-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .react-home-header-actions {
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .react-home-entry-grid,
+  .react-home-secondary-grid {
+    grid-template-columns: repeat(2, minmax(0, 220px));
+  }
+
+  .react-home-shortcut-grid {
+    grid-template-columns: repeat(auto-fill, minmax(96px, 112px));
+  }
+}
+
+@media (max-width: 520px) {
+  .react-home-section-heading {
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .react-home-inbox-heading {
+    flex-direction: row;
+    gap: 12px;
+    align-items: center;
+  }
+  .react-home-capture-actions {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .react-home-capture-actions button {
+    width: 100%;
+  }
+  .react-home-entry-grid,
+  .react-home-secondary-grid {
+    grid-template-columns: 1fr;
+  }
+  .react-home-shortcut-grid {
+    grid-template-columns: repeat(auto-fill, minmax(96px, 112px));
+  }
+  .react-home-entry {
+    min-height: 196px;
+  }
+  .react-home-create-type-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .react-home-create-catalog-toolbar {
+    grid-template-columns: 1fr;
+    align-items: stretch;
+  }
+  .react-home-create-catalog-filters {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .react-home-create-catalog-filter {
+    width: 100%;
+  }
+  .react-home-create-catalog-sort .seiton-ui-field,
+  .react-home-create-catalog-sort .seiton-ui-select {
+    width: 100%;
+  }
+  .react-home-create-catalog-density {
+    justify-content: flex-end;
+    justify-self: stretch;
+  }
+  .react-home-inbox-item {
+    flex-direction: column;
+    gap: 4px;
+    align-items: flex-start;
+  }
+  .react-home-inbox-item time {
+    font-size: var(--seiton-font-size-xs);
+  }
+  .react-home-fab {
+    right: 16px;
+    bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+    width: 60px;
+    min-width: 60px;
+    height: 60px;
+    min-height: 60px;
+  }
+  .react-home-feedback {
+    bottom: calc(88px + env(safe-area-inset-bottom, 0px));
+  }
+  .react-home-order-row {
+    grid-template-columns: 20px minmax(0, 1fr) auto;
+    gap: 8px;
+    padding-inline: 8px;
+  }
+  .react-home-order-shortcut-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+  .react-home-order-shortcut-group {
+    grid-column: 1 / -1;
+  }
+  .react-home-order-controls button {
+    min-width: 32px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .react-home-entry {
+    transition: none;
+  }
+}
+
+/* Keep the creation catalog scannable when the host becomes narrow. */
+@media (max-width: 680px) {
+  .react-home-create-catalog-toolbar {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .react-home-create-catalog-filters,
+  .react-home-create-catalog-density {
+    justify-self: stretch;
+  }
+
+  .react-home-create-catalog-filter,
+  .react-home-create-catalog-density-button {
+    flex: 1 1 0;
+  }
+
+  .react-home-create-catalog-sort,
+  .react-home-create-catalog-sort .seiton-ui-field,
+  .react-home-create-catalog-sort .seiton-ui-select {
+    width: 100%;
+  }
+
+  .react-home-create-catalog-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .react-home-create-preset-main strong,
+  .react-home-create-preset-location,
+  .react-home-create-preset-tags,
+  .react-home-create-type-option-content strong,
+  .react-home-create-type-option-hint {
+    overflow: visible;
+    text-overflow: clip;
+    overflow-wrap: anywhere;
+    white-space: normal;
+  }
+
+  .react-home-create-preset-option,
+  .react-home-create-preset-open,
+  .react-home-create-type-option {
+    min-height: 0;
+  }
+
+  .react-home-create-preset-open {
+    min-height: 92px;
+  }
+}
+
+@media (max-width: 480px) {
+  .react-home-create-catalog-list {
+    grid-template-columns: 1fr;
+  }
+
+  .react-home-create-catalog-list-list {
+    grid-template-columns: 1fr;
+  }
+}

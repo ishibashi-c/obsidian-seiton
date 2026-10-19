@@ -1,0 +1,621 @@
+/* Production-only layout boundary. Screen rules remain source-owned in src/ui. */
+.seiton-react-production-host {
+  min-height: 100%;
+  color: var(--seiton-color-text);
+  background: var(--seiton-color-body);
+  isolation: isolate;
+}
+.seiton-react-production-host
+  :is(
+    .seiton-react-home-prototype,
+    .seiton-react-library-prototype,
+    .seiton-react-search-prototype,
+    .seiton-react-organize-prototype,
+    .seiton-react-memo-prototype,
+    .seiton-react-bookshelf-prototype,
+    .seiton-react-create-prototype,
+    .seiton-react-onboarding-prototype,
+    .seiton-react-supporting-prototype
+  ) {
+  min-height: 100%;
+}
+.seiton-react-production-host .seiton-react-home-prototype {
+  padding-bottom: calc(132px + env(safe-area-inset-bottom, 0px));
+}
+
+.seiton-react-production-host
+  :is(
+    .react-home-footer,
+    .react-library-footer,
+    .react-search-footer,
+    .react-organize-footer,
+    .react-memo-footer,
+    .react-bookshelf-footer,
+    .react-onboarding-footer
+  ) {
+  display: none;
+}
+
+/* Overlay roots are opaque and centered even when Obsidian supplies global CSS. */
+.seiton-react-production-dialog-host {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  pointer-events: none;
+}
+.seiton-react-production-dialog-host .seiton-ui-modal-root {
+  pointer-events: auto;
+}
+.seiton-react-production-dialog-host .seiton-ui-modal-content,
+.seiton-react-production-dialog-host .seiton-ui-modal-body,
+.seiton-react-production-dialog-host .seiton-ui-modal-header {
+  opacity: 1;
+}
+
+.seiton-tag-suggestions {
+  display: grid;
+  gap: 6px;
+  margin-top: 2px;
+}
+.seiton-tag-suggestions-label {
+  font-size: var(--seiton-font-size-xs);
+  font-weight: 700;
+  color: var(--seiton-color-dimmed);
+}
+.seiton-tag-suggestions-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.seiton-tag-suggestions-list button {
+  min-height: 30px;
+  padding: 3px 9px;
+  font: inherit;
+  font-size: var(--seiton-font-size-xs);
+  color: var(--seiton-color-text);
+  cursor: pointer;
+  background: var(--seiton-color-body);
+  border: 1px solid var(--seiton-color-default-border);
+  border-radius: 999px;
+}
+.seiton-tag-suggestions-list button:hover,
+.seiton-tag-suggestions-list button:focus-visible {
+  color: var(--seiton-color-accent-8);
+  outline: none;
+  border-color: var(--seiton-color-accent-5);
+}
+
+/* Folder destinations stay readable as a hierarchy instead of a flat path list. */
+.seiton-folder-tree-picker {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+  font-size: var(--seiton-font-size-sm);
+  font-weight: 700;
+  color: var(--seiton-color-dimmed);
+}
+.seiton-folder-tree-trigger {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  min-width: 0;
+  min-height: 42px;
+  padding: 8px 11px;
+  font: inherit;
+  font-weight: 400;
+  color: var(--seiton-color-text);
+  text-align: left;
+  cursor: pointer;
+  background: var(--seiton-color-body);
+  border: 1px solid var(--seiton-color-default-border);
+  border-radius: var(--seiton-radius-md);
+}
+.seiton-folder-tree-trigger:hover,
+.seiton-folder-tree-trigger[aria-expanded="true"] {
+  border-color: var(--seiton-color-accent-5);
+}
+.seiton-folder-tree-trigger:focus-visible,
+.seiton-folder-tree-picker button:focus-visible {
+  outline: 2px solid var(--seiton-color-accent-5);
+  outline-offset: 2px;
+}
+.seiton-folder-tree-trigger-value {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.seiton-folder-tree-trigger-icon {
+  flex: 0 0 auto;
+  color: var(--seiton-color-dimmed);
+}
+.seiton-folder-tree-panel {
+  min-width: 0;
+  min-height: 180px;
+  max-height: min(50vh, 420px);
+  padding: 5px;
+  overflow: auto;
+  overscroll-behavior: contain;
+  color: var(--seiton-color-text);
+  background: var(--seiton-color-body);
+  border: 1px solid var(--seiton-color-default-border);
+  border-radius: var(--seiton-radius-md);
+  box-shadow: var(--seiton-shadow-sm);
+}
+.seiton-folder-tree-list {
+  display: grid;
+  gap: 2px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+.seiton-folder-tree-list .seiton-folder-tree-list {
+  padding-inline-start: 5px;
+  margin-inline-start: 18px;
+  border-inline-start: 1px solid var(--seiton-color-default-border);
+}
+.seiton-folder-tree-row {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  gap: 3px;
+  align-items: stretch;
+  min-width: 0;
+}
+.seiton-folder-tree-option,
+.seiton-folder-tree-empty {
+  min-width: 0;
+  min-height: 34px;
+  font: inherit;
+  color: var(--seiton-color-text);
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+  border-radius: var(--seiton-radius-sm);
+}
+.seiton-folder-tree-disclosure {
+  display: grid;
+  place-items: center;
+  min-width: 28px;
+  min-height: 34px;
+  padding: 0;
+  font: inherit;
+  color: var(--seiton-color-dimmed);
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+  border-radius: var(--seiton-radius-sm);
+}
+.seiton-folder-tree-disclosure > span::before {
+  content: "›";
+}
+.seiton-folder-tree-disclosure[aria-expanded="true"] > span::before {
+  content: "⌄";
+}
+.seiton-folder-tree-disclosure:focus-visible {
+  outline: 2px solid var(--seiton-color-accent-5);
+  outline-offset: 2px;
+}
+.seiton-folder-tree-disclosure:hover {
+  background: var(--seiton-color-default-hover);
+}
+.seiton-folder-tree-spacer {
+  width: 28px;
+}
+.seiton-folder-tree-option {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 5px 8px;
+  font-weight: 400;
+  text-align: left;
+}
+.seiton-folder-tree-option-main {
+  display: grid;
+  gap: 1px;
+  min-width: 0;
+}
+.seiton-folder-tree-name,
+.seiton-folder-tree-description {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.seiton-folder-tree-description {
+  font-size: var(--seiton-font-size-xs);
+  color: var(--seiton-color-dimmed);
+}
+.seiton-folder-tree-ancestor {
+  align-self: center;
+  min-width: 0;
+  padding: 5px 8px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.seiton-folder-tree-option:hover,
+.seiton-folder-tree-empty:hover {
+  background: var(--seiton-color-default-hover);
+}
+.seiton-folder-tree-option.is-selected,
+.seiton-folder-tree-empty.is-selected {
+  color: var(--seiton-color-accent-8);
+  background: var(--seiton-color-accent-1);
+}
+.seiton-folder-tree-check {
+  flex: 0 0 auto;
+  color: var(--seiton-color-accent-7);
+}
+.seiton-folder-tree-empty {
+  width: 100%;
+  padding: 5px 8px;
+  margin-bottom: 5px;
+  font-weight: 400;
+  text-align: left;
+  border-bottom: 1px solid var(--seiton-color-default-border);
+  border-radius: 0;
+}
+.seiton-folder-tree-empty-state {
+  padding: 10px;
+  font-weight: 400;
+  color: var(--seiton-color-dimmed);
+}
+
+/* Markdown post-processor output: keep the saved URL useful even without a remote image. */
+.seiton-rich-card-note {
+  margin: 18px 0;
+}
+.seiton-rich-card-editor-widget {
+  display: inline-block;
+  width: min(100%, 420px);
+  max-width: 420px;
+  margin: 10px 0 14px 12px;
+  vertical-align: top;
+}
+.seiton-rich-card-editor-widget .seiton-rich-card,
+.seiton-rich-card-editor-widget .seiton-rich-card-skeleton {
+  width: 100%;
+}
+.seiton-rich-card-editor-widget {
+  position: relative;
+}
+.seiton-rich-card-editor-card {
+  display: block;
+}
+.seiton-rich-card-editor-edit {
+  position: absolute;
+  top: 14px;
+  right: 8px;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  padding: 6px;
+  color: var(--embed-action-color, var(--text-normal));
+  cursor: pointer;
+  background: var(
+    --embed-actions-background,
+    color-mix(in srgb, var(--background-primary) 80%, transparent)
+  );
+  border: 0;
+  border-radius: var(--embed-actions-radius, 8px);
+  box-shadow: var(
+    --embed-actions-shadow,
+    0 1px 2px rgb(0 0 0 / 5%),
+    0 0 6px rgb(0 0 0 / 5%)
+  );
+  opacity: 0;
+  -webkit-backdrop-filter: var(--embed-actions-blur, blur(8px));
+  backdrop-filter: var(--embed-actions-blur, blur(8px));
+  transition:
+    opacity 70ms ease-out,
+    color 70ms ease-out,
+    background-color 70ms ease-out;
+}
+.seiton-rich-card-editor-widget:hover .seiton-rich-card-editor-edit,
+.seiton-rich-card-editor-edit:focus-visible {
+  opacity: 1;
+}
+.seiton-rich-card-editor-edit:hover,
+.seiton-rich-card-editor-edit:focus-visible {
+  color: var(--interactive-accent);
+  background: var(--background-modifier-hover);
+}
+.seiton-rich-card-editor-edit svg {
+  width: 16px;
+  height: 16px;
+}
+.seiton-rich-card {
+  display: flex;
+  width: 100%;
+  max-width: 420px;
+  margin: 0.75em 0;
+  overflow: hidden;
+  font-family: var(
+    --font-interface,
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif
+  );
+  color: var(--seiton-color-text, var(--text-normal, #222));
+  text-decoration: none;
+  cursor: pointer;
+  background: color-mix(
+    in srgb,
+    var(--seiton-color-text, var(--text-normal, #222)) 4%,
+    var(--seiton-color-body, var(--background-primary, #fff))
+  );
+  border: 0;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 5%);
+  transition: background-color 150ms ease;
+}
+.seiton-rich-card:hover {
+  background: var(--seiton-color-default, var(--background-secondary, #f6f7f8));
+}
+.seiton-rich-card:active {
+  background: var(
+    --seiton-color-default-hover,
+    var(--background-modifier-hover, #edf0f2)
+  );
+}
+.seiton-rich-card:focus-visible {
+  outline: 2px solid
+    var(--seiton-color-accent-5, var(--interactive-accent, #7d50ee));
+  outline-offset: 3px;
+}
+.seiton-rich-card.layout-large {
+  flex-direction: column;
+}
+.seiton-rich-card.layout-text {
+  min-height: 56px;
+}
+.seiton-rich-card.layout-compact {
+  align-items: stretch;
+  min-height: 76px;
+}
+.seiton-rich-card-media {
+  position: relative;
+  display: block;
+  width: 100%;
+  min-height: 168px;
+  overflow: hidden;
+  background: var(
+    --seiton-color-default-hover,
+    var(--background-secondary-alt, #edf0f2)
+  );
+}
+.seiton-rich-card.layout-large .seiton-rich-card-media {
+  aspect-ratio: 1.91 / 1;
+}
+.seiton-rich-card.layout-large .seiton-rich-card-media.is-portrait {
+  aspect-ratio: 1 / 1;
+  background-position: center top;
+}
+.seiton-rich-card.layout-compact .seiton-rich-card-media {
+  order: 2;
+  width: 76px;
+  min-width: 76px;
+  min-height: 76px;
+  aspect-ratio: 1;
+}
+.seiton-rich-card-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.seiton-rich-card-tint {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: color-mix(
+    in srgb,
+    var(--seiton-card-tint, transparent) 25%,
+    transparent
+  );
+}
+.seiton-rich-card-copy {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 3px;
+  justify-content: center;
+  min-width: 0;
+  overflow: hidden;
+}
+.seiton-rich-card.layout-large .seiton-rich-card-copy {
+  flex: 0 0 auto;
+  padding: 10px 12px 11px;
+}
+.seiton-rich-card.layout-compact .seiton-rich-card-copy {
+  padding: 10px 12px;
+}
+.seiton-rich-card.layout-text .seiton-rich-card-copy {
+  padding: 10px 12px;
+}
+.seiton-rich-card-copy strong {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 2;
+  font-size: 0.88em;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--seiton-color-text, var(--text-normal, #222));
+}
+.seiton-rich-card.layout-text .seiton-rich-card-copy strong {
+  -webkit-line-clamp: 1;
+}
+.seiton-rich-card-description {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+  font-size: 0.78em;
+  line-height: 1.5;
+  color: var(--seiton-color-dimmed, var(--text-muted, #6f7782));
+}
+.seiton-rich-card-domain {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 0.74em;
+  line-height: 1.35;
+  color: var(--seiton-color-dimmed, var(--text-muted, #6f7782));
+  white-space: nowrap;
+}
+.seiton-rich-card-domain > span:last-child {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.seiton-rich-card-domain img {
+  flex: 0 0 14px;
+  width: 14px;
+  height: 14px;
+  object-fit: cover;
+  border-radius: 3px;
+}
+.seiton-rich-card-favicon-fallback {
+  display: inline-flex;
+  flex: 0 0 14px;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  color: var(--text-faint, #9aa3ad);
+}
+.seiton-rich-card-skeleton {
+  width: min(100%, 420px);
+  min-height: 56px;
+  padding: 18px;
+  margin: 0.75em 0;
+  color: var(--seiton-color-dimmed, var(--text-muted, #6f7782));
+  background: linear-gradient(
+    100deg,
+    var(--seiton-color-default, var(--background-secondary, #f6f7f8)) 30%,
+    var(--seiton-color-default-hover, var(--background-secondary-alt, #edf0f2))
+      50%,
+    var(--seiton-color-default, var(--background-secondary, #f6f7f8)) 70%
+  );
+  background-size: 200% 100%;
+  border-radius: 12px;
+  animation: seiton-rich-card-shimmer 1.4s ease-in-out infinite;
+}
+@keyframes seiton-rich-card-shimmer {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .seiton-rich-card-editor-widget {
+    width: min(100%, 420px);
+    margin-left: 0;
+  }
+  .seiton-rich-card.layout-compact .seiton-rich-card-media {
+    width: 64px;
+    min-width: 64px;
+    min-height: 64px;
+  }
+  .seiton-rich-card-editor-edit {
+    padding: 8px;
+    opacity: 1;
+  }
+}
+
+/* Floating selection toolbar, isolated from Obsidian button rules. */
+.seiton-selection-toolbar {
+  position: fixed;
+  z-index: 1000;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  align-items: center;
+  max-width: calc(100vw - 16px);
+  padding: 5px;
+  color: var(--seiton-color-text);
+  background: var(--seiton-color-body);
+  border: 1px solid var(--seiton-color-default-border);
+  border-radius: 10px;
+  box-shadow: var(--seiton-shadow-md);
+  animation: seiton-selection-toolbar-in 120ms ease-out;
+}
+.seiton-selection-toolbar,
+.seiton-selection-toolbar * {
+  box-sizing: border-box;
+}
+.seiton-selection-tool {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  min-width: 30px;
+  height: 30px;
+  padding: 0;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 650;
+  line-height: 1;
+  color: var(--seiton-color-text);
+  appearance: none;
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+  border-radius: 6px;
+}
+.seiton-selection-tool:hover,
+.seiton-selection-tool:focus-visible {
+  outline: none;
+  background: var(--seiton-color-default-hover);
+}
+.seiton-selection-tool:focus-visible {
+  box-shadow: 0 0 0 2px var(--seiton-color-accent-5);
+}
+.seiton-selection-swatch {
+  position: relative;
+}
+.seiton-selection-swatch::before {
+  width: 17px;
+  height: 17px;
+  content: "";
+  background: var(--seiton-highlight-color);
+  border: 1px solid
+    color-mix(in srgb, var(--seiton-color-text) 18%, transparent);
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 2px var(--seiton-color-body);
+}
+.seiton-selection-separator {
+  flex: 0 0 1px;
+  width: 1px;
+  height: 20px;
+  margin-inline: 3px;
+  background: var(--seiton-color-default-border);
+}
+@keyframes seiton-selection-toolbar-in {
+  from {
+    opacity: 0;
+    transform: translateY(3px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .seiton-selection-toolbar {
+    animation: none;
+  }
+}

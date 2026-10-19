@@ -1,0 +1,273 @@
+.seiton-react-onboarding-prototype {
+  min-height: 100vh;
+  padding: clamp(22px, 4vw, 56px) clamp(16px, 4vw, 56px) 72px;
+  overflow: clip;
+  color: var(--seiton-color-text);
+  background: var(--seiton-color-body);
+}
+.seiton-react-onboarding-prototype,
+.seiton-react-onboarding-prototype * {
+  box-sizing: border-box;
+}
+.seiton-react-onboarding-prototype .react-onboarding-header,
+.seiton-react-onboarding-prototype main,
+.seiton-react-onboarding-prototype .react-onboarding-footer {
+  width: min(920px, 100%);
+  margin-inline: auto;
+}
+.react-onboarding-header {
+  display: flex;
+  gap: 24px;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--seiton-color-default-border);
+}
+.react-onboarding-heading {
+  margin-top: 8px;
+  letter-spacing: -0.05em;
+}
+.react-onboarding-header-actions {
+  align-items: center;
+}
+.react-onboarding-panel {
+  padding: clamp(18px, 4vw, 34px);
+  margin-top: 38px;
+  background: var(--seiton-color-body);
+  border: 1px solid var(--seiton-color-default-border);
+  border-radius: var(--seiton-radius-lg);
+}
+.react-onboarding-panel-heading {
+  display: flex;
+  gap: 16px;
+  align-items: end;
+  justify-content: space-between;
+}
+.react-onboarding-panel-heading h2 {
+  margin-top: 6px;
+  letter-spacing: -0.04em;
+}
+.react-onboarding-progress {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  padding: 0;
+  margin: 26px 0 30px;
+  list-style: none;
+}
+.react-onboarding-progress li {
+  display: flex;
+  gap: 9px;
+  align-items: center;
+  padding: 10px 0;
+  color: var(--seiton-color-dimmed);
+  border-bottom: 2px solid var(--seiton-color-default-border);
+}
+.react-onboarding-progress li.is-current {
+  color: var(--seiton-color-text);
+  border-color: var(--seiton-color-accent-5);
+}
+.react-onboarding-progress li.is-done {
+  color: var(--seiton-color-accent-7);
+  border-color: var(--seiton-color-accent-3);
+}
+.react-onboarding-progress span {
+  display: grid;
+  place-items: center;
+  width: 25px;
+  height: 25px;
+  font-size: var(--seiton-font-size-sm);
+  font-weight: 700;
+  background: var(--seiton-color-default-hover);
+  border-radius: 50%;
+}
+.react-onboarding-progress .is-current span {
+  color: var(--seiton-color-accent-8);
+  background: var(--seiton-color-accent-2);
+}
+.react-onboarding-step {
+  display: grid;
+  gap: 18px;
+  min-height: 330px;
+}
+.react-onboarding-description {
+  max-width: 62ch;
+  line-height: 1.6;
+  color: var(--seiton-color-dimmed);
+}
+.react-onboarding-preview {
+  display: grid;
+  gap: 8px;
+  padding: 16px;
+  background: var(--seiton-color-default-hover);
+  border: 1px solid var(--seiton-color-default-border);
+  border-radius: var(--seiton-radius-md);
+}
+.react-onboarding-muted {
+  color: var(--seiton-color-dimmed);
+}
+.react-onboarding-preset-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+.react-onboarding-preset {
+  display: grid;
+  gap: 8px;
+  align-content: start;
+  min-width: 0;
+  min-height: 100px;
+  padding: 14px 12px;
+  font: inherit;
+  color: var(--seiton-color-text);
+  text-align: left;
+  white-space: normal;
+  cursor: pointer;
+  background: var(--seiton-color-body);
+  border: 1px solid var(--seiton-color-default-border);
+  border-radius: var(--seiton-radius-md);
+}
+.react-onboarding-preset strong,
+.react-onboarding-preset span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.react-onboarding-preset:hover,
+.react-onboarding-preset.is-selected {
+  background: var(--seiton-color-accent-0);
+  border-color: var(--seiton-color-accent-5);
+}
+.react-onboarding-preset span {
+  font-size: var(--seiton-font-size-xs);
+  line-height: 1.45;
+  color: var(--seiton-color-dimmed);
+}
+.react-onboarding-type-fieldset,
+.react-onboarding-guide-fieldset {
+  padding: 16px;
+  margin: 0;
+  border: 1px solid var(--seiton-color-default-border);
+  border-radius: var(--seiton-radius-md);
+}
+.react-onboarding-type-fieldset legend,
+.react-onboarding-guide-fieldset legend {
+  padding-inline: 5px;
+  font-size: var(--seiton-font-size-sm);
+  font-weight: 700;
+  color: var(--seiton-color-dimmed);
+}
+.react-onboarding-type-fieldset > div {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 13px 18px;
+}
+.react-onboarding-module-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+.react-onboarding-module {
+  display: flex;
+  gap: 10px;
+  align-items: start;
+  min-width: 0;
+  padding: 14px;
+  cursor: pointer;
+  background: var(--seiton-color-default-hover);
+  border: 1px solid var(--seiton-color-default-border);
+  border-radius: var(--seiton-radius-md);
+}
+.react-onboarding-module > span {
+  display: grid;
+  gap: 5px;
+}
+.react-onboarding-module small {
+  line-height: 1.45;
+  color: var(--seiton-color-dimmed);
+}
+.react-onboarding-fields {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+.react-onboarding-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  padding-top: 18px;
+  margin-top: 24px;
+  border-top: 1px solid var(--seiton-color-default-border);
+}
+.react-onboarding-saved {
+  margin-top: 18px;
+}
+.react-onboarding-footer {
+  padding-top: 18px;
+  margin-top: 56px;
+  border-top: 1px solid var(--seiton-color-default-border);
+}
+@media (max-width: 760px) {
+  .react-onboarding-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .react-onboarding-header-actions {
+    align-items: center;
+  }
+  .react-onboarding-panel-heading {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .react-onboarding-preset-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .react-onboarding-preset:last-child {
+    grid-column: 1 / -1;
+  }
+  .react-onboarding-module-grid,
+  .react-onboarding-fields {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 480px) {
+  .react-onboarding-panel {
+    max-height: calc(100vh - 24px);
+    padding: 16px;
+    overflow: auto;
+  }
+  .react-onboarding-progress {
+    gap: 4px;
+    margin-top: 20px;
+  }
+  .react-onboarding-progress li {
+    gap: 5px;
+    align-items: flex-start;
+    font-size: var(--seiton-font-size-xs);
+  }
+  .react-onboarding-progress li strong {
+    overflow-wrap: anywhere;
+  }
+  .react-onboarding-progress span {
+    width: 22px;
+    height: 22px;
+  }
+  .react-onboarding-type-fieldset > div {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+  .react-onboarding-preset {
+    min-height: 90px;
+    padding: 11px 10px;
+  }
+  .react-onboarding-actions {
+    position: sticky;
+    bottom: -16px;
+    padding: 12px 0 16px;
+    background: var(--seiton-color-body);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .react-onboarding-preset {
+    transition: none;
+  }
+}

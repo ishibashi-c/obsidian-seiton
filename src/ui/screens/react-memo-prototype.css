@@ -1,0 +1,191 @@
+.seiton-react-memo-prototype {
+  min-height: 100vh;
+  padding: clamp(22px, 4vw, 56px) clamp(16px, 4vw, 56px) 72px;
+  overflow: clip;
+  color: var(--seiton-color-text);
+  background: var(--seiton-color-body);
+}
+.seiton-react-memo-prototype,
+.seiton-react-memo-prototype * {
+  box-sizing: border-box;
+}
+.seiton-react-memo-prototype .react-memo-header,
+.seiton-react-memo-prototype main,
+.seiton-react-memo-prototype .react-memo-footer {
+  width: min(1120px, 100%);
+  margin-inline: auto;
+}
+.react-memo-header {
+  display: flex;
+  gap: 24px;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--seiton-color-default-border);
+}
+.react-memo-heading {
+  margin-top: 8px;
+  letter-spacing: -0.05em;
+}
+.react-memo-header-actions {
+  align-items: center;
+}
+.react-memo-controls,
+.react-memo-results {
+  margin-top: 38px;
+}
+.react-memo-controls {
+  padding: 22px;
+  background: var(--seiton-color-default-hover);
+  border: 1px solid var(--seiton-color-default-border);
+  border-radius: var(--seiton-radius-lg);
+}
+.react-memo-section-heading {
+  display: flex;
+  gap: 16px;
+  align-items: end;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+.react-memo-section-heading h2 {
+  margin-top: 5px;
+  letter-spacing: -0.04em;
+}
+.react-memo-period-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 18px;
+}
+.react-memo-period-row strong {
+  min-width: 230px;
+  text-align: center;
+}
+.react-memo-period-row .seiton-ui-segmented {
+  margin-left: auto;
+}
+.react-memo-list {
+  display: grid;
+  gap: 10px;
+}
+.react-memo-row {
+  display: grid;
+  grid-template-areas: "time content actions" "tags tags actions";
+  grid-template-columns: 148px minmax(0, 1fr) auto;
+  gap: 8px 16px;
+  padding: 18px 20px;
+  background: var(--seiton-color-body);
+  border: 1px solid var(--seiton-color-default-border);
+  border-radius: var(--seiton-radius-lg);
+}
+.react-memo-row-time {
+  grid-area: time;
+  font-size: var(--seiton-font-size-sm);
+  color: var(--seiton-color-dimmed);
+}
+.react-memo-row-content {
+  grid-area: content;
+  min-width: 0;
+  margin: 0;
+  line-height: 1.6;
+}
+.react-memo-row-tags {
+  display: flex;
+  flex-wrap: wrap;
+  grid-area: tags;
+  gap: 6px;
+}
+.react-memo-row-tags span {
+  padding: 3px 8px;
+  font-size: var(--seiton-font-size-xs);
+  color: var(--seiton-color-accent-8);
+  background: var(--seiton-color-accent-1);
+  border-radius: 999px;
+}
+.react-memo-row-actions {
+  display: flex;
+  grid-area: actions;
+  gap: 8px;
+  align-items: end;
+}
+.react-memo-empty {
+  display: grid;
+  gap: 10px;
+  place-content: center;
+  justify-items: center;
+  min-height: 260px;
+  padding: 24px;
+  color: var(--seiton-color-dimmed);
+  text-align: center;
+  border: 1px dashed var(--seiton-color-default-border);
+  border-radius: var(--seiton-radius-lg);
+}
+.react-memo-empty strong {
+  font-size: var(--seiton-font-size-lg);
+  color: var(--seiton-color-text);
+}
+.react-memo-feedback {
+  position: fixed;
+  right: clamp(16px, 4vw, 56px);
+  bottom: 24px;
+  z-index: 20;
+  width: min(420px, calc(100vw - 32px));
+}
+.react-memo-footer {
+  padding-top: 18px;
+  margin-top: 56px;
+  border-top: 1px solid var(--seiton-color-default-border);
+}
+.react-memo-muted {
+  color: var(--seiton-color-dimmed);
+}
+@media (max-width: 700px) {
+  .react-memo-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .react-memo-header-actions {
+    align-items: center;
+  }
+  .react-memo-section-heading {
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .react-memo-period-row {
+    align-items: stretch;
+  }
+  .react-memo-period-row strong {
+    flex: 1 0 100%;
+    order: 3;
+    min-width: 0;
+    padding: 7px 0;
+  }
+  .react-memo-period-row .seiton-ui-segmented {
+    margin-left: 0;
+  }
+  .react-memo-row {
+    grid-template-areas: "time" "content" "tags" "actions";
+    grid-template-columns: 1fr;
+  }
+  .react-memo-row-actions {
+    align-items: stretch;
+  }
+  .react-memo-row-actions button {
+    flex: 1;
+  }
+}
+@media (max-width: 480px) {
+  .react-memo-controls {
+    padding: 16px;
+  }
+  .react-memo-row {
+    padding: 16px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .react-memo-row {
+    transition: none;
+  }
+}

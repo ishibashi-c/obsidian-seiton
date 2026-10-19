@@ -1,0 +1,26 @@
+node_modules/
+dist/
+main.js
+*.log
+.DS_Store
+
+# Local UI review artifacts; durable verification belongs in docs/.
+/.playwright-mcp/
+/audit-*.png
+/current-*.png
+/qa-*.png
+/before-organize.png
+/onboarding-shared.png
+/organize-tag-first-*.png
+/seiton-*.png
+
+# Local workspace and private artifacts
+.agents/
+.codex/
+.delegation/
+.obsidian/
+.env
+.env.*
+!.env.example
+/issue-*.png
+/theme/

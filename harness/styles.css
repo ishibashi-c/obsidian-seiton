@@ -1,0 +1,256 @@
+@import "../src/ui/tokens.css";
+
+/* UI Lab共通スタイル。UI本体はsrc/uiの画面コンポーネントが所有する。 */
+
+:root {
+  --text-normal: #222;
+  --text-muted: #666;
+  --text-faint: #999;
+  --text-accent: hsl(252 80% 56%);
+  --background-primary: #ffffff;
+  --background-secondary: #f6f6f7;
+  --background-secondary-alt: #ededf0;
+  --background-modifier-border: #e2e2e2;
+  --background-modifier-hover: rgba(0, 0, 0, 0.04);
+  --interactive-accent: #6c5ce7;
+  --interactive-accent-hover: #5a4bd1;
+  --text-on-accent: #fff;
+  --text-error: #c94242;
+  --text-highlight-bg: #fff1a8;
+  --radius-s: 6px;
+  --radius-m: 10px;
+  --shadow-s: 0 2px 8px rgba(0, 0, 0, 0.12);
+  font-family: -apple-system, "Hiragino Sans", "Noto Sans JP", sans-serif;
+}
+
+body.theme-dark {
+  --text-normal: #dcddde;
+  --text-muted: #a7a9ad;
+  --text-faint: #777a80;
+  --background-primary: #202124;
+  --background-secondary: #292b2f;
+  --background-secondary-alt: #33353a;
+  --background-modifier-border: #414349;
+  --background-modifier-hover: rgba(255, 255, 255, 0.07);
+  --interactive-accent: #9b87f5;
+  --interactive-accent-hover: #ad9cf8;
+  --text-on-accent: #17171a;
+  --text-highlight-bg: #665c22;
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  color: var(--text-normal);
+  background: var(--background-primary);
+}
+
+#harness-root {
+  max-width: none;
+  min-height: 100vh;
+  padding: 0;
+  margin: 0;
+  color: var(--text-normal);
+  background: var(--background-primary);
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+.harness-placeholder {
+  padding: 32px;
+  color: var(--text-muted);
+  border: 1px dashed var(--background-modifier-border);
+  border-radius: 12px;
+}
+
+/* Reserve a real content safe-area for the fixed Home create action. */
+#harness-root .seiton-react-home-prototype {
+  padding-bottom: calc(132px + env(safe-area-inset-bottom, 0px));
+}
+
+/* --- Notice --- */
+.mock-notice {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 1000;
+  padding: 10px 16px;
+  color: #fff;
+  background: #222;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* --- Menu --- */
+.mock-menu {
+  position: fixed;
+  z-index: 1001;
+  min-width: 200px;
+  padding: 6px;
+  color: var(--text-normal);
+  background: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+.mock-menu hr {
+  margin: 4px 0;
+  border: none;
+  border-top: 1px solid var(--background-modifier-border);
+}
+.mock-menu-item {
+  padding: 6px 12px;
+  cursor: pointer;
+  border-radius: 6px;
+}
+.mock-menu-item:hover {
+  background: var(--background-modifier-hover);
+}
+
+/* --- Modal --- */
+.mock-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1002;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: max(24px, env(safe-area-inset-top, 0px))
+    max(24px, env(safe-area-inset-right, 0px))
+    max(24px, env(safe-area-inset-bottom, 0px))
+    max(24px, env(safe-area-inset-left, 0px));
+  background: rgba(0, 0, 0, 0.35);
+}
+.mock-modal {
+  box-sizing: border-box;
+  width: min(560px, calc(100vw - 48px));
+  max-height: min(80vh, calc(100dvh - 48px));
+  padding: 20px;
+  overflow: auto;
+  color: var(--text-normal);
+  background: var(--background-primary);
+  border-radius: 12px;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.25);
+}
+
+/* MantineのPortal面はページ内容を透かさず、常に読める不透明な面にする。 */
+:where(
+  .seiton-ui-Modal-content,
+  .seiton-ui-Modal-header,
+  .seiton-ui-Modal-body,
+  .seiton-ui-Popover-dropdown,
+  .seiton-ui-Select-dropdown,
+  .seiton-ui-Combobox-dropdown,
+  .seiton-ui-Combobox-options,
+  .seiton-ui-Menu-dropdown
+) {
+  color: var(--text-normal) !important;
+  background-color: var(--background-primary) !important;
+  background-image: none !important;
+  opacity: 1 !important;
+}
+
+:where(.seiton-ui-Modal-overlay) {
+  background-color: rgb(0 0 0 / 48%) !important;
+  opacity: 1 !important;
+}
+
+@media (max-width: 420px) {
+  .mock-modal-backdrop {
+    padding-inline: max(16px, env(safe-area-inset-left, 0px))
+      max(16px, env(safe-area-inset-right, 0px));
+  }
+  .mock-modal {
+    width: 100%;
+    max-height: calc(100dvh - 32px);
+  }
+}
+
+/* React/MantineのPortalはページroot内に置く。fixedレイヤーだけはviewport全体を基準にする。 */
+:where(
+  .seiton-react-home-prototype,
+  .seiton-react-bookshelf-prototype,
+  .seiton-react-supporting-prototype
+) .seiton-ui-Modal-inner {
+  right: 0;
+  left: 0;
+  width: 100vw;
+}
+
+.seiton-tag-suggestions {
+  display: grid;
+  gap: 6px;
+  margin-top: 2px;
+}
+
+.seiton-tag-suggestions-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.seiton-tag-suggestions-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.seiton-tag-suggestions-list button {
+  min-height: 30px;
+  padding: 3px 9px;
+  font-size: 0.8rem;
+  color: var(--text-normal);
+  cursor: pointer;
+  background: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 999px;
+}
+
+.seiton-tag-suggestions-list button:hover,
+.seiton-tag-suggestions-list button:focus-visible {
+  color: var(--text-accent);
+  outline: none;
+  border-color: var(--interactive-accent);
+}
+
+/* MantineのPortal面はObsidianの外側へ出るため、面と文字を明示的に不透明にする。 */
+:where(
+  .seiton-ui-Modal-content,
+  .seiton-ui-Modal-header,
+  .seiton-ui-Modal-body,
+  .seiton-ui-Popover-dropdown,
+  .seiton-ui-Select-dropdown,
+  .seiton-ui-Select-options
+) {
+  color: var(--seiton-color-text, var(--text-normal, #222)) !important;
+  background-color: var(
+    --seiton-color-body,
+    var(--background-primary, #fff)
+  ) !important;
+  opacity: 1 !important;
+}
+
+/* --- Suggest --- */
+.mock-suggest {
+  position: fixed;
+  z-index: 1003;
+  overflow: hidden;
+  color: var(--text-normal);
+  background: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+.mock-suggest-item {
+  padding: 6px 12px;
+  cursor: pointer;
+}
+.mock-suggest-item:hover {
+  background: var(--background-modifier-hover);
+}

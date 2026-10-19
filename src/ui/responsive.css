@@ -1,0 +1,699 @@
+/* Shared layout and density corrections for every Seiton surface. */
+.seiton-ui-root
+:is(
+  .seiton-react-home-prototype,
+  .seiton-react-library-prototype,
+  .seiton-react-search-prototype,
+  .seiton-react-organize-prototype,
+  .seiton-react-memo-prototype,
+  .seiton-react-bookshelf-prototype,
+  .seiton-react-create-prototype,
+  .seiton-react-onboarding-prototype,
+  .seiton-react-supporting-prototype
+) {
+  padding: 20px clamp(16px, 3vw, 36px) 48px;
+}
+
+/* Keep page identity distinct from section headings. */
+.seiton-ui-root
+:is(
+  .react-home-header,
+  .react-library-header,
+  .react-search-header,
+  .react-organize-header,
+  .react-memo-header,
+  .react-bookshelf-header,
+  .react-create-header,
+  .react-onboarding-header,
+  .react-supporting-header
+) {
+  gap: 12px;
+  align-items: center;
+  padding-bottom: 12px;
+}
+
+.seiton-ui-root
+  :is(
+    .react-home-header,
+    .react-library-header,
+    .react-search-header,
+    .react-organize-header,
+    .react-memo-header,
+    .react-bookshelf-header,
+    .react-create-header,
+    .react-onboarding-header,
+    .react-supporting-header
+  )
+  h1 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 650;
+  line-height: 1.35;
+  letter-spacing: -0.02em;
+  overflow-wrap: anywhere;
+}
+
+.seiton-ui-root .react-bookshelf-header-title {
+  gap: 8px;
+}
+
+.seiton-ui-root
+  :is(
+    .react-home-header,
+    .react-library-header,
+    .react-search-header,
+    .react-organize-header,
+    .react-memo-header
+  )
+  + main
+  > :first-child {
+  margin-top: 24px;
+}
+
+.seiton-ui-root :is(.react-bookshelf-browse-layout, .react-create-main) {
+  padding-top: 24px;
+}
+
+.seiton-ui-root .react-onboarding-panel {
+  margin-top: 24px;
+}
+
+.seiton-ui-root .seiton-react-home-prototype {
+  padding-bottom: calc(112px + env(safe-area-inset-bottom, 0px));
+}
+
+.seiton-ui-root .react-bookshelf-browse-layout {
+  grid-template-columns: 210px minmax(0, 1fr);
+  gap: 28px;
+}
+
+.seiton-ui-root .react-bookshelf-category-title {
+  margin-bottom: 12px;
+  font-size: 20px;
+}
+
+.seiton-ui-root .react-bookshelf-category-button {
+  min-height: 38px;
+}
+
+.seiton-ui-root .react-home-entry {
+  min-height: 0;
+  padding: 12px;
+}
+
+.seiton-ui-root .react-home-entry-title-slot {
+  min-height: 0;
+  border: 0;
+  border-radius: 0;
+}
+
+.seiton-ui-root .react-home-entry-description-slot {
+  min-height: 0;
+  margin-top: 8px;
+}
+
+.seiton-ui-root .react-memo-row {
+  gap: 6px 12px;
+  padding: 12px;
+}
+
+.seiton-ui-root .react-organize-preview {
+  min-height: 104px;
+  margin-block: 14px;
+}
+
+.seiton-ui-root .react-onboarding-panel {
+  padding: clamp(18px, 3vw, 28px);
+}
+
+.seiton-ui-root .seiton-ui-modal-root {
+  padding: 20px;
+}
+
+.seiton-ui-root .seiton-ui-modal-header {
+  padding: 16px 20px;
+}
+
+.seiton-ui-root .seiton-ui-modal-body {
+  padding: 18px 20px;
+}
+
+/* Content density is shared by native views and UI Lab. */
+.seiton-ui-root {
+  --seiton-font-size-sm: 13px;
+  --seiton-font-size-md: 14px;
+  --seiton-font-size-lg: 18px;
+  font-size: 14px;
+}
+
+.seiton-ui-root .seiton-ui-title-h2 {
+  font-size: 20px;
+}
+.seiton-ui-root .seiton-ui-title-h3 {
+  font-size: 18px;
+}
+
+.seiton-ui-root
+  :is(
+    .react-home-section,
+    .react-home-capture-section,
+    .react-library-controls,
+    .react-library-results,
+    .react-search-controls,
+    .react-search-results,
+    .react-memo-controls,
+    .react-memo-results,
+    .react-organize-section,
+    .react-create-section
+  ) {
+  margin-top: 20px;
+}
+
+.seiton-ui-root
+  :is(
+    .react-home-section-heading,
+    .react-library-section-heading,
+    .react-search-section-heading,
+    .react-memo-section-heading,
+    .react-organize-section-heading
+  ) {
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.seiton-ui-root .react-home-capture-panel {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(64px, auto);
+  gap: 8px 12px;
+  padding: 12px;
+}
+.seiton-ui-root
+  .react-home-capture-panel
+  > :is(.seiton-ui-field, .react-home-memo-tags, .react-home-capture-error) {
+  grid-column: 1 / -1;
+}
+.seiton-ui-root .react-home-capture-panel textarea {
+  height: 72px;
+  min-height: 72px;
+}
+.seiton-ui-root .react-home-memo-tag-picker {
+  margin-top: 0;
+}
+.seiton-ui-root .react-home-capture-actions {
+  grid-row: 2;
+  grid-column: 2;
+  align-self: end;
+}
+.seiton-ui-root .react-home-entry-action {
+  padding-top: 8px;
+}
+.seiton-ui-root .react-home-shortcut-grid {
+  grid-template-columns: repeat(auto-fill, minmax(84px, 96px));
+  gap: 10px 12px;
+}
+.seiton-ui-root .react-home-shortcut {
+  gap: 6px;
+  min-height: 96px;
+}
+.seiton-ui-root .react-home-shortcut-open {
+  gap: 6px;
+}
+.seiton-ui-root .react-home-shortcut-icon {
+  width: 56px;
+  height: 56px;
+  font-size: 22px;
+}
+.seiton-ui-root .react-home-shortcut-icon img {
+  width: 32px;
+  height: 32px;
+}
+.seiton-ui-root .react-home-shortcut-folder-icon {
+  width: 64px;
+  height: 56px;
+}
+.seiton-ui-root :is(.react-home-inbox-panel, .react-home-secondary-panel) {
+  padding: 14px;
+}
+.seiton-ui-root .react-home-fab {
+  width: 52px;
+  min-width: 52px;
+  height: 52px;
+  min-height: 52px;
+}
+.seiton-ui-root .react-home-inbox-accordion {
+  margin-top: 12px;
+}
+
+.seiton-ui-root
+  :is(.react-library-controls, .react-search-controls, .react-memo-controls) {
+  padding: 14px;
+}
+.seiton-ui-root .react-library-card {
+  gap: 6px;
+  padding: 12px;
+}
+.seiton-ui-root .react-search-result-open {
+  grid-template-rows: auto 50px auto 44px auto;
+  gap: 8px;
+  min-height: 0;
+  padding: 14px;
+}
+.seiton-ui-root
+  :is(.react-library-empty, .react-search-empty, .react-memo-empty) {
+  min-height: 160px;
+  padding: 20px;
+}
+.seiton-ui-root .react-organize-card {
+  padding: 18px;
+}
+.seiton-ui-root .react-organize-title-button {
+  font-size: 22px;
+}
+.seiton-ui-root .react-bookshelf-card-layout {
+  grid-template-columns: 96px minmax(0, 1fr);
+  gap: 12px;
+}
+.seiton-ui-root .react-create-form {
+  padding: 18px;
+}
+
+@media (max-width: 980px) {
+  .seiton-ui-root .react-supporting-nav {
+    overflow: visible;
+  }
+
+  .seiton-ui-root .react-supporting-nav-scroll {
+    flex-wrap: wrap;
+    min-width: 0;
+  }
+}
+
+@media (max-width: 760px) {
+  .seiton-ui-root
+    :is(
+      .react-home-header,
+      .react-library-header,
+      .react-search-header,
+      .react-organize-header,
+      .react-memo-header,
+      .react-bookshelf-header,
+      .react-create-header,
+      .react-onboarding-header,
+      .react-supporting-header
+    ) {
+    align-items: flex-start;
+  }
+
+  .seiton-ui-root :is(.react-home-header, .react-bookshelf-header) {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .seiton-ui-root
+    :is(
+      .seiton-react-home-prototype,
+      .seiton-react-library-prototype,
+      .seiton-react-search-prototype,
+      .seiton-react-organize-prototype,
+      .seiton-react-memo-prototype,
+      .seiton-react-bookshelf-prototype,
+      .seiton-react-create-prototype,
+      .seiton-react-onboarding-prototype,
+      .seiton-react-supporting-prototype
+    ) {
+    padding: 16px 16px 36px;
+  }
+
+  .seiton-ui-root .seiton-react-home-prototype {
+    padding-bottom: calc(104px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .seiton-ui-root
+    :is(
+      .react-home-section,
+      .react-home-capture-section,
+      .react-library-results,
+      .react-search-controls,
+      .react-search-results,
+      .react-memo-controls,
+      .react-memo-results,
+      .react-organize-section,
+      .react-create-section
+    ) {
+    margin-top: 16px;
+  }
+
+  .seiton-ui-root .react-home-entry-grid {
+    gap: 8px;
+  }
+
+  .seiton-ui-root .react-home-entry {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0 10px;
+    align-items: center;
+    padding: 12px 14px;
+  }
+
+  .seiton-ui-root .react-home-entry-action {
+    display: none;
+  }
+
+  .seiton-ui-root .react-home-entry-title-slot,
+  .seiton-ui-root .react-home-entry-description-slot {
+    grid-column: 1;
+  }
+
+  .seiton-ui-root .react-home-entry-title-slot {
+    align-items: center;
+  }
+
+  .seiton-ui-root .react-home-entry-description-slot {
+    margin-top: 4px;
+    -webkit-line-clamp: 2;
+  }
+
+  .seiton-ui-root .react-home-entry::after {
+    grid-row: 1 / span 2;
+    grid-column: 2;
+    align-self: center;
+    color: var(--seiton-color-accent-7);
+    content: "→";
+  }
+
+  .seiton-ui-root .react-home-capture-panel {
+    padding: 14px;
+  }
+
+  .seiton-ui-root .react-home-capture-panel textarea {
+    height: 64px;
+    min-height: 64px;
+  }
+
+  .seiton-ui-root .react-search-controls,
+  .seiton-ui-root .react-memo-controls {
+    padding: 15px;
+  }
+
+  .seiton-ui-root .react-search-section-heading,
+  .seiton-ui-root .react-memo-section-heading {
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .seiton-ui-root .react-memo-period-row {
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+
+  .seiton-ui-root .react-memo-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 6px 10px;
+    padding: 12px;
+  }
+
+  .seiton-ui-root .react-organize-card {
+    padding: 14px;
+  }
+
+  .seiton-ui-root .react-organize-preview {
+    min-height: 88px;
+    padding: 12px;
+    margin-block: 16px;
+  }
+
+  .seiton-ui-root .react-organize-proposal-details[open] {
+    max-height: 152px;
+    overflow: auto;
+    overscroll-behavior: contain;
+  }
+
+  .seiton-ui-root .react-organize-proposal-body {
+    max-height: 84px;
+  }
+
+  .seiton-ui-root .react-onboarding-panel {
+    padding: 18px;
+    margin-top: 22px;
+  }
+
+  .seiton-ui-root .react-onboarding-progress {
+    gap: 6px;
+    margin: 18px 0 20px;
+  }
+
+  .seiton-ui-root .react-onboarding-step {
+    gap: 14px;
+    min-height: 0;
+  }
+
+  .seiton-ui-root .react-supporting-nav {
+    margin-top: 16px;
+    overflow: visible;
+  }
+
+  .seiton-ui-root .react-supporting-nav-scroll {
+    flex-wrap: wrap;
+    min-width: 0;
+  }
+
+  .seiton-ui-root .react-supporting-nav button {
+    min-height: 38px;
+    padding: 8px 10px;
+  }
+
+  .seiton-ui-root .react-supporting-frame {
+    padding-top: 22px;
+  }
+
+  .seiton-ui-root .react-supporting-content {
+    gap: 12px;
+  }
+
+  .seiton-ui-root .react-bookshelf-browse-layout {
+    display: block;
+    padding-top: 20px;
+  }
+
+  .seiton-ui-root .react-bookshelf-category-rail {
+    position: static;
+    padding: 0 0 14px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid var(--seiton-color-default-border);
+  }
+
+  .seiton-ui-root .react-bookshelf-category-title {
+    margin-bottom: 8px;
+    font-size: 18px;
+  }
+
+  .seiton-ui-root .react-bookshelf-category-nav {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
+    overflow: visible;
+  }
+
+  .seiton-ui-root .react-bookshelf-category-button {
+    gap: 6px;
+    align-items: flex-start;
+    width: 100%;
+    min-width: 0;
+    min-height: 40px;
+    padding: 7px 8px;
+    white-space: normal;
+  }
+
+  .seiton-ui-root .react-bookshelf-category-button > span:first-child {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .seiton-ui-root .react-bookshelf-category-count {
+    margin-inline-start: auto;
+  }
+
+  .seiton-ui-root .react-bookshelf-controls {
+    gap: 8px;
+    padding: 8px;
+  }
+
+  .seiton-ui-root .react-bookshelf-card {
+    padding: 12px;
+  }
+
+  .seiton-ui-root .react-create-section-heading {
+    gap: 10px;
+  }
+
+  .seiton-ui-root .react-create-actions {
+    gap: 8px;
+  }
+
+  .seiton-ui-root .seiton-ui-modal-root {
+    padding: 12px;
+  }
+
+  .seiton-ui-root .seiton-ui-modal-content {
+    max-height: calc(100dvh - 24px);
+    border-radius: var(--seiton-radius-md);
+  }
+
+  .seiton-ui-root .seiton-ui-modal-header {
+    padding: 12px 14px;
+  }
+
+  .seiton-ui-root .seiton-ui-modal-body {
+    padding: 14px;
+  }
+
+  .seiton-ui-root .seiton-folder-tree-panel {
+    min-height: 120px;
+    max-height: min(46dvh, 360px);
+  }
+
+  .seiton-ui-root .seiton-settings-navigation {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 4px;
+    margin-bottom: 12px;
+    overflow: visible;
+  }
+
+  .seiton-ui-root .seiton-settings-navigation-item {
+    width: 100%;
+    min-height: 38px;
+    white-space: normal;
+  }
+  .seiton-ui-root {
+    --seiton-font-size-lg: 16px;
+  }
+  .seiton-ui-root .seiton-ui-title-h3 {
+    font-size: 17px;
+  }
+  .seiton-ui-root .seiton-ui-title-h2 {
+    font-size: 18px;
+  }
+  .seiton-ui-root
+    :is(.seiton-ui-input, .seiton-ui-select, .seiton-ui-textarea) {
+    min-height: 44px;
+    font-size: 16px;
+  }
+  .seiton-ui-root .seiton-ui-button {
+    min-height: 40px;
+    padding: 6px 10px;
+  }
+  .seiton-ui-root .seiton-ui-icon-button {
+    min-height: 32px;
+    padding: 0;
+  }
+  .seiton-ui-root .react-home-capture-actions .seiton-ui-button {
+    min-height: 44px;
+  }
+  .seiton-ui-root .react-home-fab {
+    width: 48px;
+    min-width: 48px;
+    height: 48px;
+    min-height: 48px;
+  }
+  .seiton-ui-root .react-home-shortcut-grid {
+    grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+    gap: 8px;
+  }
+  .seiton-ui-root .react-home-shortcut {
+    min-height: 80px;
+    padding: 4px;
+  }
+  .seiton-ui-root .react-home-shortcut-open {
+    gap: 4px;
+    padding: 4px;
+  }
+  .seiton-ui-root .react-home-shortcut-icon {
+    width: 44px;
+    height: 44px;
+    font-size: 18px;
+  }
+  .seiton-ui-root .react-home-shortcut-icon img {
+    width: 26px;
+    height: 26px;
+  }
+  .seiton-ui-root .react-home-shortcut-folder-icon {
+    width: 50px;
+    height: 44px;
+  }
+  .seiton-ui-root .react-home-shortcut-copy {
+    font-size: 12px;
+  }
+  .seiton-ui-root :is(.react-home-inbox-panel, .react-home-secondary-panel) {
+    padding: 12px;
+  }
+  .seiton-ui-root .react-library-card {
+    grid-template-rows: repeat(4, auto);
+  }
+  .seiton-ui-root .react-search-result-open {
+    grid-template-rows: auto 44px auto 44px auto;
+    padding: 12px;
+  }
+  .seiton-ui-root .react-organize-title-button {
+    font-size: 18px;
+  }
+  .seiton-ui-root .react-bookshelf-card-layout {
+    grid-template-columns: 72px minmax(0, 1fr);
+    gap: 10px;
+  }
+  .seiton-ui-root .react-bookshelf-title-slot strong {
+    font-size: 16px;
+  }
+  .seiton-ui-root .react-create-form {
+    padding: 14px;
+  }
+  .seiton-ui-root
+    :is(.react-library-empty, .react-search-empty, .react-memo-empty) {
+    min-height: 120px;
+    padding: 16px;
+  }
+}
+
+@media (max-width: 420px) {
+  .seiton-ui-root
+    :is(
+      .seiton-react-home-prototype,
+      .seiton-react-library-prototype,
+      .seiton-react-search-prototype,
+      .seiton-react-organize-prototype,
+      .seiton-react-memo-prototype,
+      .seiton-react-bookshelf-prototype,
+      .seiton-react-create-prototype,
+      .seiton-react-onboarding-prototype,
+      .seiton-react-supporting-prototype
+    ) {
+    padding-inline: 12px;
+  }
+
+  .seiton-ui-root .react-home-entry {
+    padding: 10px 12px;
+  }
+
+  .seiton-ui-root .react-search-controls,
+  .seiton-ui-root .react-memo-controls {
+    padding: 12px;
+  }
+
+  .seiton-ui-root .react-onboarding-panel {
+    padding: 14px;
+  }
+
+  .seiton-ui-root .seiton-ui-modal-root {
+    padding: 8px;
+  }
+
+  .seiton-ui-root .seiton-ui-modal-content {
+    max-height: calc(100dvh - 16px);
+  }
+
+  .seiton-ui-root .seiton-ui-modal-header,
+  .seiton-ui-root .seiton-ui-modal-body {
+    padding-inline: 12px;
+  }
+}

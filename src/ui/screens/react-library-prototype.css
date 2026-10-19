@@ -1,0 +1,959 @@
+.seiton-react-library-prototype {
+  min-height: 100vh;
+  padding: clamp(22px, 4vw, 56px) clamp(16px, 4vw, 56px) 72px;
+  overflow: clip;
+  color: var(--seiton-color-text);
+  background: var(--seiton-color-body);
+}
+
+.seiton-react-library-prototype,
+.seiton-react-library-prototype * {
+  box-sizing: border-box;
+}
+
+.seiton-react-library-prototype .react-library-header,
+.seiton-react-library-prototype main,
+.seiton-react-library-prototype .react-library-footer {
+  width: min(1120px, 100%);
+  margin-inline: auto;
+}
+
+.react-library-header {
+  display: flex;
+  gap: 24px;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--seiton-color-default-border);
+}
+
+.react-library-heading {
+  margin-top: 8px;
+  letter-spacing: -0.05em;
+}
+
+.react-library-header-actions {
+  align-items: center;
+}
+
+.react-library-controls,
+.react-library-results {
+  margin-top: 38px;
+}
+
+.react-library-controls {
+  padding: 20px;
+  background: var(--seiton-color-default-hover);
+  border: 1px solid var(--seiton-color-default-border);
+  border-radius: var(--seiton-radius-lg);
+}
+
+.react-library-section-heading {
+  display: flex;
+  gap: 20px;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.react-library-section-heading h2 {
+  margin-top: 3px;
+}
+
+.react-library-control-note,
+.react-library-muted,
+.react-library-list-type,
+.react-library-list-folder,
+.react-library-list-tags,
+.react-library-list-row time,
+.react-library-card-meta time {
+  color: var(--seiton-color-dimmed);
+}
+
+.react-library-filter-grid {
+  display: grid;
+  grid-template-columns: minmax(260px, 2fr) repeat(4, minmax(125px, 1fr));
+  gap: 12px;
+  align-items: start;
+}
+
+.react-library-filter-grid label,
+.react-library-search-field {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+  font-size: var(--seiton-font-size-sm);
+  font-weight: 700;
+  color: var(--seiton-color-dimmed);
+}
+
+.react-library-search-label {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 42px;
+  line-height: 20px;
+}
+
+.react-library-search-label .seiton-ui-segmented,
+.react-library-search-label .seiton-ui-SegmentedControl-root {
+  width: auto;
+  min-width: 0;
+  margin: 0;
+}
+
+.react-library-filter-grid label > span {
+  display: flex;
+  align-items: center;
+  min-height: 42px;
+  line-height: 20px;
+}
+
+.react-library-filter-grid .seiton-folder-tree-label {
+  display: flex;
+  align-items: center;
+  min-height: 42px;
+  line-height: 20px;
+}
+
+.react-library-filter-grid input,
+.react-library-filter-grid select {
+  box-sizing: border-box;
+  width: 100%;
+  height: 42px;
+  min-height: 42px;
+  padding: 8px 11px;
+  font: inherit;
+  font-weight: 400;
+  line-height: 1.25;
+  color: var(--seiton-color-text);
+  background: var(--seiton-color-body);
+  border: 1px solid var(--seiton-color-default-border);
+  border-radius: var(--seiton-radius-md);
+}
+
+.react-library-filter-grid input:focus-visible,
+.react-library-filter-grid select:focus-visible,
+.react-library-list-open:focus-visible,
+.react-library-tag-items button:focus-visible {
+  outline: 2px solid var(--seiton-color-accent-5);
+  outline-offset: 2px;
+}
+
+.react-library-result-actions {
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.react-library-result-actions .seiton-ui-segmented {
+  flex: 0 0 auto;
+}
+
+.react-library-view-toggle {
+  display: inline-flex;
+  gap: 2px;
+  align-items: center;
+  padding: 2px;
+  background: var(--seiton-color-body);
+  border: 1px solid var(--seiton-color-default-border);
+  border-radius: var(--seiton-radius-md);
+}
+
+.react-library-folder-actions-menu {
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.react-library-folder-actions-trigger {
+  display: inline-flex;
+  gap: 7px;
+  align-items: center;
+  min-height: 38px;
+  padding: 6px 10px;
+  color: var(--seiton-color-text);
+  cursor: pointer;
+  list-style: none;
+  background: var(--seiton-color-body);
+  border: 1px solid var(--seiton-color-default-border);
+  border-radius: var(--seiton-radius-md);
+}
+
+.react-library-folder-actions-trigger::-webkit-details-marker {
+  display: none;
+}
+
+.react-library-folder-actions-trigger:hover,
+.react-library-folder-actions-menu[open]
+  > .react-library-folder-actions-trigger {
+  background: var(--seiton-color-default-hover);
+}
+
+.react-library-folder-actions-trigger:focus-visible {
+  outline: 2px solid var(--seiton-color-accent-5);
+  outline-offset: 2px;
+}
+
+.react-library-folder-actions-trigger .seiton-ui-icon:last-child {
+  width: 14px;
+  height: 14px;
+  color: var(--seiton-color-dimmed);
+}
+
+.react-library-folder-actions-panel {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  z-index: 8;
+  display: grid;
+  gap: 2px;
+  width: max-content;
+  min-width: 210px;
+  max-width: min(260px, calc(100vw - 32px));
+  padding: 5px;
+  background: var(--seiton-color-body);
+  border: 1px solid var(--seiton-color-default-border);
+  border-radius: var(--seiton-radius-md);
+  box-shadow: var(--seiton-shadow-md);
+}
+
+.react-library-folder-actions-panel .seiton-ui-button {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  min-height: 36px;
+  padding-inline: 9px;
+  text-align: left;
+}
+
+.react-library-archive-paths {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+}
+
+.react-library-archive-paths > div {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+  padding: 11px 12px;
+  background: var(--seiton-color-default-hover);
+  border: 1px solid var(--seiton-color-default-border);
+  border-radius: var(--seiton-radius-md);
+}
+
+.react-library-archive-paths > div > :last-child {
+  overflow-wrap: anywhere;
+  user-select: text;
+}
+
+.react-library-folder-actions {
+  flex-wrap: wrap;
+}
+
+.react-library-card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.react-library-card-shell {
+  position: relative;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr);
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--seiton-color-body);
+  border: 1px solid var(--seiton-color-default-border);
+  border-radius: var(--seiton-radius-lg);
+  box-shadow: var(--seiton-shadow-xs);
+}
+
+.react-library-card {
+  display: grid;
+  /* Title, summary, and tags each own a fixed slot so content length never
+     changes the position of the next slot. */
+  grid-template-rows: 26px 48px 62px auto;
+  gap: 8px;
+  min-width: 0;
+  min-height: 0;
+  padding: 14px;
+  color: var(--seiton-color-text);
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background-color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.react-library-card:hover {
+  background: var(--seiton-color-default-hover);
+  box-shadow: var(--seiton-shadow-sm);
+}
+
+.react-library-card:focus-visible {
+  outline: 2px solid var(--seiton-color-accent-5);
+  outline-offset: 3px;
+}
+
+.react-library-card-meta {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+  min-width: 0;
+}
+
+.react-library-card-meta time {
+  flex: 0 0 auto;
+  font-size: var(--seiton-font-size-xs);
+}
+
+.react-library-card-folder,
+.react-library-list-folder {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.react-library-card-folder {
+  min-width: 0;
+  font-size: var(--seiton-font-size-xs);
+  color: var(--seiton-color-dimmed);
+}
+
+.react-library-card-title,
+.react-library-card-summary {
+  min-width: 0;
+  margin: 0;
+  overflow: hidden;
+}
+
+.react-library-card-title {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  align-self: start;
+  -webkit-line-clamp: 2;
+  font-size: var(--seiton-font-size-lg);
+  line-height: 1.35;
+}
+
+.react-library-card-summary {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  align-self: start;
+  -webkit-line-clamp: 3;
+  font-size: var(--seiton-font-size-sm);
+  line-height: 1.55;
+  color: var(--seiton-color-dimmed);
+}
+
+.react-library-card-summary.is-empty,
+.react-library-no-tags {
+  font-style: italic;
+  color: var(--seiton-color-dimmed);
+}
+
+.react-library-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-content: start;
+  min-width: 0;
+  padding-right: 40px;
+  overflow: hidden;
+}
+
+.react-library-card-tags span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 26px;
+  padding: 3px 9px;
+  font-size: var(--seiton-font-size-xs);
+  color: var(--seiton-color-accent-8);
+  white-space: nowrap;
+  background: var(--seiton-color-accent-1);
+  border-radius: 999px;
+}
+
+.react-library-card-tags .react-library-no-tags {
+  padding: 0;
+  background: transparent;
+}
+
+.react-library-card-action {
+  justify-self: stretch;
+  width: 100%;
+  font-weight: 700;
+  color: var(--seiton-color-accent-7);
+}
+
+.react-library-card-menu {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  z-index: 2;
+}
+
+.react-library-card-menu-popover {
+  position: absolute;
+  right: 0;
+  bottom: 36px;
+  width: 132px;
+  padding: 5px;
+  background: var(--seiton-color-body);
+  border: 1px solid var(--seiton-color-default-border);
+  border-radius: var(--seiton-radius-md);
+  box-shadow: var(--seiton-shadow-md);
+}
+
+.react-library-list-shell {
+  overflow: clip;
+  background: var(--seiton-color-body);
+  border: 1px solid var(--seiton-color-default-border);
+  border-radius: var(--seiton-radius-lg);
+}
+
+.react-library-list {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.react-library-list-header,
+.react-library-list-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 168px;
+  align-items: center;
+  width: 100%;
+  min-width: 0;
+}
+
+.react-library-list-header {
+  min-height: 38px;
+  font-size: var(--seiton-font-size-xs);
+  font-weight: 700;
+  color: var(--seiton-color-dimmed);
+  background: var(--seiton-color-default-hover);
+  border-bottom: 1px solid var(--seiton-color-default-border);
+}
+
+.react-library-list-header-content {
+  display: grid;
+  grid-template-columns: minmax(180px, 2.2fr) minmax(100px, 0.8fr) minmax(
+      150px,
+      1.1fr
+    ) minmax(120px, 1.1fr) 92px;
+  gap: 14px;
+  align-items: center;
+  min-width: 0;
+  padding: 0 12px;
+}
+
+.react-library-list-header-content > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.react-library-list-header-action {
+  width: 100%;
+  padding-inline: 12px;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.react-library-list-row {
+  min-height: 60px;
+  padding: 0;
+  border-bottom: 1px solid var(--seiton-color-default-border);
+}
+
+.react-library-list li:last-child .react-library-list-row {
+  border-bottom: 0;
+}
+
+.react-library-list-row:hover {
+  background: var(--seiton-color-default-hover);
+}
+
+.react-library-list-open {
+  display: grid;
+  grid-template-columns: minmax(180px, 2.2fr) minmax(100px, 0.8fr) minmax(
+      150px,
+      1.1fr
+    ) minmax(120px, 1.1fr) 92px;
+  gap: 14px;
+  align-items: center;
+  align-self: stretch;
+  min-width: 0;
+  padding: 8px 12px;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+}
+
+.react-library-list-open:hover {
+  background: transparent;
+}
+
+.react-library-list-title,
+.react-library-list-tags,
+.react-library-list-action {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.react-library-list-title {
+  font-weight: 700;
+}
+
+.react-library-list-type,
+.react-library-list-folder,
+.react-library-list-tags,
+.react-library-list-row time {
+  font-size: var(--seiton-font-size-sm);
+}
+
+.react-library-list-action {
+  width: auto;
+  font-size: var(--seiton-font-size-sm);
+  font-weight: 700;
+  color: var(--seiton-color-accent-7);
+  text-align: right;
+}
+
+.react-library-list-actions {
+  display: flex;
+  gap: 2px;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: 0;
+  padding-inline: 6px;
+}
+
+.react-library-list-picker {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  background: var(--seiton-color-default-hover);
+  border: 1px solid var(--seiton-color-default-border);
+  border-radius: var(--seiton-radius-md);
+}
+
+.react-library-tag-groups {
+  display: grid;
+  gap: 12px;
+}
+
+.react-library-tag-group {
+  padding: 16px;
+  background: var(--seiton-color-body);
+  border: 1px solid var(--seiton-color-default-border);
+  border-radius: var(--seiton-radius-lg);
+}
+
+.react-library-tag-heading {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.react-library-tag-heading h3 {
+  margin: 0;
+  font-size: var(--seiton-font-size-lg);
+}
+
+.react-library-tag-items {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.react-library-tag-item {
+  position: relative;
+  min-width: 0;
+}
+
+.react-library-tag-items button {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+  min-height: 62px;
+  padding: 10px 12px;
+  font: inherit;
+  color: var(--seiton-color-text);
+  text-align: left;
+  cursor: pointer;
+  background: var(--seiton-color-default-hover);
+  border: 1px solid var(--seiton-color-default-border);
+  border-radius: var(--seiton-radius-md);
+}
+
+.react-library-tag-item > button:first-child {
+  width: 100%;
+  padding-right: 156px;
+}
+
+.react-library-tag-item > .react-library-tag-pin {
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  width: auto;
+  min-height: 28px;
+  padding: 4px 6px;
+  color: var(--seiton-color-accent-7);
+  background: transparent;
+  border: 0;
+  transform: translateY(-50%);
+}
+
+.react-library-tag-item > .react-library-tag-move {
+  position: absolute;
+  top: 50%;
+  right: 68px;
+  width: auto;
+  min-height: 28px;
+  padding: 4px 6px;
+  color: var(--seiton-color-accent-7);
+  background: transparent;
+  border: 0;
+  transform: translateY(-50%);
+}
+
+.react-library-tag-items button:hover {
+  border-color: var(--seiton-color-accent-4);
+}
+
+.react-library-tag-items strong,
+.react-library-tag-items span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.react-library-tag-items span {
+  font-size: var(--seiton-font-size-sm);
+  color: var(--seiton-color-dimmed);
+}
+
+.react-library-empty {
+  display: grid;
+  gap: 10px;
+  place-content: center;
+  justify-items: center;
+  min-height: 220px;
+  padding: 24px;
+  color: var(--seiton-color-dimmed);
+  text-align: center;
+  border: 1px dashed var(--seiton-color-default-border);
+  border-radius: var(--seiton-radius-lg);
+}
+
+.react-library-empty strong {
+  font-size: var(--seiton-font-size-lg);
+  color: var(--seiton-color-text);
+}
+
+.react-library-feedback {
+  position: fixed;
+  right: clamp(16px, 4vw, 56px);
+  bottom: 24px;
+  z-index: 20;
+  width: min(420px, calc(100vw - 32px));
+}
+
+.react-library-footer {
+  padding-top: 18px;
+  margin-top: 56px;
+  border-top: 1px solid var(--seiton-color-default-border);
+}
+
+@media (max-width: 980px) {
+  .react-library-filter-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .react-library-card-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .react-library-list-open {
+    grid-template-columns: minmax(180px, 2fr) minmax(80px, 1fr) minmax(
+        140px,
+        1fr
+      ) 92px;
+  }
+
+  .react-library-list-header-content {
+    grid-template-columns: minmax(180px, 2fr) minmax(80px, 1fr) minmax(
+        140px,
+        1fr
+      ) 92px;
+  }
+
+  .react-library-list-tags,
+  .react-library-list-header-tags {
+    display: none;
+  }
+}
+
+@media (max-width: 820px) {
+  .react-library-list-header {
+    display: none;
+  }
+
+  .react-library-list-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 5px 12px;
+    min-height: 94px;
+  }
+
+  .react-library-list-open {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 5px 12px;
+    padding: 11px 12px;
+  }
+
+  .react-library-list-type {
+    justify-self: end;
+  }
+
+  .react-library-list-folder,
+  .react-library-list-open .react-library-list-folder,
+  .react-library-list-open time {
+    grid-column: 1;
+  }
+
+  .react-library-list-row time {
+    grid-column: 1;
+  }
+
+  .react-library-list-type::before,
+  .react-library-list-folder::before,
+  .react-library-list-row time::before {
+    font-weight: 700;
+    color: var(--seiton-color-dimmed);
+    content: attr(data-label) ": ";
+  }
+
+  .react-library-list-action {
+    grid-row: auto;
+    grid-column: 2;
+    width: auto;
+  }
+
+  .react-library-list-actions {
+    flex-wrap: wrap;
+    grid-row: 1 / span 2;
+    grid-column: 2;
+    max-width: 138px;
+    padding: 4px;
+  }
+}
+
+@media (max-width: 700px) {
+  .react-library-controls {
+    padding: 14px;
+    margin-top: 22px;
+    border-radius: var(--seiton-radius-md);
+  }
+
+  .react-library-results {
+    margin-top: 22px;
+  }
+
+  .react-library-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .react-library-header-actions {
+    align-items: center;
+  }
+
+  .react-library-section-heading {
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-start;
+    margin-bottom: 8px;
+  }
+
+  .react-library-result-actions {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 6px;
+    align-items: center;
+    width: 100%;
+  }
+
+  .react-library-result-actions > .seiton-ui-segmented:first-child {
+    grid-row: 1;
+    grid-column: 1 / -1;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .react-library-result-actions
+    > .seiton-ui-segmented:first-child
+    .seiton-ui-segmented-option {
+    flex: 1 1 0;
+    white-space: nowrap;
+  }
+
+  .react-library-result-actions > .seiton-ui-segmented:nth-child(2) {
+    flex: initial;
+    grid-row: 2;
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+
+  .react-library-result-actions
+    > .seiton-ui-segmented:nth-child(2)
+    .seiton-ui-segmented-option {
+    flex: 1 1 auto;
+    white-space: nowrap;
+  }
+
+  .react-library-result-actions > .react-library-view-toggle {
+    grid-row: 3;
+    grid-column: 1;
+    justify-content: center;
+  }
+
+  .react-library-result-actions > .react-library-folder-actions-menu {
+    flex: initial;
+    grid-row: 3;
+    grid-column: 2;
+    min-width: 0;
+  }
+
+  .react-library-filter-grid,
+  .react-library-card-grid,
+  .react-library-tag-items {
+    grid-template-columns: 1fr;
+  }
+
+  .react-library-filter-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .react-library-filter-grid > label {
+    grid-template-columns: minmax(0, auto) minmax(0, 1fr);
+    gap: 6px;
+    align-items: center;
+    font-size: var(--seiton-font-size-xs);
+  }
+
+  .react-library-search-field {
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-column: 1 / -1;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .react-library-search-label {
+    min-height: 34px;
+  }
+
+  .react-library-search-field input,
+  .react-library-search-field select {
+    min-width: 0;
+  }
+
+  .react-library-filter-grid > label > span,
+  .react-library-filter-grid .seiton-folder-tree-label {
+    min-height: 0;
+    line-height: 1.3;
+    overflow-wrap: anywhere;
+  }
+
+  .react-library-filter-grid input,
+  .react-library-filter-grid select,
+  .seiton-folder-tree-trigger {
+    height: 38px;
+    min-height: 38px;
+    padding: 6px 8px;
+    font-size: var(--seiton-font-size-sm);
+  }
+
+  .seiton-folder-tree-picker {
+    grid-template-columns: minmax(0, auto) minmax(0, 1fr);
+    gap: 6px;
+    align-items: center;
+    font-size: var(--seiton-font-size-xs);
+  }
+
+  .react-library-card-grid {
+    gap: 9px;
+  }
+
+  .react-library-card {
+    grid-template-rows: 24px 44px 54px auto;
+    gap: 7px;
+    padding: 12px;
+  }
+
+  .react-library-list-row {
+    min-height: 76px;
+  }
+
+  .react-library-list-open {
+    padding: 9px 10px;
+  }
+
+  .react-library-empty {
+    min-height: 160px;
+    padding: 18px;
+  }
+
+  .react-library-folder-actions-trigger {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .react-library-folder-actions > button {
+    flex: 1 1 100px;
+  }
+}
+
+@media (max-width: 480px) {
+  .react-library-controls {
+    padding: 12px;
+  }
+}
+
+@media (max-width: 360px) {
+  .react-library-filter-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .react-library-filter-grid > label,
+  .seiton-folder-tree-picker {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .react-library-search-field {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .react-library-card,
+  .react-library-list-row,
+  .react-library-tag-items button {
+    transition: none;
+  }
+}
