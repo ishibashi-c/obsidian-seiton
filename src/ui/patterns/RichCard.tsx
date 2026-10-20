@@ -1,6 +1,6 @@
 /** @jsxImportSource react */
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import type { RichCardGateway } from "../../platform/ports";
 import { type Lang, t } from "../../shared/i18n";
 import type { RichCardMetadata } from "../../shared/richCard";
@@ -78,6 +78,9 @@ function extractDominantColor(image: HTMLImageElement): string | null {
   }
 }
 
+const subscribeNever = (): (() => void) => () => undefined;
+const zeroSnapshot = (): number => 0;
+
 /** React version of the note preview. The store remains the backend boundary. */
 export function ReactRichCard({
   url,
@@ -88,6 +91,10 @@ export function ReactRichCard({
   store: RichCardGateway;
   lang: Lang;
 }) {
+  const policyRevision = useSyncExternalStore(
+    store.subscribe ?? subscribeNever,
+    store.getSnapshot ?? zeroSnapshot
+  );
   const [card, setCard] = useState<RichCardMetadata | null>(null);
   const [layout, setLayout] = useState<"large" | "compact" | "text">("large");
   const [imageFailed, setImageFailed] = useState(false);
@@ -96,6 +103,7 @@ export function ReactRichCard({
   const allowed = store.allows(url);
 
   useEffect(() => {
+    void policyRevision;
     let active = true;
     setCard(null);
     setLayout("large");
@@ -134,7 +142,7 @@ export function ReactRichCard({
     return () => {
       active = false;
     };
-  }, [allowed, store, url]);
+  }, [allowed, store, url, policyRevision]);
 
   if (!allowed) {
     return null;
@@ -151,13 +159,18 @@ export function ReactRichCard({
     );
   }
 
-  const imageUrl = imageFailed ? null : card.imageUrl;
+  const visibleCard = store.sanitize?.(card) ?? card;
+  const imageUrl = imageFailed ? null : visibleCard.imageUrl;
   const imageWidth = card.imageWidth ?? 0;
   const imageHeight = card.imageHeight ?? 0;
   const portrait = imageHeight > imageWidth * 1.1;
   const resolvedLayout = imageUrl ? layout : "text";
   const fallbackFavicon = `https://www.google.com/s2/favicons?domain=${encodeURIComponent(card.domain)}&sz=64`;
-  const faviconUrl = card.iconUrl ?? fallbackFavicon;
+  const faviconUrl =
+    visibleCard.iconUrl ??
+    ((store.allowsRemoteAssets?.() ?? true) && store.allows(fallbackFavicon)
+      ? fallbackFavicon
+      : null);
   const cardTint = tint ?? card.tint ?? null;
 
   return (
@@ -207,17 +220,17 @@ export function ReactRichCard({
           </span>
         )}
         <span className="seiton-rich-card-domain">
-          {!faviconFailed && (
+          {!faviconFailed && Boolean(faviconUrl) && (
             <img
               alt=""
               height={14}
               loading="lazy"
               onError={() => setFaviconFailed(true)}
-              src={faviconUrl}
+              src={faviconUrl ?? undefined}
               width={14}
             />
           )}
-          {Boolean(faviconFailed) && (
+          {(faviconFailed || !faviconUrl) && (
             <span
               aria-hidden="true"
               className="seiton-rich-card-favicon-fallback"

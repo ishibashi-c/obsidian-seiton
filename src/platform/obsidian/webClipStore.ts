@@ -3,7 +3,7 @@
  * - 一撃保存: og:title取得を待たず未整理ノートを作る
  * - 後追い更新: 取得成功後にだけファイル名をog:titleへ置き換える
  */
-import { requestUrl, TFile, type Vault } from "obsidian";
+import { TFile, type Vault } from "obsidian";
 import {
   formatItemFrontmatter,
   parseFrontmatter,
@@ -156,10 +156,6 @@ export async function renameWebClipTitle(
   await vault.rename(file, nextPath);
   const renamed = vault.getAbstractFileByPath(nextPath);
   return renamed instanceof TFile ? renamed : file;
-}
-
-export async function fetchHtml(url: string): Promise<string> {
-  return (await requestUrl({ method: "GET", url })).text;
 }
 
 async function saveIdea(

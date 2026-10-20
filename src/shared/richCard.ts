@@ -12,6 +12,7 @@ export interface RichCardMetadata {
   domain: string;
   iconUrl: string | null;
   imageHeight?: number;
+  imageSourceUrl?: string;
   imageUrl: string | null;
   imageWidth?: number;
   siteName: string | null;
@@ -302,14 +303,20 @@ export function normalizeRichCardDomains(values: string[]): string[] {
   return [
     ...new Set(
       values
-        .map((value) =>
-          value
-            .trim()
-            .toLowerCase()
-            .replace(/^https?:\/\//, "")
-            .replace(/\/.*$/, "")
-            .replace(/^\.+|\.+$/g, "")
-        )
+        .map((value) => {
+          const input = value.trim().replace(/^\.+|\.+$/g, "");
+          if (!input) {
+            return "";
+          }
+          try {
+            const parsed = new URL(
+              /^https?:\/\//i.test(input) ? input : `https://${input}`
+            );
+            return parsed.hostname.toLowerCase().replace(/\.$/, "");
+          } catch {
+            return "";
+          }
+        })
         .filter(Boolean)
     ),
   ];

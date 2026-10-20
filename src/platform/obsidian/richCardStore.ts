@@ -2,7 +2,7 @@
  * リッチカードキャッシュストア（spec §7）
  * vault内 `.seiton/cache/` にJSON+画像を保存。ネットワーク通信は明示的に呼んだ時だけ。
  */
-import { requestUrl, type Vault } from "obsidian";
+import type { requestUrl, Vault } from "obsidian";
 import { RICH_CARD_CACHE_FOLDER } from "../../shared/constants";
 import { normalizeFolder } from "../../shared/paths";
 import {
@@ -15,6 +15,7 @@ import {
   type RichCardMetadata,
 } from "../../shared/richCard";
 import { extractMainDomain } from "../../shared/sanitize";
+import { requestRichCardUrl } from "./richCardRequest";
 
 export interface RichCardStoreOptions {
   disabledDomains?: string[];
@@ -33,7 +34,6 @@ const PREVIEW_USER_AGENTS = [
   "facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)",
   "Slackbot-LinkExpanding 1.0 (+https://api.slack.com/robots)",
 ];
-const MAX_REDIRECTS = 4;
 const MAX_IMAGE_BYTES = 300 * 1024;
 const DOWNSCALE_WIDTH = 640;
 const FAILED_METADATA_TTL = 15 * 60 * 1000;
@@ -83,6 +83,7 @@ async function ensureFolder(vault: Vault, path: string): Promise<void> {
 function asResource(vault: Vault, metadata: CachedMetadata): RichCardMetadata {
   return {
     ...metadata,
+    imageSourceUrl: metadata.imageUrl ?? undefined,
     imageUrl: metadata.imagePath
       ? vault.adapter.getResourcePath(metadata.imagePath)
       : metadata.imageUrl,
@@ -134,44 +135,6 @@ function decodeResponseText(
   }
 }
 
-async function requestWithRedirects(
-  url: string,
-  userAgent: string
-): Promise<Awaited<ReturnType<typeof requestUrl>>> {
-  let current = url;
-  for (let attempt = 0; attempt <= MAX_REDIRECTS; attempt += 1) {
-    const response = await requestUrl({
-      headers: {
-        Accept:
-          "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-        "Accept-Language": "ja,en;q=0.8",
-        "User-Agent": userAgent,
-      },
-      method: "GET",
-      throw: false,
-      url: current,
-    });
-    if (response.status < 300 || response.status >= 400) {
-      return response;
-    }
-    const location = header(response, "location");
-    if (!location) {
-      return response;
-    }
-    try {
-      current = new URL(location, current).toString();
-    } catch {
-      return response;
-    }
-  }
-  return requestUrl({
-    headers: { "User-Agent": userAgent },
-    method: "GET",
-    throw: false,
-    url: current,
-  });
-}
-
 function hasUsefulMetadata(
   metadata: RichCardMetadata,
   originalUrl: string
@@ -196,13 +159,19 @@ function fallbackMetadata(url: string): RichCardMetadata {
   };
 }
 
-async function fetchPreviewMetadata(url: string): Promise<RichCardMetadata> {
+async function fetchPreviewMetadata(
+  url: string,
+  request: (
+    url: string,
+    userAgent: string
+  ) => Promise<Awaited<ReturnType<typeof requestUrl>>>
+): Promise<RichCardMetadata> {
   let best: RichCardMetadata | null = null;
   for (const userAgent of PREVIEW_USER_AGENTS) {
     // requestUrlだけでなく、レスポンスの文字コード解析やDOMParserも
     // サイトごとの異常値でthrowし得る。1回の失敗で全UA再試行を止めない。
     try {
-      const response = await requestWithRedirects(url, userAgent);
+      const response = await request(url, userAgent);
       if (response.status >= 400) {
         continue;
       }
@@ -240,10 +209,23 @@ async function fetchPreviewMetadata(url: string): Promise<RichCardMetadata> {
 /** vault内のJSON/画像を使うリッチカードキャッシュ。同じURLの同時取得は1つにまとめる。 */
 export class RichCardStore {
   private readonly inFlight = new Map<string, Promise<RichCardMetadata>>();
+  private revision = 0;
+  private readonly listeners = new Set<() => void>();
+  readonly subscribe = (listener: () => void): (() => void) => {
+    this.listeners.add(listener);
+    return () => this.listeners.delete(listener);
+  };
+  readonly getSnapshot = (): number => this.revision;
+
   constructor(
     private readonly vault: Vault,
     private options: RichCardStoreOptions = {}
-  ) {}
+  ) {
+    this.options = {
+      ...options,
+      disabledDomains: [...(options.disabledDomains ?? [])],
+    };
+  }
 
   updateOptions(options: RichCardStoreOptions): void {
     const changed =
@@ -251,8 +233,15 @@ export class RichCardStore {
         JSON.stringify(options.disabledDomains ?? []) ||
       this.options.maxBytes !== options.maxBytes ||
       this.options.maxAgeDays !== options.maxAgeDays;
-    this.options = options;
+    this.options = {
+      ...options,
+      disabledDomains: [...(options.disabledDomains ?? [])],
+    };
     if (changed) {
+      this.revision += 1;
+      for (const listener of this.listeners) {
+        listener();
+      }
       void this.cleanup();
     }
   }
@@ -288,7 +277,7 @@ export class RichCardStore {
       ) {
         return null;
       }
-      return asResource(this.vault, metadata);
+      return this.sanitize(asResource(this.vault, metadata));
     } catch {
       return null;
     }
@@ -300,12 +289,12 @@ export class RichCardStore {
     }
     const running = this.inFlight.get(url);
     if (running) {
-      return running;
+      return this.sanitize(await running);
     }
     const operation = this.fetchUncached(url);
     this.inFlight.set(url, operation);
     try {
-      return await operation;
+      return this.sanitize(await operation);
     } finally {
       this.inFlight.delete(url);
     }
@@ -341,7 +330,14 @@ export class RichCardStore {
     // hostnameカードへ落とす。次回表示時には再取得できる。
     let metadata: RichCardMetadata;
     try {
-      metadata = await fetchPreviewMetadata(url);
+      metadata = await fetchPreviewMetadata(url, (target, userAgent) =>
+        requestRichCardUrl(target, () => this.options.disabledDomains ?? [], {
+          Accept:
+            "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+          "Accept-Language": "ja,en;q=0.8",
+          "User-Agent": userAgent,
+        })
+      );
     } catch {
       metadata = fallbackMetadata(url);
     }
@@ -353,17 +349,17 @@ export class RichCardStore {
     };
     await ensureFolder(this.vault, RICH_CARD_CACHE_FOLDER);
     if (
+      this.allows(url) &&
       metadata.imageUrl &&
       /^https?:/i.test(metadata.imageUrl) &&
       this.allows(metadata.imageUrl)
     ) {
       try {
-        const imageResponse = await requestUrl({
-          headers: { Referer: url, "User-Agent": PREVIEW_USER_AGENTS[0] },
-          method: "GET",
-          throw: false,
-          url: metadata.imageUrl,
-        });
+        const imageResponse = await requestRichCardUrl(
+          metadata.imageUrl,
+          () => this.options.disabledDomains ?? [],
+          { Referer: url, "User-Agent": PREVIEW_USER_AGENTS[0] }
+        );
         if (imageResponse.status !== 200) {
           throw new Error(
             `Rich card image request failed (${imageResponse.status})`
@@ -393,7 +389,52 @@ export class RichCardStore {
       JSON.stringify(cachedMetadata, null, 2)
     );
     await this.cleanup();
-    return asResource(this.vault, cachedMetadata);
+    return this.sanitize(asResource(this.vault, cachedMetadata));
+  }
+
+  /** Re-evaluate cached and mounted metadata whenever the policy changes. */
+  readonly sanitize = (metadata: RichCardMetadata): RichCardMetadata => {
+    if (!this.allows(metadata.url)) {
+      return fallbackMetadata(metadata.url);
+    }
+    const strict = (this.options.disabledDomains ?? []).some((domain) =>
+      domain.trim()
+    );
+    const safeAsset = (asset: string | null): boolean =>
+      Boolean(
+        asset &&
+          (strict
+            ? /^(?:app:|capacitor:|file:|data:image\/(?:png|jpeg|gif|webp|avif);)/i.test(
+                asset
+              )
+            : this.allows(asset))
+      );
+    return {
+      ...metadata,
+      iconUrl: safeAsset(metadata.iconUrl) ? metadata.iconUrl : null,
+      imageUrl:
+        safeAsset(metadata.imageUrl) &&
+        (!metadata.imageSourceUrl || this.allows(metadata.imageSourceUrl))
+          ? metadata.imageUrl
+          : null,
+    };
+  };
+
+  allowsRemoteAssets(): boolean {
+    return !(this.options.disabledDomains ?? []).some((domain) =>
+      domain.trim()
+    );
+  }
+
+  async fetchHtml(url: string): Promise<string> {
+    const response = await requestRichCardUrl(
+      url,
+      () => this.options.disabledDomains ?? []
+    );
+    if (!this.allows(url)) {
+      throw new Error("Rich card domain is disabled");
+    }
+    return decodeResponseText(response);
   }
 
   allows(url: string): boolean {

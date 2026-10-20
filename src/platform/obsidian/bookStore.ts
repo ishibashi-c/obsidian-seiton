@@ -133,9 +133,17 @@ const BOOK_COVER_FOLDER = "Seiton/assets/covers";
 const LEGACY_BOOK_COVER_PREFIX = ".seiton/covers/";
 
 function isManagedBookCoverPath(path: string): boolean {
+  const prefix = path.startsWith(LEGACY_BOOK_COVER_PREFIX)
+    ? LEGACY_BOOK_COVER_PREFIX
+    : `${BOOK_COVER_FOLDER}/`;
+  if (!path.startsWith(prefix)) {
+    return false;
+  }
+  const filename = path.slice(prefix.length);
   return (
-    path.startsWith(LEGACY_BOOK_COVER_PREFIX) ||
-    path.startsWith(`${BOOK_COVER_FOLDER}/`)
+    /^[^/\\]+\.(?:jpe?g|png|webp|gif|avif)$/i.test(filename) &&
+    filename !== "." &&
+    !filename.includes("\0")
   );
 }
 
@@ -510,14 +518,18 @@ export async function removeCachedCover(app: App, note: TFile): Promise<void> {
     return;
   }
   const cover = app.vault.getAbstractFileByPath(coverPath);
-  if (cover instanceof TFile) {
+  if (
+    isManagedBookCoverPath(coverPath) &&
+    cover instanceof TFile &&
+    cover.path === coverPath &&
+    isManagedBookCoverPath(cover.path)
+  ) {
     await app.fileManager.trashFile(cover);
   }
   const next = rewriteFrontmatter(raw, { bookCover: "" });
   if (next) {
-    await app.vault.modify(note, next);
+    await app.vault.modify(note, syncBookCoverEmbed(next, "") ?? next);
   }
-  await ensureBookCoverEmbed(app, note);
 }
 
 /** 外部ツール作成ノートの既存値・本文を上書きせず、不足書誌だけ補完する。 */
