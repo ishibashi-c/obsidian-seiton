@@ -36,7 +36,6 @@ import {
   ReactSearchView,
 } from "../platform/obsidian/views";
 import {
-  fetchHtml,
   saveSharedText,
   saveWebClip,
   updateWebClipTitle,
@@ -564,7 +563,10 @@ export default class SeitonPlugin extends Plugin implements SeitonNavigator {
     if (!this.createRichCardStore().allows(url)) {
       return;
     }
-    void updateWebClipTitle(this.app.vault, file, fetchHtml)
+    const store = this.createRichCardStore();
+    void updateWebClipTitle(this.app.vault, file, (source) =>
+      store.fetchHtml(source)
+    )
       .then(() => this.refreshHome())
       .catch(() => undefined);
   }
@@ -628,6 +630,7 @@ export default class SeitonPlugin extends Plugin implements SeitonNavigator {
   }
 
   async saveSettings(): Promise<void> {
+    this.createRichCardStore();
     await this.saveData(this.settings);
     this.toolbar?.setLanguage(this.lang);
     const languageChanged = this.renderedLanguage !== this.lang;

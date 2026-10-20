@@ -13,7 +13,7 @@ Plan, build, and verify changes proportionately. Preserve unrelated work. Do not
 - Use TypeScript, React, esbuild, Vitest, and the existing project tooling. Avoid adding runtime dependencies without a demonstrated need.
 - Own UI components in `src/ui/` and reuse them in UI Lab. Keep Obsidian integration in `src/platform/obsidian/` and connection code in `src/app/`.
 - Scope plugin styles to the Shadow DOM boundary. Use Obsidian theme variables and accessible keyboard, focus, error, and reduced-motion behavior.
-- Use `requestUrl`, `parseYaml` / `stringifyYaml`, and the injected Obsidian app. Do not use a global `app`.
+- Use `requestUrl` (except the redirect-rejecting rich-card transport when a domain deny list is active), `parseYaml` / `stringifyYaml`, and the injected Obsidian app. Do not use a global `app`.
 - Preserve compatibility for existing settings and Markdown. Include old keys, unknown keys, and incomplete frontmatter in relevant fixtures.
 - Update all eight locale dictionaries when adding interface text.
 

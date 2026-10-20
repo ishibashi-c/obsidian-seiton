@@ -724,5 +724,12 @@ if (view === "home") {
     async () => mockSettings.save()
   );
 } else {
-  root.innerHTML = `<div class="harness-placeholder"><h1>Seiton UI Harness</h1><p>unknown view: ${view}</p></div>`;
+  const placeholder = document.createElement("div");
+  placeholder.className = "harness-placeholder";
+  const title = document.createElement("h1");
+  title.textContent = "Seiton UI Harness";
+  const message = document.createElement("p");
+  message.textContent = `unknown view: ${view}`;
+  placeholder.append(title, message);
+  root.replaceChildren(placeholder);
 }

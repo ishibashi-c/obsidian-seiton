@@ -14,7 +14,11 @@ import type { SeitonSettings } from "../shared/types";
 /** UIが必要とするリッチカード操作だけを定義する。 */
 export interface RichCardGateway {
   allows: (url: string) => boolean;
+  allowsRemoteAssets?: () => boolean;
   fetch: (url: string) => Promise<RichCardMetadata>;
+  getSnapshot?: () => number;
+  sanitize?: (metadata: RichCardMetadata) => RichCardMetadata;
+  subscribe?: (listener: () => void) => () => void;
 }
 
 /** UIが必要とする書誌操作だけを定義する。実装はplatform/obsidianが提供する。 */
