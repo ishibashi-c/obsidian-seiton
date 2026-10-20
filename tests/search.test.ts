@@ -143,6 +143,7 @@ describe("ranked search", () => {
       parseSearchQuery('"exact phrase" -draft type:article tag:開発')
     ).toEqual({
       exclude: ["draft"],
+      excludeFilters: {},
       filters: { tag: ["開発"], type: ["article"] },
       include: [],
       phrases: ["exact phrase"],
@@ -161,6 +162,33 @@ describe("ranked search", () => {
         (result) => result.document.id
       )
     ).toEqual(["1"]);
+  });
+
+  it("負のfield filterは一致するフィールド値を除外する", () => {
+    expect(
+      rankDocuments(documents, "-tag:言語").map((result) => result.document.id)
+    ).toEqual(["3", "1"]);
+    expect(parseSearchQuery("-type:article").excludeFilters).toEqual({
+      type: ["article"],
+    });
+  });
+
+  it("excerpt maps normalized long vowels, full-width text, phrases, and emoji to source offsets", () => {
+    const body = `${"ー".repeat(400)} emoji😀 ＡＢＣ word   query`;
+    const result = rankDocuments(
+      [{ ...documents[0], body, title: "other" }],
+      '"word query"'
+    )[0];
+    expect(result?.excerpt).toContain("emoji😀 ＡＢＣ word query");
+  });
+
+  it("handles an emoji query without stalling source offset mapping", () => {
+    const body = "😀abc";
+    const result = rankDocuments(
+      [{ ...documents[0], body, title: "other" }],
+      "😀"
+    )[0];
+    expect(result?.excerpt).toContain("😀abc");
   });
 
   it("tag filterに一致したタグを結果へ含める", () => {

@@ -549,6 +549,7 @@ export function openReactAddBookDialog(
 ): () => void {
   return openProductionDialog({
     closeButtonLabel: t(lang, "notify.close"),
+    lang,
     render: (close, onRequestResultFocus) => (
       <ReactAddBookForm
         gateway={gateway}

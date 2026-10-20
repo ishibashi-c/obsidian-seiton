@@ -75,6 +75,7 @@ export function openReactCoverDialog(
 ): () => void {
   return openProductionDialog({
     closeButtonLabel: t(lang, "notify.close"),
+    lang,
     render: (close) => (
       <ReactCoverForm
         gateway={gateway}

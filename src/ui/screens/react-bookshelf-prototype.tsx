@@ -1767,7 +1767,7 @@ export function ReactBookshelfSurface({
       );
       closeActionsMenu();
     } catch {
-      announce("ピン留めを更新できませんでした");
+      announce(t(lang, "search.pinUpdateFailed"));
     }
   };
   useEffect(() => {
@@ -1902,7 +1902,7 @@ export function ReactBookshelfSurface({
           : row
       )
     );
-    announce("本の情報を保存しました");
+    announce(t(lang, "book.saved"));
   };
   const runLibrarySearch = async (
     book: Book,
@@ -2135,7 +2135,7 @@ export function ReactBookshelfSurface({
       title: book.title,
     }));
     if (booksForSearch.length === 0) {
-      announce("ISBNのある本を選択してください");
+      announce(t(lang, "book.noIsbn"));
       return;
     }
     const queued = booksForSearch.map((book) => ({
@@ -2183,7 +2183,7 @@ export function ReactBookshelfSurface({
           return;
         }
         const error =
-          cause instanceof Error ? cause.message : "一括検索に失敗しました";
+          cause instanceof Error ? cause.message : t(lang, "book.searchFailed");
         setBatchItems((current) =>
           failPendingLibraryBatchItems(current, error)
         );
@@ -2780,14 +2780,15 @@ export function ReactBookshelfSurface({
               root: "react-bookshelf-modal",
             }}
             closeButtonProps={{ "aria-label": t(lang, "notify.close") }}
+            lang={lang}
             onClose={() => setActiveBook(null)}
             opened={Boolean(activeBook)}
             portalProps={{ target: portalTarget }}
             returnFocusRef={bookActionTriggerRef}
             title={
               activeBook
-                ? `表紙を差し替え · ${activeBook.title}`
-                : "表紙を差し替え"
+                ? `${t(lang, "book.replaceCover")} · ${activeBook.title}`
+                : t(lang, "book.replaceCover")
             }
             withinPortal
           >
@@ -2796,23 +2797,23 @@ export function ReactBookshelfSurface({
             ) : (
               <Stack gap="md">
                 <TextInput
-                  description="Vault内の画像パスを入力します。"
-                  label="表紙画像のパス"
+                  description={t(lang, "book.coverPathHint")}
+                  label={t(lang, "book.coverPath")}
                   onChange={(event) => setCoverPath(event.currentTarget.value)}
                   value={coverPath}
                 />
                 <Group justify="flex-end">
                   <Button onClick={() => setActiveBook(null)} variant="default">
-                    キャンセル
+                    {t(lang, "action.cancel")}
                   </Button>
                   <Button
                     color="ink"
                     onClick={() => {
                       setActiveBook(null);
-                      announce("表紙のパスを保存しました");
+                      announce(t(lang, "book.saved"));
                     }}
                   >
-                    保存
+                    {t(lang, "action.save")}
                   </Button>
                 </Group>
               </Stack>

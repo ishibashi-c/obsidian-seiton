@@ -60,6 +60,42 @@ afterEach(() => {
   vi.unstubAllGlobals();
 });
 
+describe("rich-card cache cleanup", () => {
+  it("coalesces concurrent cleanup and tolerates a cache file trashed by another task", async () => {
+    const paths = [".seiton/cache/stale.json"];
+    let resolveTrash: (() => void) | undefined;
+    const adapter = {
+      list: vi.fn(async () => ({ files: paths })),
+      stat: vi.fn(async () => ({
+        ctime: 0,
+        mtime: 0,
+        size: 10,
+        type: "file" as const,
+      })),
+      trashLocal: vi.fn(async () => {
+        await new Promise<void>((resolve) => {
+          resolveTrash = resolve;
+        });
+        throw new Error("File was already moved by another cleanup");
+      }),
+    };
+    const vault = { adapter } as unknown as Vault;
+    const store = new RichCardStore(vault, { maxAgeDays: 0 });
+
+    const first = store.cleanup(100_000);
+    const second = store.cleanup(100_000);
+    await vi.waitFor(() => expect(adapter.trashLocal).toHaveBeenCalledOnce());
+    resolveTrash?.();
+
+    await expect(Promise.all([first, second])).resolves.toEqual([
+      undefined,
+      undefined,
+    ]);
+    expect(adapter.list).toHaveBeenCalledOnce();
+    expect(adapter.trashLocal).toHaveBeenCalledOnce();
+  });
+});
+
 describe("rich-card network policy", () => {
   it.each([
     "https://BLOCKED.test:8443/path",

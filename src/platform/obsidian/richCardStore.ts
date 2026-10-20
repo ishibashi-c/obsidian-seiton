@@ -209,6 +209,7 @@ async function fetchPreviewMetadata(
 /** vault内のJSON/画像を使うリッチカードキャッシュ。同じURLの同時取得は1つにまとめる。 */
 export class RichCardStore {
   private readonly inFlight = new Map<string, Promise<RichCardMetadata>>();
+  private cleanupInFlight: Promise<void> | null = null;
   private revision = 0;
   private readonly listeners = new Set<() => void>();
   readonly subscribe = (listener: () => void): (() => void) => {
@@ -443,6 +444,21 @@ export class RichCardStore {
 
   /** サイズ上限・古いもの自動削除（両方実装・spec §7） */
   async cleanup(now = Date.now()): Promise<void> {
+    if (this.cleanupInFlight) {
+      return this.cleanupInFlight;
+    }
+    const operation = this.cleanupCache(now);
+    this.cleanupInFlight = operation;
+    try {
+      await operation;
+    } finally {
+      if (this.cleanupInFlight === operation) {
+        this.cleanupInFlight = null;
+      }
+    }
+  }
+
+  private async cleanupCache(now: number): Promise<void> {
     let listingPaths: string[] = [];
     try {
       listingPaths = (await this.vault.adapter.list(RICH_CARD_CACHE_FOLDER))
@@ -453,8 +469,14 @@ export class RichCardStore {
     const entries: CacheEntryInfo[] = (
       await Promise.all(
         listingPaths.map(async (path) => {
-          const stat = await this.vault.adapter.stat(path);
-          return stat ? { modified: stat.mtime, path, size: stat.size } : null;
+          try {
+            const stat = await this.vault.adapter.stat(path);
+            return stat
+              ? { modified: stat.mtime, path, size: stat.size }
+              : null;
+          } catch {
+            return null;
+          }
         })
       )
     ).filter((entry): entry is CacheEntryInfo => entry !== null);
@@ -464,9 +486,15 @@ export class RichCardStore {
       this.options.maxAgeDays ?? 30,
       now
     );
-    for (const path of paths) {
-      await this.vault.adapter.trashLocal(path);
-    }
+    await Promise.all(
+      paths.map(async (path) => {
+        try {
+          await this.vault.adapter.trashLocal(path);
+        } catch {
+          // Cleanup is best-effort; concurrent eviction may already have moved it.
+        }
+      })
+    );
   }
 
   /** 派生cacheだけをObsidianのローカルゴミ箱へ移す。ユーザーノートは対象外。 */

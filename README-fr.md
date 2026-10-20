@@ -62,6 +62,10 @@ Seiton n’a ni compte hébergé, ni analytics, ni télémétrie, ni publicité,
 
 Les clips Web récupèrent les métadonnées et les images de la page enregistrée et de ses serveurs d’images. Le service de favicons de Google fournit les icônes de domaine de remplacement. openBD et Open Library fournissent les métadonnées ISBN et les couvertures ; Open Library permet aussi la recherche par titre et auteur.
 
+### Restrictions de domaine des cartes enrichies
+
+Les paramètres permettent d’ajouter et de supprimer les domaines bloqués un par un. Lorsque des domaines sont bloqués, les requêtes automatiques de cartes et de titres utilisent le navigateur et refusent les redirections. En cas de redirection ou de réponse inaccessible à cause de CORS, la carte affiche uniquement l’URL. Les notes et les URL enregistrées restent disponibles. Les images impossibles à récupérer de façon sûre et les favicons distants sont omis ; les images du cache local sont vérifiées selon le réglage actuel. Les cartes existantes sont actualisées après une modification. Sans domaine bloqué, Seiton utilise le transport Obsidian habituel.
+
 La recherche de disponibilité via Calil et la recherche de communes et d’adresses via l’autorité géospatiale du Japon (GSI) sont réservées à l’interface japonaise et aux bibliothèques du Japon. Calil nécessite votre propre clé API. Ces fonctions sont masquées dans les autres langues ; la Bibliothèque de lecture et la recherche de livres restent disponibles.
 
 ## Développement

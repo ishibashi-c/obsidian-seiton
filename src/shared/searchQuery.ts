@@ -15,6 +15,12 @@ export function normalizeSearchText(value: string): string {
 
 export interface ParsedSearchQuery {
   exclude: string[];
+  excludeFilters: Partial<
+    Record<
+      "type" | "tag" | "list" | "status" | "source" | "after" | "before",
+      string[]
+    >
+  >;
   filters: Partial<
     Record<
       "type" | "tag" | "list" | "status" | "source" | "after" | "before",
@@ -28,6 +34,7 @@ export interface ParsedSearchQuery {
 export function parseSearchQuery(query: string): ParsedSearchQuery {
   const parsed: ParsedSearchQuery = {
     exclude: [],
+    excludeFilters: {},
     filters: {},
     include: [],
     phrases: [],
@@ -39,11 +46,12 @@ export function parseSearchQuery(query: string): ParsedSearchQuery {
     const filter = /^(type|tag|list|status|source|after|before):(.+)$/i.exec(
       token
     );
-    if (filter && !negative) {
+    if (filter) {
       const key = filter[1].toLowerCase() as keyof ParsedSearchQuery["filters"];
-      const values = parsed.filters[key] ?? [];
+      const target = negative ? parsed.excludeFilters : parsed.filters;
+      const values = target[key] ?? [];
       values.push(normalizeSearchText(filter[2].replace(/^"|"$/g, "")));
-      parsed.filters[key] = values;
+      target[key] = values;
       continue;
     }
     const normalized = normalizeSearchText(token.replace(/^"|"$/g, ""));

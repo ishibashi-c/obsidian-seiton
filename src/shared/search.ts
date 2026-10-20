@@ -123,10 +123,27 @@ function excerpt(body: string, tokens: string[]): string {
   const positions = tokens
     .map((token) => normalized.indexOf(token))
     .filter((position) => position >= 0);
-  const start =
-    positions.length > 0 ? Math.max(0, Math.min(...positions) - 60) : 0;
-  const text = body.replace(/\s+/g, " ").trim();
-  return `${start > 0 ? "…" : ""}${text.slice(start, start + 220)}${text.length > start + 220 ? "…" : ""}`;
+  const normalizedPosition = positions.length ? Math.min(...positions) : -1;
+  let sourcePosition = 0;
+  if (normalizedPosition >= 0) {
+    let low = 0;
+    let high = body.length;
+    while (low < high) {
+      const middle = Math.floor((low + high) / 2);
+      if (
+        normalizeSearchText(body.slice(0, middle)).length > normalizedPosition
+      ) {
+        high = middle;
+      } else {
+        low = middle + 1;
+      }
+    }
+    sourcePosition = low;
+  }
+  const start = Math.max(0, sourcePosition - 60);
+  const end = Math.min(body.length, start + 220);
+  const text = body.slice(start, end).replace(/\s+/g, " ").trim();
+  return `${start > 0 ? "…" : ""}${text}${end < body.length ? "…" : ""}`;
 }
 
 export function rankDocuments(
@@ -136,7 +153,11 @@ export function rankDocuments(
 ): RankedSearchResult[] {
   const parsed = parseSearchQuery(query);
   const terms = [...parsed.include, ...parsed.phrases];
-  if (terms.length === 0 && Object.keys(parsed.filters).length === 0) {
+  if (
+    terms.length === 0 &&
+    Object.keys(parsed.filters).length === 0 &&
+    Object.keys(parsed.excludeFilters).length === 0
+  ) {
     return [];
   }
   const aliases = options.tagAliases ?? {};
@@ -169,9 +190,30 @@ export function rankDocuments(
     if (!fieldFilter(parsed.filters.source, fields.source)) {
       continue;
     }
+    const forbidden = parsed.excludeFilters;
+    if (
+      (forbidden.type?.length &&
+        fieldFilter(forbidden.type, document.type ? [document.type] : [])) ||
+      (forbidden.tag?.length && fieldFilter(forbidden.tag, fields.tags)) ||
+      (forbidden.list?.length && fieldFilter(forbidden.list, fields.lists)) ||
+      (forbidden.status?.length &&
+        fieldFilter(
+          forbidden.status,
+          document.status ? [document.status] : []
+        )) ||
+      (forbidden.source?.length && fieldFilter(forbidden.source, fields.source))
+    ) {
+      continue;
+    }
     const date = document.created
       ? normalizeSearchText(document.created.slice(0, 10))
       : undefined;
+    if (
+      (date && forbidden.after?.some((value) => date >= value)) ||
+      (date && forbidden.before?.some((value) => date <= value))
+    ) {
+      continue;
+    }
     if (
       parsed.filters.after?.[0] &&
       (!date || date < parsed.filters.after[0])

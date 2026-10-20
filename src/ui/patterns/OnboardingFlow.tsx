@@ -270,7 +270,7 @@ export function ReactOnboardingFlow({
                 (value) => (
                   <button
                     aria-pressed={preset === value}
-                    className={`react-onboarding-preset${preset === value ? "is-selected" : ""}`}
+                    className={`react-onboarding-preset ${preset === value ? "is-selected" : ""}`}
                     key={value}
                     onClick={() => applyPreset(value)}
                     type="button"

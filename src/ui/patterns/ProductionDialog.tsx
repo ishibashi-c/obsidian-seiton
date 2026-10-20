@@ -2,32 +2,60 @@
 
 import { type ReactNode, useState } from "react";
 import { createRoot } from "react-dom/client";
+import { type Lang, t } from "../../shared/i18n";
 import { installSeitonStyles } from "../boundary";
 import { stopEscapeFromReachingObsidian } from "../escapeBoundary";
 import { Modal } from "../primitives";
 
 interface ProductionDialogOptions {
   closeButtonLabel?: string;
+  lang?: Lang;
   render: (close: () => void, requestResultFocus: () => void) => ReactNode;
   size?: string | number;
   title: ReactNode;
+}
+
+const openDialogs = new Set<() => void>();
+
+export function getProductionDialogCloseButtonLabel(
+  lang: Lang,
+  label?: string
+): string {
+  return label ?? t(lang, "notify.close");
+}
+
+export function closeProductionDialogs(): void {
+  for (const close of [...openDialogs]) {
+    close();
+  }
 }
 
 function ProductionDialogRoot({
   close,
   closeButtonLabel,
   host,
+  lang,
   render,
   size,
   title,
-}: ProductionDialogOptions & { close: () => void; host: HTMLElement }) {
+}: ProductionDialogOptions & {
+  close: () => void;
+  host: HTMLElement;
+  lang: Lang;
+}) {
   const [focusKey, setFocusKey] = useState(0);
 
   return (
     <Modal
       centered
-      closeButtonProps={{ "aria-label": closeButtonLabel ?? "閉じる" }}
+      closeButtonProps={{
+        "aria-label": getProductionDialogCloseButtonLabel(
+          lang,
+          closeButtonLabel
+        ),
+      }}
       focusKey={focusKey}
+      lang={lang}
       onClose={close}
       opened
       portalProps={{ target: host }}
@@ -44,7 +72,8 @@ function ProductionDialogRoot({
 export function openProductionDialog({
   title,
   size = "lg",
-  closeButtonLabel = "閉じる",
+  closeButtonLabel,
+  lang = "en",
   render,
 }: ProductionDialogOptions): () => void {
   const host = document.createElement("div");
@@ -64,6 +93,7 @@ export function openProductionDialog({
       return;
     }
     closed = true;
+    openDialogs.delete(close);
     host.removeEventListener("keydown", stopEscapeFromReachingObsidian);
     root.unmount();
     host.remove();
@@ -74,11 +104,13 @@ export function openProductionDialog({
       close={close}
       closeButtonLabel={closeButtonLabel}
       host={host}
+      lang={lang}
       render={render}
       size={size}
       title={title}
     />
   );
   host.addEventListener("keydown", stopEscapeFromReachingObsidian);
+  openDialogs.add(close);
   return close;
 }

@@ -31,11 +31,6 @@ export interface FrontmatterResult {
   data: Record<string, unknown>;
 }
 
-/** YAML エスケープが必要な文字 */
-function needsQuote(s: string): boolean {
-  return /^[\s[\]#:]|[:#]$|^["'\-?]|\s$/.test(s) || /[:#[\]]/.test(s);
-}
-
 /** 値をYAML文字列化（配列はフロー形式） */
 export function serializeYamlValue(value: unknown): string {
   if (value === null || value === undefined) {
@@ -47,14 +42,9 @@ export function serializeYamlValue(value: unknown): string {
   if (typeof value === "boolean") {
     return value ? "true" : "false";
   }
-  if (Array.isArray(value)) {
-    return `[${value.map((v) => serializeYamlValue(v)).join(", ")}]`;
-  }
-  const s = String(value);
-  if (needsQuote(s)) {
-    return `"${s.replace(/"/g, '\\"')}"`;
-  }
-  return s;
+  // JSON strings and flow collections are valid YAML. JSON encoding keeps
+  // numeric-looking strings (ISBNs), nested unknown metadata, and escapes intact.
+  return JSON.stringify(value) ?? "null";
 }
 
 /** frontmatter 本文（--- 囲みなし）のシリアライズ。undefined と空配列は省略可 */
@@ -71,7 +61,8 @@ export function serializeFrontmatter(
     if (Array.isArray(v) && v.length === 0 && skipEmpty) {
       continue;
     }
-    lines.push(`${k}: ${serializeYamlValue(v)}`);
+    const key = /^[A-Za-z0-9_-]+$/.test(k) ? k : JSON.stringify(k);
+    lines.push(`${key}: ${serializeYamlValue(v)}`);
   }
   return lines.join("\n");
 }

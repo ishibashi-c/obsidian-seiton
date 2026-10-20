@@ -96,6 +96,8 @@ class RichCardWidget extends WidgetType {
   eq(widget: WidgetType): boolean {
     return (
       widget instanceof RichCardWidget &&
+      widget.range.from === this.range.from &&
+      widget.range.to === this.range.to &&
       widget.range.raw === this.range.raw &&
       widget.range.url === this.range.url
     );
@@ -122,12 +124,12 @@ function selectionContainsRange(
 
 function buildDecorations(
   view: EditorView,
-  enabled: () => boolean,
+  enabled: (view: EditorView) => boolean,
   store: RichCardGateway,
   lang: Lang,
   revealSelection: boolean
 ): DecorationSet {
-  if (!enabled()) {
+  if (!enabled(view)) {
     return Decoration.none;
   }
   const builder = new RangeSetBuilder<Decoration>();
@@ -160,7 +162,7 @@ function buildDecorations(
 
 /** Reading Viewと同じURL候補を、編集ビューではカード置換＋編集時の原文露出で表示する。 */
 export function createRichCardEditorExtension(
-  enabled: () => boolean,
+  enabled: (view: EditorView) => boolean,
   store: RichCardGateway,
   lang: Lang
 ) {

@@ -147,7 +147,7 @@ export interface ObsidianProductionAdapter {
     item: MemoItem,
     next: { day: string; time: string; text: string; tags: string[] },
     settings: SeitonSettings
-  ) => Promise<void>;
+  ) => Promise<string>;
   executeCommand: (id: string) => void;
   fileForBook: (book: Book) => TFile | null;
   keepMemoAsNote: (item: MemoItem, settings: SeitonSettings) => Promise<void>;
@@ -181,7 +181,7 @@ export interface ObsidianProductionAdapter {
     settings: SeitonSettings,
     saveSettings: () => Promise<void>
   ) => Promise<void>;
-  removeBookCover: (book: Book) => Promise<void>;
+  removeBookCover: (book: Book, settings: SeitonSettings) => Promise<void>;
   renameLibraryFolder: (
     settings: SeitonSettings,
     path: string,
@@ -256,7 +256,7 @@ function vaultFile(value: unknown): TFile | null {
     : null;
 }
 
-function normalizeShortcut(shortcut: HomeShortcut): ShortcutLink | null {
+export function normalizeShortcut(shortcut: HomeShortcut): ShortcutLink | null {
   const title = shortcut.title.trim();
   const rawTarget = shortcut.target?.trim() ?? "";
   const target =
@@ -275,6 +275,16 @@ function normalizeShortcut(shortcut: HomeShortcut): ShortcutLink | null {
     shortcut.kind === "view"
       ? shortcut.kind
       : "url";
+  if (kind === "url") {
+    try {
+      const parsed = new URL(target);
+      if (parsed.protocol !== "http:" && parsed.protocol !== "https:") {
+        return null;
+      }
+    } catch {
+      return null;
+    }
+  }
   return { group: shortcut.group?.trim() ?? "", kind, target, title };
 }
 
@@ -308,14 +318,15 @@ function memoFile(
 
 function searchResultFile(
   adapter: Pick<ObsidianProductionAdapter, "resolveFile">,
-  result: RankedSearchResult
+  result: RankedSearchResult,
+  lang: Lang
 ): TFile {
   if (result.document.kind !== "note") {
-    throw new Error("編集対象が見つかりません");
+    throw new Error(t(lang, "adapter.noteNotFound"));
   }
   const file = adapter.resolveFile(result.document.path);
   if (!file) {
-    throw new Error("編集対象が見つかりません");
+    throw new Error(t(lang, "adapter.noteNotFound"));
   }
   return file;
 }
@@ -340,7 +351,11 @@ function snapshotMatches(
 
 export function createObsidianProductionAdapter(
   app: App,
-  loadData: (app: App, settings: SeitonSettings) => Promise<ReactProductionData>
+  loadData: (
+    app: App,
+    settings: SeitonSettings
+  ) => Promise<ReactProductionData>,
+  getLang: () => Lang = () => "en"
 ): ObsidianProductionAdapter {
   const openBookPath = async (
     path: string,
@@ -406,9 +421,7 @@ export function createObsidianProductionAdapter(
     }
     const fingerprint = organizationProposalOperationFingerprint(operation);
     if (fingerprint !== expectedFingerprint) {
-      throw new Error(
-        "確認後に整理案が変更されています。再読み込みして確認してください。"
-      );
+      throw new Error(t(lang, "adapter.proposalChanged"));
     }
     const priorResult = proposal.results[operationId];
     if (
@@ -551,7 +564,7 @@ export function createObsidianProductionAdapter(
     update: (bookPath, input, settings) => {
       const file = vaultFile(app.vault.getAbstractFileByPath(bookPath));
       if (!file) {
-        throw new Error("編集対象の本が見つかりません");
+        throw new Error(t(getLang(), "adapter.bookNotFound"));
       }
       return updateBookRecord(app, file, input, settings);
     },
@@ -560,16 +573,16 @@ export function createObsidianProductionAdapter(
     save: async (notePath, coverPath) => {
       const file = vaultFile(app.vault.getAbstractFileByPath(notePath));
       if (!file) {
-        throw new Error("表紙を設定するノートが見つかりません");
+        throw new Error(t(getLang(), "adapter.coverNoteNotFound"));
       }
       const raw = await app.vault.read(file);
       const frontmatter = parseFrontmatter(raw);
       if (!frontmatter) {
-        throw new Error("frontmatter missing");
+        throw new Error(t(getLang(), "adapter.frontmatterMissing"));
       }
       const next = rewriteFrontmatter(raw, { bookCover: coverPath });
       if (!next) {
-        throw new Error("frontmatter invalid");
+        throw new Error(t(getLang(), "adapter.frontmatterInvalid"));
       }
       await app.vault.modify(file, next);
       await ensureBookCoverEmbed(app, file);
@@ -587,7 +600,7 @@ export function createObsidianProductionAdapter(
         title,
       });
       if (!shortcut) {
-        throw new Error("ショートカットの名前とURLが必要です");
+        throw new Error(t(getLang(), "adapter.shortcutInvalid"));
       }
       settings.shortcuts = [...settings.shortcuts, shortcut];
       if (shortcut.group) {
@@ -600,10 +613,10 @@ export function createObsidianProductionAdapter(
     async addHomeShortcutFolder(settings, rawName, saveSettings) {
       const name = rawName.trim();
       if (!name) {
-        throw new Error("ショートカットフォルダ名が空です");
+        throw new Error(t(getLang(), "adapter.shortcutGroupEmpty"));
       }
       if (settings.shortcutGroups.includes(name)) {
-        throw new Error("同じショートカットフォルダがあります");
+        throw new Error(t(getLang(), "adapter.shortcutGroupExists"));
       }
       settings.shortcutGroups = [...settings.shortcutGroups, name];
       await saveSettings();
@@ -614,7 +627,7 @@ export function createObsidianProductionAdapter(
     archiveLibraryItem: (settings, path, saveSettings) =>
       archiveLibraryItem(app, settings, path, saveSettings),
     async archiveSearchResult(settings, result, saveSettings) {
-      const file = searchResultFile(adapter, result);
+      const file = searchResultFile(adapter, result, getLang());
       return archiveLibraryItem(app, settings, file.path, saveSettings);
     },
     bookGateway,
@@ -625,7 +638,7 @@ export function createObsidianProductionAdapter(
         searchCalilLibrariesBatch(books, settings, options),
     },
     async changeSearchType(settings, result, type) {
-      const file = searchResultFile(adapter, result);
+      const file = searchResultFile(adapter, result, getLang());
       return changeItemType(app, file, type, settings);
     },
     coverGateway,
@@ -657,10 +670,10 @@ export function createObsidianProductionAdapter(
     async createHomeList(settings, rawName, saveSettings) {
       const name = rawName.trim();
       if (!name) {
-        throw new Error("リスト名が空です");
+        throw new Error(t(getLang(), "adapter.listNameEmpty"));
       }
       if (settings.listNames.includes(name)) {
-        throw new Error("同じ名前のリストがあります");
+        throw new Error(t(getLang(), "adapter.listNameExists"));
       }
       settings.listNames = [...settings.listNames, name];
       await saveSettings();
@@ -670,7 +683,7 @@ export function createObsidianProductionAdapter(
     async deleteMemo(item, settings) {
       const file = memoFile(adapter, item, settings);
       if (!file || item.lineIndex === undefined || item.lineIndex < 0) {
-        throw new Error("一言メモの保存先が見つかりません");
+        throw new Error(t(getLang(), "adapter.memoMissing"));
       }
       await deleteMemo(
         app.vault,
@@ -683,9 +696,12 @@ export function createObsidianProductionAdapter(
     async editMemo(item, next, settings) {
       const file = memoFile(adapter, item, settings);
       if (!file || item.lineIndex === undefined || item.lineIndex < 0) {
-        throw new Error("一言メモの保存先が見つかりません");
+        throw new Error(t(getLang(), "adapter.memoMissing"));
       }
-      await editMemo(app.vault, file, memoEntryFor(item), next);
+      return await editMemo(app.vault, file, memoEntryFor(item), next, {
+        memosFolder: settings.memosFolder,
+        rootFolder: settings.rootFolder,
+      });
     },
     executeCommand: (id) => {
       const commands = (
@@ -770,7 +786,9 @@ export function createObsidianProductionAdapter(
     async organizeItem(item, patch, settings, saveSettings) {
       const file = adapter.resolveFile(item.path);
       if (!file) {
-        throw new Error(`整理対象が見つかりません: ${item.path}`);
+        throw new Error(
+          t(getLang(), "adapter.organizationItemMissing", { path: item.path })
+        );
       }
       const destinationPreset = patch.destinationId
         ? settings.pinnedCreatePresets.find(
@@ -778,10 +796,10 @@ export function createObsidianProductionAdapter(
           )
         : undefined;
       if (patch.destinationId && !destinationPreset) {
-        throw new Error("選択した保存先プリセットが見つかりません");
+        throw new Error(t(getLang(), "adapter.presetMissing"));
       }
       if (destinationPreset && destinationPreset.type !== patch.type) {
-        throw new Error("保存先プリセットとタイプが一致しません");
+        throw new Error(t(getLang(), "adapter.presetTypeMismatch"));
       }
       await applyOrganization(
         app,
@@ -798,10 +816,10 @@ export function createObsidianProductionAdapter(
         saveSettings
       );
     },
-    async removeBookCover(book) {
+    async removeBookCover(book, settings) {
       const file = adapter.fileForBook(book);
       if (file) {
-        await removeCachedCover(app, file);
+        await removeCachedCover(app, file, settings.rootFolder);
       }
     },
     renameLibraryFolder: (settings, path, name, saveSettings) =>
@@ -810,11 +828,11 @@ export function createObsidianProductionAdapter(
     async restoreLegacyArchivedItem(path) {
       const file = vaultFile(app.vault.getAbstractFileByPath(path));
       if (!file) {
-        throw new Error("復元するノートが見つかりません");
+        throw new Error(t(getLang(), "adapter.archiveNoteMissing"));
       }
       const parsed = parseItem(await app.vault.read(file), file.path);
       if (parsed.item?.status !== "archive") {
-        throw new Error("旧アーカイブの状態を確認できません");
+        throw new Error(t(getLang(), "adapter.archiveStatusInvalid"));
       }
       await setItemStatus(file, "active", app.vault);
     },
@@ -872,16 +890,16 @@ export function createObsidianProductionAdapter(
     async setLibraryLists(path, lists) {
       const file = adapter.resolveFile(path);
       if (!file) {
-        throw new Error("編集対象が見つかりません");
+        throw new Error(t(getLang(), "adapter.noteNotFound"));
       }
       await setItemLists(file, lists, app.vault);
     },
     async setSearchLists(result, lists) {
-      const file = searchResultFile(adapter, result);
+      const file = searchResultFile(adapter, result, getLang());
       await setItemLists(file, lists, app.vault);
     },
     async setSearchTags(settings, result, tags) {
-      const file = searchResultFile(adapter, result);
+      const file = searchResultFile(adapter, result, getLang());
       await setItemTags(file, tags, settings.tagAliases, app.vault);
     },
     async supplementBook(book, settings) {
@@ -891,7 +909,7 @@ export function createObsidianProductionAdapter(
       }
       const metadata = await fetchBookMetadata(book.isbn);
       if (!metadata) {
-        throw new Error("書誌情報が見つかりませんでした");
+        throw new Error(t(getLang(), "adapter.metadataMissing"));
       }
       await completeBookMetadata(app, file, metadata, settings);
     },

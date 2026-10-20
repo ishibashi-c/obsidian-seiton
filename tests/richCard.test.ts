@@ -9,6 +9,7 @@ import {
   isRichCardDomainDisabled,
   isRichCardFolderTarget,
   normalizeRichCardDomains,
+  safeRichCardHref,
 } from "../src/shared/richCard";
 
 describe("richCard", () => {
@@ -79,6 +80,29 @@ describe("richCard", () => {
     expect(meta.siteName).toBe("Example");
     expect(meta.canonicalUrl).toBe("https://d.com/canonical");
     expect(meta.iconUrl).toBe("https://d.com/favicon.png");
+  });
+
+  it("canonical navigation URL rejects data schemes", () => {
+    expect(
+      extractRichCardMetadata(
+        '<link rel="canonical" href="data:text/html,unsafe">',
+        "https://example.com/page"
+      ).canonicalUrl
+    ).toBeNull();
+  });
+
+  it("keeps raster data images but rejects data navigation targets from cached metadata", () => {
+    const meta = extractRichCardMetadata(
+      '<meta property="og:image" content="data:image/png;base64,AAAA"><link rel="icon" href="data:image/webp;base64,AAAA"><link rel="canonical" href="data:text/html,unsafe">',
+      "https://example.com/page"
+    );
+    expect(meta.imageUrl).toBe("data:image/png;base64,AAAA");
+    expect(meta.iconUrl).toBe("data:image/webp;base64,AAAA");
+    expect(meta.canonicalUrl).toBeNull();
+    expect(
+      safeRichCardHref("data:text/html,unsafe", "https://example.com/page")
+    ).toBe("https://example.com/page");
+    expect(safeRichCardHref(null, "data:text/html,unsafe")).toBeUndefined();
   });
 
   it("遅延画像とsrcsetを通常画像の代替候補として拾う", () => {

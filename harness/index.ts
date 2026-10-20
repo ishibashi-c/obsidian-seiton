@@ -1,21 +1,22 @@
 /**
- * ブラウザハーネス エントリ（spec 12.6章 層2）
+ * ブラウザハーネスのエントリ。UI Labで本番と同じReact UIを表示する。
  *
  * URLクエリでビューを選択する:
  *   http://localhost:5178/?view=home  … ホーム
  *   http://localhost:5178/?view=react-home  … Reactページ単位のホームモック
- *   http://localhost:5178/?view=react-library  … Reactライブラリページモック
+ *   http://localhost:5178/?view=react-library  … React書庫ページモック
  *   http://localhost:5178/?view=react-search  … React検索ページモック
  *   http://localhost:5178/?view=react-organize  … React整理ページモック
  *   http://localhost:5178/?view=react-organize&fixture=proposal-review … 整理案・保留・一括確認
  *   http://localhost:5178/?view=react-home&fixture=readme-demo&lang=ja … README用の匿名デモデータ
- *   http://localhost:5178/?view=react-memo  … Reactつぶやき振り返りページモック
+ *   http://localhost:5178/?view=react-memo  … React一言メモの振り返りページモック
  *   http://localhost:5178/?view=react-bookshelf  … React本棚ページモック
  *   http://localhost:5178/?view=react-onboarding  … Reactオンボーディングページモック
  *   http://localhost:5178/?view=react-supporting … 設定・モーダル・共通部品モック
  *   http://localhost:5178/?view=react-bookshelf&fixture=batch-over-10 … 一括検索の大量選択確認
  *   http://localhost:5178/?view=react-search&fixture=archive-search … アーカイブ検索の確認
  *   http://localhost:5178/?view=react-search&fixture=exclude-archives … 設定によるアーカイブ完全除外
+ *   http://localhost:5178/?view=react-search&fixture=search-history-disabled … 検索履歴を保存しない設定
  *   http://localhost:5178/?view=react-search&fixture=external-search … 外部フォルダ検索結果の確認
  *   http://localhost:5178/?view=react-bookshelf&fixture=book-api-error … 書誌API失敗と手入力fallback（外部表紙画像なし）
  *   http://localhost:5178/?view=react-bookshelf&fixture=book-finished-empty&lang=de … 明示的な空読了日のローカライズ
@@ -378,7 +379,7 @@ const ORGANIZATION_PROPOSAL_METADATA = JSON.stringify({
   created: "2026-09-24",
   holds: [
     {
-      reason: "メール文面は現在の9タイプに自然に当てはめにくいため",
+      reason: "メール文面は現在の10タイプに自然に当てはめにくいため",
       source: "Seiton/inbox/メールの下書き.md",
       title: "メールの下書き",
     },

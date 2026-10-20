@@ -23,7 +23,7 @@ import {
   uniquePath,
 } from "../../shared/paths";
 import { itemToSearchDocument, type SearchDocument } from "../../shared/search";
-import { mostFrequentTags } from "../../shared/tags";
+import { canonicalizeTags, mostFrequentTags } from "../../shared/tags";
 import type {
   ArchiveFolderMove,
   ArchiveNoteMove,
@@ -629,7 +629,10 @@ async function readOrganizationProposals(
             const item = current.item;
             const desiredType =
               operation.changes.type ?? operation.expected.type;
-            const desiredTags = operation.changes.tags ?? item.tags ?? [];
+            const desiredTags = canonicalizeTags(
+              operation.changes.tags ?? item.tags ?? [],
+              settings.tagAliases
+            );
             const desiredLists = operation.changes.lists ?? item.lists ?? [];
             const expectedAppliedPath =
               operation.changes.status === "archive"

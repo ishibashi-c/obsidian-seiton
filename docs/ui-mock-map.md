@@ -9,10 +9,10 @@ UIの正本は`src/ui/`。本番とUI Labは同じReactコンポーネントを�
 | 画面 | UIの入口（`src/ui/`からの相対パス） | クエリ |
 |---|---|---|
 | ホーム | `screens/react-home-prototype.tsx` | `?view=home` |
-| ライブラリ | `screens/react-library-prototype.tsx` | `?view=library` |
+| 書庫 | `screens/react-library-prototype.tsx` | `?view=library` |
 | 検索 | `screens/react-search-prototype.tsx` | `?view=search` |
 | 整理 | `screens/react-organize-prototype.tsx` | `?view=organize` |
-| つぶやき振り返り | `screens/react-memo-prototype.tsx` | `?view=memo` |
+| 一言メモの振り返り | `screens/react-memo-prototype.tsx` | `?view=memo` |
 | 本棚 | `screens/react-bookshelf-prototype.tsx` | `?view=bookshelf` |
 | 新規作成 | `screens/react-create-prototype.tsx` | `?view=create` |
 | オンボーディング | `screens/react-onboarding-prototype.tsx`、`patterns/OnboardingFlow.tsx` | `?view=react-onboarding` |

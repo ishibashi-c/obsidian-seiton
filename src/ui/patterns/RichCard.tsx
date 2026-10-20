@@ -3,7 +3,7 @@
 import { useEffect, useState, useSyncExternalStore } from "react";
 import type { RichCardGateway } from "../../platform/ports";
 import { type Lang, t } from "../../shared/i18n";
-import type { RichCardMetadata } from "../../shared/richCard";
+import { type RichCardMetadata, safeRichCardHref } from "../../shared/richCard";
 import { extractMainDomain } from "../../shared/sanitize";
 
 function extractDominantColor(image: HTMLImageElement): string | null {
@@ -172,11 +172,12 @@ export function ReactRichCard({
       ? fallbackFavicon
       : null);
   const cardTint = tint ?? card.tint ?? null;
+  const href = safeRichCardHref(card.canonicalUrl, card.url);
 
   return (
     <a
       className={`seiton-rich-card layout-${resolvedLayout}`}
-      href={card.canonicalUrl ?? card.url}
+      href={href}
       onClick={(event) => event.stopPropagation()}
       rel="noopener noreferrer"
       style={
@@ -188,7 +189,7 @@ export function ReactRichCard({
     >
       {Boolean(imageUrl) && (
         <span
-          className={`seiton-rich-card-media${portrait ? "is-portrait" : ""}`}
+          className={`seiton-rich-card-media ${portrait ? "is-portrait" : ""}`}
         >
           <img
             alt=""

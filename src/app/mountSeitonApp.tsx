@@ -688,7 +688,7 @@ async function mountWithData(
         onRemoveCover: context
           ? (book) => {
               void context.platform
-                .removeBookCover(book)
+                .removeBookCover(book, context.settings)
                 .then(() => context.navigator.open("bookshelf"))
                 .catch(() =>
                   context.platform.notify(

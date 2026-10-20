@@ -35,11 +35,11 @@ source: https://example.com/article
 - `status`: `inbox` / `active` / `archive`
 - `created`: ISO 8601
 
-`source`はクリップ元URL。`tags`は内容、`sourceTags`は取得元・形式、`lists`は複数ノートを束ねるユーザー選択の集合を表す。`collection`は、作品や参照先などの項目を一つのノートへ継続して追記するタイプであり、`lists`とは使い分ける。既定の保存先は`<rootFolder>/collections/`。`bookCategory`は本棚の基幹カテゴリ、`bookSeries`は任意のシリーズ・テーマ名で、`type: reading`のノートだけに使用する。
+`source`はクリップ元URL。`tags`は内容、`sourceTags`は取得元・形式、`lists`は複数ノートを束ねるユーザー選択の集合を表す。`collection`は、作品や参照先などの項目を一つのノートへ継続して追記するタイプであり、`lists`とは使い分ける。既定の保存先は`<rootFolder>/collections/`。`bookCategory`は本棚の基幹カテゴリ、`bookSeries`は任意のシリーズ・テーマ名で、`type: reading`のノートだけに使用する。読書記録には`readingStatus`と`bookOwnership`も利用でき、カテゴリ名は`tags`にも追加される。
 
 ### Compatibility window
 
-現行実装は`sourceTags`の旧名として`baseTags`を使っている。`sourceTags`移行がロードマップ上で完了するまでは、既存ノートが使うキーを維持し、両方を同時に増殖させない。移行後は読込時に両方を受け付け、書込時に`sourceTags`へ統一する。
+現行実装は`sourceTags`を正本として読み書きする。旧ノートとの互換性のため`baseTags`も読み込み、保存時に`sourceTags`へ統一する。
 
 ## File rules
 
@@ -47,7 +47,7 @@ source: https://example.com/article
 - `/ \ : * ? " < > |`を除去する
 - 重複時は`タイトル 2.md`のように連番を付ける
 - タイプ変更時は、設定されたタイプ別フォルダへ移動する
-- ライブラリからのフォルダ作成・改名とノート移動は、同じタイプの保存領域内だけで行う
+- 書庫からのフォルダ作成・改名とノート移動は、同じタイプの保存領域内だけで行う
 - タイプ別保存領域そのものは保護し、異なるタイプのノートを混在させない
 - `type: reading`の新規作成・カテゴリ変更時は、設定された本棚フォルダの下に`bookCategory`と同名のカテゴリフォルダを作り、同じカテゴリ名を`tags`にも追加する
 - 未選択タイプのフォルダを先回りして作らない
@@ -84,7 +84,7 @@ source: https://example.com/article
 
 ### Archive
 
-- ノート単体のアーカイブは`status: archive`へ変更して`<rootFolder>/archive/<タイプ保存先名>/notes/`へ物理移動する。タイプ保存先からの相対階層、変更前のパス、変更前の`status`を記録し、Seitonのライブラリから復元する
+- ノート単体のアーカイブは`status: archive`へ変更して`<rootFolder>/archive/<タイプ保存先名>/notes/`へ物理移動する。タイプ保存先からの相対階層、変更前のパス、変更前の`status`を記録し、Seitonの書庫から復元する
 - フォルダ文脈のアーカイブは、フォルダを`<rootFolder>/archive/<タイプ保存先名>/<元フォルダからの相対パス>`へ物理移動し、Seiton設定の`archiveFolderMoves`に元のパスと移動先を記録する。`archivedFolders`は各画面で除外する現在のVaultパスを保持する。ノートのfrontmatterや`status`は変更しない
 - フォルダ文脈はタイプ別保存領域の配下であれば、授業・プロジェクト・テーマなど用途を問わずアーカイブできる
 - 復元は記録済みの元パスへフォルダごと戻す。復元先に同名のファイルやフォルダがある場合は上書きせず停止する
@@ -93,7 +93,7 @@ source: https://example.com/article
 
 ### Organization proposal from an external AI
 
-未整理ノートを整理するときは元ノートを書き換えず、次の形式のMarkdownを作成する。保存先はSeitonの表示言語に対応する`<rootFolder>/<整理案フォルダ>/`で、ファイル名は`YYYY-MM-DD.md`。同じ日付のファイルがあれば`YYYY-MM-DD-02.md`、`-03.md`のように連番を付ける。整理案フォルダはライブラリ・通常検索・フォルダアーカイブの対象外。
+未整理ノートを整理するときは元ノートを書き換えず、次の形式のMarkdownを作成する。保存先はSeitonの表示言語に対応する`<rootFolder>/<整理案フォルダ>/`で、ファイル名は`YYYY-MM-DD.md`。同じ日付のファイルがあれば`YYYY-MM-DD-02.md`、`-03.md`のように連番を付ける。整理案フォルダは書庫・通常検索・フォルダアーカイブの対象外。
 
 ```yaml
 ---
@@ -138,7 +138,7 @@ seiton-proposal:
 
 ### Memo files
 
-つぶやきは`<memosFolder>/YYYY-MM.md`へ追記する。
+一言メモは`<memosFolder>/YYYY-MM.md`へ追記する。
 
 ```markdown
 ---
@@ -148,7 +148,7 @@ month: 2026-08
 - 08:06 内容 #任意タグ
 ```
 
-既存行の順序と不明な行を保持する。行内タグは任意で、無理に追加しない。つぶやきを独立ノートにする場合は元行を残し、必要なら作成先へのWikiリンクを追記する。
+既存行の順序と不明な行を保持する。行内タグは任意で、無理に追加しない。一言メモを独立ノートにする場合は元行を残し、必要なら作成先へのWikiリンクを追記する。
 
 ## Add a book from a title
 
@@ -184,11 +184,17 @@ bookAuthor: 著者名
 bookPublisher: 出版社
 bookPublished: 2024
 bookFinished: 2026-08-24
+bookCategory: 小説
+bookSeries: 任意のシリーズ名
+readingStatus: read
+bookOwnership: owned
 bookRating:
 ---
 ```
 
-本文には感想・要点を書ける見出しを残す。表紙パスや取得できなかった書誌項目を捏造しない。表紙と不足メタデータはSeiton側の補完処理へ任せる。
+`bookCategory`は本棚のカテゴリで、Seitonは同じ値を`tags`にも追加する。`bookSeries`、`readingStatus`、`bookOwnership`は任意の読書記録項目である。実際の選択値は本棚の設定と画面に従う。
+
+新規読書ノートの本文には、設定の`templates.reading`を使う。未設定なら既定の`## 出典`、`## 要約`、`## ポイント`見出しを使う。表紙画像は`<rootFolder>/assets/covers/`へ保存する。既存の`bookCover`参照は保持する。外部表紙の解除では参照だけを外し、元画像には変更を加えない。取得できなかった書誌項目や表紙パスを捏造しない。
 
 ### Calil library lookup
 

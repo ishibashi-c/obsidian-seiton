@@ -56,7 +56,8 @@ abstract class ReactSeitonView extends ItemView {
     const boundary = createSeitonShadowBoundary(this.contentEl);
     const platform = createObsidianProductionAdapter(
       this.app,
-      loadReactProductionData
+      loadReactProductionData,
+      () => this.lang
     );
     const dispose = await mountSeitonApp(
       boundary.mountPoint,
@@ -273,7 +274,7 @@ export class ReactCreateView extends ReactSeitonView {
     return VIEW_TYPE_CREATE;
   }
   getDisplayText(): string {
-    return "新規作成";
+    return t(this.lang, "new.createTitle");
   }
   getIcon(): string {
     return "file-plus-2";

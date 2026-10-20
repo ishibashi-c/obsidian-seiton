@@ -1,12 +1,15 @@
 import { describe, expect, it } from "vitest";
+import { parse as parseYaml } from "yaml";
 import {
   formatItemFrontmatter,
   parseFrontmatter,
   parseItem,
   rewriteFrontmatter,
   serializeFrontmatter,
+  setYamlParser,
   validateItem,
 } from "../src/shared/frontmatter";
+import { testParseYaml } from "./helpers/yaml";
 
 const NOTE = `---
 type: webclip
@@ -107,6 +110,30 @@ describe("serializeFrontmatter / formatItemFrontmatter", () => {
     const fm = serializeFrontmatter({ title: "a: b #c" });
     expect(fm).toBe('title: "a: b #c"');
   });
+
+  it("文字列ISBN、ネスト値、改行とバックスラッシュを往復する", () => {
+    const original = {
+      custom: { nested: [1, true] },
+      "custom: key": "retained",
+      path: "a\\b\nline",
+    };
+    const input = `---\n${serializeFrontmatter({ bookIsbn: "9784101010014", ...original })}\n---\nbody`;
+    setYamlParser(parseYaml);
+    try {
+      const rewritten = rewriteFrontmatter(input, { status: "active" });
+      expect(rewritten).not.toBeNull();
+      const fm = rewritten?.slice(4, rewritten.indexOf("\n---\n", 4));
+      const parsed = parseYaml(fm ?? "") as Record<string, unknown>;
+      expect(parsed.bookIsbn).toBe("9784101010014");
+      expect(parsed["custom: key"]).toBe("retained");
+      expect(parsed.custom).toEqual(original.custom);
+      expect(parsed.path).toBe(original.path);
+      expect(parsed.status).toBe("active");
+      expect(fm).toContain('bookIsbn: "9784101010014"');
+    } finally {
+      setYamlParser(testParseYaml);
+    }
+  });
 });
 
 describe("rewriteFrontmatter", () => {
@@ -120,7 +147,7 @@ describe("rewriteFrontmatter", () => {
     expect(reparsed.item?.status).toBe("archive");
     expect(reparsed.item?.type).toBe("webclip");
     expect(reparsed.body.startsWith("https://example.com")).toBe(true);
-    expect(next).toContain("sourceTags: [ニュース]");
+    expect(next).toContain('sourceTags: ["ニュース"]');
     expect(next).not.toContain("baseTags:");
   });
 

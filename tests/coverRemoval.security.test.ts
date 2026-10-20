@@ -1,6 +1,7 @@
 import { type App, TFile } from "obsidian";
 import { describe, expect, it, vi } from "vitest";
 import { removeCachedCover } from "../src/platform/obsidian/bookStore";
+import { parseFrontmatter } from "../src/shared/frontmatter";
 
 function fixture(path: string, resolved = path) {
   const note = new TFile();
@@ -41,7 +42,7 @@ describe("cover removal security boundary", () => {
     const f = fixture(path);
     await removeCachedCover(f.app, f.note);
     expect(f.trashFile).not.toHaveBeenCalled();
-    expect(f.content()).toContain("custom: preserved");
+    expect(parseFrontmatter(f.content())?.data.custom).toBe("preserved");
     expect(f.content()).toContain("Body stays.");
     expect(f.content()).not.toContain("<!-- Seiton: book-cover -->");
   });

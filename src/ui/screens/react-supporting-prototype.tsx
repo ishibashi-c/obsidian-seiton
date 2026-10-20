@@ -1001,7 +1001,7 @@ function ToolbarSurface() {
               <button
                 aria-label={`見出し ${level}`}
                 aria-pressed={heading === `h${level}`}
-                className={`seiton-selection-tool${heading === `h${level}` ? "is-active" : ""}`}
+                className={`seiton-selection-tool ${heading === `h${level}` ? "is-active" : ""}`}
                 key={level}
                 onClick={() =>
                   setHeading(heading === `h${level}` ? "本文" : `h${level}`)

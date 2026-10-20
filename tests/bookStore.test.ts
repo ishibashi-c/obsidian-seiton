@@ -1,10 +1,12 @@
 import { type App, type requestUrl, TFile } from "obsidian";
 import { afterEach, describe, expect, it, vi } from "vitest";
+import { parse as parseYaml } from "yaml";
 import {
   cacheCover,
   createBookNote,
   findSimilarBookNotes,
 } from "../src/platform/obsidian/bookStore";
+import { DEFAULT_TEMPLATES } from "../src/shared/noteTemplates";
 
 const atomicHabits = {
   basename: "Atomic Habits",
@@ -82,7 +84,58 @@ describe("createBookNote", () => {
       }
     );
 
-    expect(createdContent).toContain("bookOwnership: owned");
+    const parsed = parseYaml(
+      createdContent.slice(4, createdContent.indexOf("\n---\n", 4))
+    ) as Record<string, unknown>;
+    expect(parsed.bookOwnership).toBe("owned");
+    expect(createdContent).toContain("## 出典\n\n## 要約\n\n## ポイント");
+  });
+
+  it("quotes all metadata safely and uses the configured reading template", async () => {
+    let createdContent = "";
+    const app = {
+      vault: {
+        create: async (path: string, content: string) => {
+          createdContent = content;
+          return { path } as TFile;
+        },
+        createFolder: async () => ({}) as TFile,
+        getAbstractFileByPath: () => null,
+      },
+    } as unknown as App;
+    const author = 'Author "quoted"\\\nname';
+    const publisher = "Publisher\nLine";
+    await createBookNote(
+      app,
+      {
+        finished: "2026-10-20",
+        metadata: {
+          author,
+          coverUrl: "",
+          isbn: "9784101010014",
+          pages: 0,
+          publishDate: "2024\\edition",
+          publisher,
+          title: "Safe metadata",
+        },
+      },
+      {
+        bookCoverCacheEnabled: false,
+        memosFolder: "Memos",
+        rootFolder: "Notes/Seiton",
+        templates: { ...DEFAULT_TEMPLATES, reading: "## Custom" },
+        typeFolders: {},
+      }
+    );
+    const parsed = parseYaml(
+      createdContent.slice(4, createdContent.indexOf("\n---\n", 4))
+    ) as Record<string, unknown>;
+    expect(parsed.bookIsbn).toBe("9784101010014");
+    expect(parsed.bookAuthor).toBe(author);
+    expect(parsed.bookPublisher).toBe(publisher);
+    expect(parsed.bookPublished).toBe("2024\\edition");
+    expect(parsed.bookFinished).toBe("2026-10-20");
+    expect(createdContent).toContain("## Custom");
   });
 });
 
