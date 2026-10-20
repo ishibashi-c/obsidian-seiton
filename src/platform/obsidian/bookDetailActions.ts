@@ -29,7 +29,11 @@ export function registerBookDetailActions(options: {
   registerEvent: (event: EventRef) => void;
 }): BookDetailActionController {
   const { app } = options;
-  const adapter = createObsidianProductionAdapter(app, loadReactProductionData);
+  const adapter = createObsidianProductionAdapter(
+    app,
+    loadReactProductionData,
+    options.getLang
+  );
   const actions = new Map<
     MarkdownView,
     { back: HTMLElement; edit: HTMLElement }
@@ -113,6 +117,7 @@ export function registerBookDetailActions(options: {
       }
       openProductionDialog({
         closeButtonLabel: t(lang, "notify.close"),
+        lang,
         render: (close) =>
           createElement(EditBookPanel, {
             book,

@@ -62,6 +62,10 @@ Seiton hat kein gehostetes Konto, keine Analyse, Telemetrie, Werbung oder integr
 
 Für Web-Clips werden Metadaten und Bilder von der gespeicherten Webseite und ihren Bildservern abgerufen. Googles Favicon-Dienst liefert Ersatzsymbole für Domains. openBD und Open Library liefern ISBN-Metadaten und Cover; Open Library übernimmt auch die Suche nach Titel und Autor.
 
+### Domainbeschränkungen für Rich Cards
+
+In den Einstellungen können Sie gesperrte Domains einzeln hinzufügen und entfernen. Bei gesperrten Domains verwenden automatische Karten- und Titelabfragen einen Browser-Transport, der Weiterleitungen ablehnt. Bei Weiterleitungen oder nicht verfügbaren CORS-Antworten wird eine Karte nur mit URL angezeigt. Notizen und gespeicherte URLs bleiben verfügbar. Nicht sicher abrufbare Bilder und externe Favicons werden ausgelassen; lokale Cache-Bilder werden anhand der aktuellen Einstellung geprüft. Bestehende Karten werden nach einer Änderung aktualisiert. Ohne gesperrte Domains wird weiterhin der übliche Obsidian-Transport verwendet.
+
 Die Bestandsuche über Calil und die Orts- und Adresssuche über die japanische Geospatial Information Authority (GSI) sind nur in der japanischen Oberfläche verfügbar und für Bibliotheken in Japan vorgesehen. Calil erfordert einen eigenen API-Schlüssel. In anderen Oberflächensprachen werden diese Bibliotheksfunktionen ausgeblendet. Bücherregal und Buchsuche bleiben verfügbar.
 
 ## Entwicklung

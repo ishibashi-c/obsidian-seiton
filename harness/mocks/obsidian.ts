@@ -153,6 +153,10 @@ export const mockSettings = {
 // Notice
 // ---------------------------------------------------------------------------
 
+export function getLanguage(): string {
+  return "en";
+}
+
 /** Notice風モック（Obsidianの右上通知の簡易再現） */
 export class Notice {
   constructor(

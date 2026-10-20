@@ -16,6 +16,7 @@ import {
   parseFrontmatter,
   parseItem,
   rewriteFrontmatter,
+  serializeFrontmatter,
 } from "../../shared/frontmatter";
 import { folderForType, normalizeFolder, uniquePath } from "../../shared/paths";
 import { cacheKey } from "../../shared/richCard";
@@ -37,8 +38,10 @@ export async function findBookNoteByIsbn(
     }
     const fm = parsed.item as unknown as Record<string, unknown>;
     if (
-      typeof fm.bookIsbn === "string" &&
-      normalizeIsbn(fm.bookIsbn) === isbn
+      (typeof fm.bookIsbn === "string" ||
+        (typeof fm.bookIsbn === "number" &&
+          Number.isSafeInteger(fm.bookIsbn))) &&
+      normalizeIsbn(String(fm.bookIsbn)) === isbn
     ) {
       return file;
     }
@@ -129,13 +132,14 @@ function categoryFolder(base: string, category: string): string {
 }
 
 const BOOK_COVER_EMBED_MARKER = "<!-- Seiton: book-cover -->";
-const BOOK_COVER_FOLDER = "Seiton/assets/covers";
+const bookCoverFolder = (rootFolder = "Seiton"): string =>
+  `${normalizeFolder(rootFolder)}/assets/covers`;
 const LEGACY_BOOK_COVER_PREFIX = ".seiton/covers/";
 
-function isManagedBookCoverPath(path: string): boolean {
+function isManagedBookCoverPath(path: string, rootFolder = "Seiton"): boolean {
   const prefix = path.startsWith(LEGACY_BOOK_COVER_PREFIX)
     ? LEGACY_BOOK_COVER_PREFIX
-    : `${BOOK_COVER_FOLDER}/`;
+    : `${bookCoverFolder(rootFolder)}/`;
   if (!path.startsWith(prefix)) {
     return false;
   }
@@ -159,13 +163,14 @@ async function migrateLegacyBookCover(
   if (!filename || filename.includes("/")) {
     return coverPath;
   }
-  const migratedPath = `${BOOK_COVER_FOLDER}/${filename}`;
+  const folder = bookCoverFolder();
+  const migratedPath = `${folder}/${filename}`;
   const existing = app.vault.getAbstractFileByPath(migratedPath);
   if (existing instanceof TFile) {
     return migratedPath;
   }
   try {
-    await ensureFolder(app, BOOK_COVER_FOLDER);
+    await ensureFolder(app, folder);
     await app.vault.createBinary(
       migratedPath,
       await app.vault.adapter.readBinary(coverPath)
@@ -351,7 +356,8 @@ export async function updateBookRecord(
 export async function cacheCover(
   app: App,
   isbn: string,
-  coverUrl: string
+  coverUrl: string,
+  rootFolder = "Seiton"
 ): Promise<string> {
   if (!coverUrl) {
     return "";
@@ -363,7 +369,7 @@ export async function cacheCover(
       return "";
     }
     const buf = response.arrayBuffer;
-    const folder = BOOK_COVER_FOLDER;
+    const folder = bookCoverFolder(rootFolder);
     await ensureFolder(app, folder);
     // 1x1プレースホルダー対策（easy-obookshelfと同じ判定）
     try {
@@ -421,7 +427,7 @@ export async function createBookNote(
   settings?: Pick<
     SeitonSettings,
     "rootFolder" | "memosFolder" | "typeFolders" | "bookCoverCacheEnabled"
-  > & { bookCategories?: string[] }
+  > & { bookCategories?: string[]; templates?: SeitonSettings["templates"] }
 ): Promise<string> {
   const input: BookRecordInput =
     "metadata" in metaOrInput ? metaOrInput : { metadata: metaOrInput };
@@ -429,7 +435,7 @@ export async function createBookNote(
   const coverPath =
     settings?.bookCoverCacheEnabled === false
       ? ""
-      : await cacheCover(app, meta.isbn, meta.coverUrl);
+      : await cacheCover(app, meta.isbn, meta.coverUrl, settings?.rootFolder);
   const title = sanitize(meta.title) || meta.isbn;
 
   // readingsフォルダを保証
@@ -448,58 +454,56 @@ export async function createBookNote(
   );
 
   const now = new Date().toISOString().slice(0, 19);
-  const lines = [
-    "---",
-    "type: reading",
-    "sourceTags: []",
-    `lists: ${JSON.stringify(input.lists ?? [])}`,
-    "status: active",
-    `created: "${now}"`,
-    `bookCategory: "${category.replace(/"/g, '\\"')}"`,
-  ];
+  const frontmatter: Record<string, unknown> = {
+    bookCategory: category,
+    created: now,
+    lists: input.lists ?? [],
+    sourceTags: [],
+    status: "active",
+    tags: [category],
+    type: "reading",
+  };
   if (input.series?.trim()) {
-    lines.push(`bookSeries: "${input.series.trim().replace(/"/g, '\\"')}"`);
+    frontmatter.bookSeries = input.series.trim();
   }
-  lines.splice(2, 0, `tags: [${JSON.stringify(category)}]`);
   if (meta.isbn) {
-    lines.push(`bookIsbn: "${meta.isbn}"`);
+    frontmatter.bookIsbn = meta.isbn;
   }
   if (meta.author) {
-    lines.push(`bookAuthor: "${meta.author.replace(/"/g, '\\"')}"`);
+    frontmatter.bookAuthor = meta.author;
   }
   if (coverPath) {
-    lines.push(`bookCover: "${coverPath}"`);
+    frontmatter.bookCover = coverPath;
   }
   if (meta.publisher) {
-    lines.push(`bookPublisher: "${meta.publisher.replace(/"/g, '\\"')}"`);
+    frontmatter.bookPublisher = meta.publisher;
   }
   if (meta.publishDate) {
-    lines.push(`bookPublished: "${meta.publishDate}"`);
+    frontmatter.bookPublished = meta.publishDate;
   }
   if (meta.pages > 0) {
-    lines.push(`pages: ${meta.pages}`);
+    frontmatter.pages = meta.pages;
   }
-  lines.push(`readingStatus: ${input.finished ? "read" : "tbr"}`);
-  lines.push(`bookOwnership: ${normalizeBookOwnership(input.ownership)}`);
+  frontmatter.readingStatus = input.finished ? "read" : "tbr";
+  frontmatter.bookOwnership = normalizeBookOwnership(input.ownership);
   if (input.finished) {
-    lines.push(`bookFinished: "${input.finished}"`);
+    frontmatter.bookFinished = input.finished;
   }
   if (input.rating && input.rating >= 1 && input.rating <= 5) {
-    lines.push(`bookRating: ${input.rating}`);
+    frontmatter.bookRating = input.rating;
+  }
+  const lines = [
+    "---",
+    serializeFrontmatter(frontmatter, { skipEmptyArrays: false }),
+    "---",
+  ];
+  if (coverPath) {
+    lines.push("", BOOK_COVER_EMBED_MARKER, `![[${coverPath}|220]]`);
   }
   lines.push(
-    "---",
-    ...(coverPath
-      ? ["", BOOK_COVER_EMBED_MARKER, `![[${coverPath}|220]]`]
-      : []),
     "",
-    "## 感想",
-    "",
-    input.notes ?? "",
-    "",
-    "## 要点",
-    "",
-    "## 関連ノート",
+    settings?.templates?.reading ?? "## 出典\n\n## 要約\n\n## ポイント",
+    ...(input.notes?.trim() ? ["", input.notes.trim()] : []),
     ""
   );
 
@@ -507,7 +511,11 @@ export async function createBookNote(
   return file.path;
 }
 
-export async function removeCachedCover(app: App, note: TFile): Promise<void> {
+export async function removeCachedCover(
+  app: App,
+  note: TFile,
+  rootFolder = "Seiton"
+): Promise<void> {
   const raw = await app.vault.cachedRead(note);
   const parsed = parseItem(raw, note.path);
   const coverPath =
@@ -519,10 +527,10 @@ export async function removeCachedCover(app: App, note: TFile): Promise<void> {
   }
   const cover = app.vault.getAbstractFileByPath(coverPath);
   if (
-    isManagedBookCoverPath(coverPath) &&
+    isManagedBookCoverPath(coverPath, rootFolder) &&
     cover instanceof TFile &&
     cover.path === coverPath &&
-    isManagedBookCoverPath(cover.path)
+    isManagedBookCoverPath(cover.path, rootFolder)
   ) {
     await app.fileManager.trashFile(cover);
   }
@@ -537,7 +545,7 @@ export async function completeBookMetadata(
   app: App,
   note: TFile,
   metadata: BookMetadata,
-  settings: Pick<SeitonSettings, "bookCoverCacheEnabled">
+  settings: Pick<SeitonSettings, "bookCoverCacheEnabled" | "rootFolder">
 ): Promise<void> {
   const raw = await app.vault.read(note);
   const frontmatter = parseFrontmatter(raw);
@@ -569,7 +577,12 @@ export async function completeBookMetadata(
   const hasCurrentCover =
     currentCover instanceof TFile && Boolean(currentCoverPath);
   if (!hasCurrentCover && settings.bookCoverCacheEnabled && metadata.coverUrl) {
-    const cover = await cacheCover(app, metadata.isbn, metadata.coverUrl);
+    const cover = await cacheCover(
+      app,
+      metadata.isbn,
+      metadata.coverUrl,
+      settings.rootFolder
+    );
     if (cover) {
       patch.bookCover = cover;
     }

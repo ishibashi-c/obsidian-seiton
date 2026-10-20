@@ -62,6 +62,10 @@ Seiton no tiene cuenta alojada, analítica, telemetría, anuncios ni LLM integra
 
 Los clips web obtienen metadatos e imágenes de la página guardada y de los servidores de imágenes que esta declara. El servicio de favicons de Google proporciona iconos de dominio alternativos. openBD y Open Library proporcionan metadatos por ISBN y portadas; Open Library también permite buscar por título y autor.
 
+### Restricciones de dominio para tarjetas enriquecidas
+
+En los ajustes puedes añadir y quitar dominios bloqueados uno por uno. Con dominios bloqueados, las solicitudes automáticas de tarjetas y títulos usan un transporte del navegador que rechaza las redirecciones. Si hay una redirección o CORS impide acceder a la respuesta, se muestra una tarjeta solo con la URL. Las notas y las URL guardadas siguen disponibles. Se omiten las imágenes que no se pueden obtener de forma segura y los favicons remotos; las imágenes de la caché local se comprueban según la configuración actual. Las tarjetas existentes se actualizan al cambiarla. Sin dominios bloqueados, se usa el transporte habitual de Obsidian.
+
 La consulta de fondos mediante Calil y la búsqueda de municipios y direcciones mediante la autoridad geoespacial de Japón (GSI) solo están disponibles en la interfaz japonesa y están destinadas a bibliotecas de Japón. Calil requiere tu propia clave de API. Estas funciones de biblioteca se ocultan en otros idiomas; la Estantería y la búsqueda de libros siguen disponibles.
 
 ## Desarrollo

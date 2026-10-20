@@ -136,7 +136,7 @@ interface MemoDraft {
 type MemoEditHandler = (
   memo: MemoItem,
   next: MemoDraft
-) => void | Promise<void>;
+) => Promise<string | undefined>;
 type MemoHandler = (memo: MemoItem) => void | Promise<void>;
 
 function MemoRow({
@@ -309,7 +309,7 @@ export function ReactMemoSurface({
     };
     setSaving(true);
     try {
-      await onEdit?.(activeMemo, next);
+      const updatedPath = await onEdit?.(activeMemo, next);
       setLocalMemos((current) =>
         current.map((memo) =>
           memo.id === activeMemo.id
@@ -318,6 +318,7 @@ export function ReactMemoSurface({
                 content: next.text,
                 date: next.day,
                 month: next.day.slice(0, 7),
+                ...(updatedPath ? { path: updatedPath } : {}),
                 tags: next.tags,
                 time: next.time,
               }

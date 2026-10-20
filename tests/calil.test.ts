@@ -23,6 +23,32 @@ afterEach(() => {
   vi.mocked(requestUrl).mockReset();
 });
 
+describe("collectLibraryHoldings reserve URLs", () => {
+  it("keeps only HTTP(S) reservation links from the API response", () => {
+    const libraries = collectLibraryHoldings(
+      [
+        { formal: "Safe", libid: "1", libkey: "safe", systemid: "Safe" },
+        { formal: "Unsafe", libid: "2", libkey: "unsafe", systemid: "Unsafe" },
+      ],
+      {
+        Safe: {
+          libkey: { safe: "貸出可" },
+          reserveurl: "https://example.jp/reserve",
+        },
+        Unsafe: {
+          libkey: { unsafe: "貸出可" },
+          reserveurl: "javascript:alert(1)",
+        },
+      }
+    );
+
+    expect(libraries.map((library) => library.reserveUrl)).toEqual([
+      "https://example.jp/reserve",
+      undefined,
+    ]);
+  });
+});
+
 describe("searchCalilLibraries", () => {
   it("実際のJSON配列形式のlibraryレスポンスを扱う", () => {
     const records = extractLibraryRecords([

@@ -237,6 +237,15 @@ function toHolding(
   }
   const formal = library.formal?.trim() || library.systemname?.trim() || libKey;
   const libId = String(library.libid ?? "").trim();
+  let reserveUrl: string | undefined;
+  try {
+    const candidate = new URL(result.reserveurl ?? "");
+    if (candidate.protocol === "http:" || candidate.protocol === "https:") {
+      reserveUrl = candidate.toString();
+    }
+  } catch {
+    reserveUrl = undefined;
+  }
   return {
     calilUrl: libId
       ? `https://calil.jp/library/${encodeURIComponent(libId)}/${encodeURIComponent(formal)}`
@@ -246,7 +255,7 @@ function toHolding(
     formal,
     libId,
     libKey,
-    reserveUrl: result.reserveurl || undefined,
+    reserveUrl,
     status: "蔵書あり",
     systemId,
     systemName: library.systemname?.trim() || systemId,

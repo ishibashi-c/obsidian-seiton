@@ -393,7 +393,7 @@ function LibraryCard({
         </div>
         <h3 className="react-library-card-title">{item.title}</h3>
         <p
-          className={`react-library-card-summary${item.summary ? "" : "is-empty"}`}
+          className={`react-library-card-summary ${item.summary ? "" : "is-empty"}`}
         >
           {item.summary ?? t(lang, "library.noPreview")}
         </p>

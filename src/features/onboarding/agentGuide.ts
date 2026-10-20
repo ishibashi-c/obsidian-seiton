@@ -82,7 +82,7 @@ seiton-proposal:
 - The user must review and explicitly apply each operation in Seiton's proposal review screen. They may select several and confirm them together; Seiton rechecks each source immediately before applying and continues other items if one is stale or blocked. Holds are never applied. Re-read the source metadata immediately before preparing the proposal; if its current values are uncertain, use a hold instead of guessing.
 - Tag existing folders: preview target files and proposed changes before bulk edits; make the operation rerunnable.
 - Add a book by title: use an available bibliographic-search tool or connector first. Otherwise use a public bibliographic API whose terms allow the intended storage; Seiton's ISBN lookup tries openBD first and falls back to Open Library, while title/author search uses Open Library. Confirm title, author, publisher, year, and edition. Normalize ISBN-10 to ISBN-13, ignore hyphens/spaces, check existing \`bookIsbn\`, and never invent missing metadata.
-- Reading notes use \`type: reading\` with optional \`bookIsbn\`, \`bookAuthor\`, \`bookPublisher\`, \`bookPublished\`, \`bookFinished\`, and \`bookRating\`.
+- Reading notes use \`type: reading\`. Optional book fields include \`bookIsbn\`, \`bookAuthor\`, \`bookPublisher\`, \`bookPublished\`, \`bookFinished\`, \`bookRating\`, \`bookCategory\`, \`bookSeries\`, \`readingStatus\`, and \`bookOwnership\`. Seiton also adds the selected \`bookCategory\` to \`tags\`.
 `;
 }
 

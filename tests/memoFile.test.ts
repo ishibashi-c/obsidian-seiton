@@ -54,6 +54,11 @@ describe("parseMonthFile", () => {
     const first = file?.lines.find((l) => l.kind === "memo");
     expect(first && first.kind === "memo" && first.day).toBe("2026-08-19");
   });
+
+  it("CRLF月ファイルもメモ行として読む", () => {
+    const file = parseMonthFile(MONTH_FILE.replace(/\n/g, "\r\n"));
+    expect(file?.lines.filter((line) => line.kind === "memo")).toHaveLength(3);
+  });
 });
 
 describe("appendMemo", () => {

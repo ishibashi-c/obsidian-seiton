@@ -24,6 +24,7 @@ import {
   useState,
 } from "react";
 import { createPortal } from "react-dom";
+import { type Lang, t } from "../shared/i18n";
 
 type Color = "ink" | "accent" | "red" | "green" | "gray" | string;
 type Variant = "default" | "light" | "outline" | "subtle";
@@ -414,16 +415,18 @@ export function Badge({
 }
 
 export function Alert({
+  lang = "en",
   color = "accent",
   variant = "light",
   withCloseButton,
-  closeButtonLabel = "閉じる",
+  closeButtonLabel = t(lang, "notify.close"),
   onClose,
   className,
   children,
   ...props
 }: HTMLAttributes<HTMLDivElement> &
   Record<string, unknown> & {
+    lang?: Lang;
     color?: Color;
     variant?: Variant;
     withCloseButton?: boolean;
@@ -624,6 +627,7 @@ export type SelectProps = Omit<
   "size" | "onChange" | "value"
 > &
   FieldBase & {
+    lang?: Lang;
     data?: SelectOption[];
     value?: string | null;
     defaultValue?: string;
@@ -634,6 +638,7 @@ export type SelectProps = Omit<
     placeholder?: string;
   };
 export function Select({
+  lang = "en",
   label,
   description,
   error,
@@ -683,7 +688,9 @@ export function Select({
         required={required}
       >
         {Boolean(placeholder || clearable) && (
-          <option value="">{placeholder ?? "選択してください"}</option>
+          <option value="">
+            {placeholder ?? t(lang, "common.selectPlaceholder")}
+          </option>
         )}
         {options.map((option) => (
           <option key={option.value} value={option.value}>
@@ -823,6 +830,7 @@ interface ModalProps {
   closeButtonProps?: ButtonHTMLAttributes<HTMLButtonElement>;
   contentRef?: RefObject<HTMLDivElement | null>;
   focusKey?: string | number;
+  lang?: Lang;
   onClose: () => void;
   opened: boolean;
   portalProps?: { target?: HTMLElement | null };
@@ -831,6 +839,13 @@ interface ModalProps {
   styles?: Record<string, CSSProperties>;
   title?: ReactNode;
   withinPortal?: boolean;
+}
+
+export function getModalCloseButtonLabel(
+  lang: Lang,
+  closeButtonProps?: ButtonHTMLAttributes<HTMLButtonElement>
+): string {
+  return closeButtonProps?.["aria-label"] ?? t(lang, "notify.close");
 }
 
 export function getActiveElementWithinRoot(
@@ -889,6 +904,7 @@ export function isTopmostModal(dialog: HTMLElement | null): boolean {
 }
 
 export function Modal({
+  lang = "en",
   opened,
   onClose,
   title,
@@ -983,7 +999,7 @@ export function Modal({
     return null;
   }
   const target = portalProps?.target ?? document.body;
-  const closeLabel = closeButtonProps?.["aria-label"] ?? "閉じる";
+  const closeLabel = getModalCloseButtonLabel(lang, closeButtonProps);
   const body = (
     <div className={cx("seiton-ui-modal-root", classNames?.root)}>
       <button

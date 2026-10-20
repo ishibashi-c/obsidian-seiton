@@ -54,7 +54,7 @@ export function formatMemoLine(
 
 /** 月ファイル全体をパース（frontmatter + 本文行） */
 export function parseMonthFile(content: string): MonthFile | null {
-  const fm = parseFrontmatter(content);
+  const fm = parseFrontmatter(content.replace(/\r\n/g, "\n"));
   if (!fm) {
     return null;
   }
@@ -65,7 +65,10 @@ export function parseMonthFile(content: string): MonthFile | null {
   const month = typeof data.month === "string" ? data.month : "";
   const lines: MonthBodyLine[] = [];
   let currentDay: string | null = null;
-  for (const raw of fm.body.split("\n")) {
+  for (const sourceLine of fm.body.split("\n")) {
+    const raw = sourceLine.endsWith("\r")
+      ? sourceLine.slice(0, -1)
+      : sourceLine;
     const h = HEADING_RE.exec(raw);
     if (h) {
       if (!parseDayKey(h[1])) {

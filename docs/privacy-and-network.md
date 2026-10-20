@@ -15,7 +15,7 @@ network request fails.
 | Render a rich-card domain icon when the page has no usable favicon | `www.google.com/s2/favicons` | The public domain from the card URL | Favicon shown beside the domain | If the service is unavailable, a local globe icon is shown. |
 | Search or add a book by ISBN | `api.openbd.jp`, then `openlibrary.org` when openBD has no usable record | The normalized ISBN | Selected metadata in a reading note | Empty results are shown and manual entry remains available. |
 | Search or add a book by title/author | `openlibrary.org` | The user-entered title/author query | Selected metadata in a reading note | Empty results are shown and manual entry remains available. Requests to Open Library are serialized at least 1.1 seconds apart. |
-| Cache a book cover | The selected public cover URL from openBD or Open Library | The selected cover URL | Image under `Seiton/assets/covers/` | The reading note is saved without a local cover. |
+| Cache a book cover | The selected public cover URL from openBD or Open Library | The selected cover URL | Image under `<rootFolder>/assets/covers/` | The reading note is saved without a local cover. |
 | Search library holdings (Japanese UI, when configured) | `api.calil.jp/library` and `api.calil.jp/check` | The ISBN, selected prefecture/city, and the user's Calil application key | Matching library names and availability statuses | Missing key/area, empty holdings, API errors, and polling timeouts remain visible in the modal. |
 | Resolve a municipality reference point (Japanese UI, when requested) | `msearch.gsi.go.jp/address-search/AddressSearch` | The configured prefecture and municipality name | Candidate municipality points and coordinates shown for explicit selection | Empty results and API errors remain in Settings; no personal address is saved. |
 | Search from a missing municipality (Japanese UI, when requested) | `msearch.gsi.go.jp/address-search/AddressSearch` and `api.calil.jp/library` | The address entered for this search only, then the resulting coordinates to Calil | Distance-sorted library results | The address is not saved; empty results and API errors remain visible in the search modal. |
@@ -37,7 +37,7 @@ limits, not IP-based geofencing.
 - The fallback domain icon uses Google's public favicon endpoint. The page URL,
   page metadata, and vault contents are not sent to that endpoint; only the domain
   value is included in the request.
-- Settings → Seiton → Rich cards accepts a comma-separated domain deny list.
+- Settings → Seiton → Rich cards lets you add and remove denied domains one at a time.
   A denied domain and all of its subdomains are excluded from automatic page-title
   and rich-card requests.
 - Rich-card cache age and byte limits are configurable. “Clear rich-card cache” moves

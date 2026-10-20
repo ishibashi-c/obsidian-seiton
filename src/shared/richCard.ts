@@ -21,6 +21,27 @@ export interface RichCardMetadata {
   url: string;
 }
 
+/** Use cached canonical navigation only when it is an HTTP(S) URL. */
+export function safeRichCardHref(
+  canonicalUrl: string | null,
+  url: string
+): string | undefined {
+  const safeHttpUrl = (candidate: string | null): string | undefined => {
+    if (!candidate) {
+      return undefined;
+    }
+    try {
+      const parsed = new URL(candidate);
+      return parsed.protocol === "http:" || parsed.protocol === "https:"
+        ? parsed.toString()
+        : undefined;
+    } catch {
+      return undefined;
+    }
+  };
+  return safeHttpUrl(canonicalUrl) ?? safeHttpUrl(url);
+}
+
 export interface CacheEntryInfo {
   modified: number;
   path: string;
@@ -116,13 +137,22 @@ function firstSrcset(value: string | undefined): string | null {
   return first || null;
 }
 
-function resolveUrl(value: string | null, baseUrl: string): string | null {
+function resolveUrl(
+  value: string | null,
+  baseUrl: string,
+  allowData = false
+): string | null {
   if (!value) {
     return null;
   }
   try {
     const resolved = new URL(value, baseUrl);
-    return /^(https?:|data:)/i.test(resolved.protocol)
+    if (/^https?:$/i.test(resolved.protocol)) {
+      return resolved.toString();
+    }
+    return allowData &&
+      resolved.protocol === "data:" &&
+      /^data:image\/(?:png|jpeg|gif|webp|avif);/i.test(value)
       ? resolved.toString()
       : null;
   } catch {
@@ -185,14 +215,12 @@ function domMetadata(html: string, url: string): RichCardMetadata | null {
     ];
     const imageUrl =
       imageCandidates
-        .filter((candidate): candidate is string =>
-          Boolean(candidate && !candidate.startsWith("data:"))
-        )
-        .map((candidate) => resolveUrl(candidate, url))
+        .filter((candidate): candidate is string => Boolean(candidate))
+        .map((candidate) => resolveUrl(candidate, url, true))
         .find((candidate): candidate is string => candidate !== null) ?? null;
     const iconUrl =
       [link('link[rel~="icon"]'), link('link[rel~="apple-touch-icon"]')]
-        .map((candidate) => resolveUrl(candidate, url))
+        .map((candidate) => resolveUrl(candidate, url, true))
         .find((candidate): candidate is string => candidate !== null) ?? null;
     const domain = extractMainDomain(url) ?? url;
     return {
@@ -241,7 +269,7 @@ export function extractRichCardMetadata(
           .includes("apple-touch-icon")
       ),
     ]
-      .map((candidate) => resolveUrl(candidate, url))
+      .map((candidate) => resolveUrl(candidate, url, true))
       .find((candidate): candidate is string => candidate !== null) ?? null;
   const iconUrl =
     [
@@ -255,7 +283,7 @@ export function extractRichCardMetadata(
           .includes("apple-touch-icon")
       ),
     ]
-      .map((candidate) => resolveUrl(candidate, url))
+      .map((candidate) => resolveUrl(candidate, url, true))
       .find((candidate): candidate is string => candidate !== null) ?? null;
   const canonicalUrl = resolveUrl(
     linkContent(html, (attrs) =>

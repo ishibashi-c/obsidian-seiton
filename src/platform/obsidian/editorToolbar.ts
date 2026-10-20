@@ -337,7 +337,7 @@ export class EditorToolbar {
     const bar = document.createElement("div");
     bar.className = "seiton-selection-toolbar";
     bar.setAttribute("role", "toolbar");
-    bar.setAttribute("aria-label", "選択範囲の書式");
+    bar.setAttribute("aria-label", t(this.lang, "toolbar.selectionFormat"));
     bar.addEventListener("mousedown", (event) => {
       event.preventDefault();
       event.stopPropagation();
@@ -345,8 +345,12 @@ export class EditorToolbar {
     this.addActionButton(bar, "bold", "B", t(this.lang, "toolbar.bold"), () =>
       this.toggleWrap("**")
     );
-    this.addActionButton(bar, "italic", "I", "斜体 / Italic", () =>
-      this.toggleWrap("*")
+    this.addActionButton(
+      bar,
+      "italic",
+      "I",
+      t(this.lang, "toolbar.italic"),
+      () => this.toggleWrap("*")
     );
     this.addSeparator(bar);
     for (let level = 1; level <= 6; level++) {
@@ -377,7 +381,7 @@ export class EditorToolbar {
       bar,
       "clear-formatting",
       "×",
-      "書式を解除 / Clear formatting",
+      t(this.lang, "toolbar.clearFormatting"),
       () => this.clearFormatting()
     );
     document.body.appendChild(bar);

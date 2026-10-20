@@ -1,10 +1,16 @@
 import {
   type App,
+  type Command,
+  editorInfoField,
+  editorLivePreviewField,
+  getLanguage,
+  MarkdownRenderChild,
   Notice,
   Plugin,
   PluginSettingTab,
   parseYaml,
   Setting,
+  setTooltip,
   TFile,
   ToggleComponent,
 } from "obsidian";
@@ -47,6 +53,7 @@ import {
   DEFAULT_RICH_CARD_CACHE_MAX_BYTES,
   DEFAULT_ROOT_FOLDER,
   EDITOR_COLORS,
+  ITEM_TYPES,
   VIEW_TYPE_BOOKSHELF,
   VIEW_TYPE_CREATE,
   VIEW_TYPE_HOME,
@@ -56,7 +63,13 @@ import {
   VIEW_TYPE_SEARCH,
 } from "../shared/constants";
 import { parseItem, setYamlParser } from "../shared/frontmatter";
-import { detectLang, LANGS, type Lang, t } from "../shared/i18n";
+import {
+  detectLang,
+  LANGS,
+  type Lang,
+  type MessageKey,
+  t,
+} from "../shared/i18n";
 import {
   type SeitonDestination,
   type SeitonNavigationOptions,
@@ -80,6 +93,7 @@ import type {
 } from "../shared/types";
 import { extractHttpUrl, parseClipParams } from "../shared/webClip";
 import { openReactAddBookDialog } from "../ui/patterns/AddBookModal";
+import { closeProductionDialogs } from "../ui/patterns/ProductionDialog";
 import { ReactRichCard } from "../ui/patterns/RichCard";
 import {
   ColorPaletteEditor,
@@ -130,6 +144,19 @@ function labelSettingsControls(containerEl: HTMLElement): void {
   }
 }
 
+class ReactCardRenderChild extends MarkdownRenderChild {
+  constructor(
+    containerEl: HTMLElement,
+    private readonly root: Root
+  ) {
+    super(containerEl);
+  }
+
+  onunload(): void {
+    this.root.unmount();
+  }
+}
+
 function mountSettingsEditor(
   container: HTMLElement,
   roots: Root[],
@@ -177,12 +204,16 @@ export default class SeitonPlugin extends Plugin implements SeitonNavigator {
   private pendingCreatePresetId: string | undefined;
   private pendingCreateType: ItemType | undefined;
   private renderedLanguage: Lang | null = null;
+  private localizedCommands: { command: Command; nameKey: MessageKey }[] = [];
   private moduleAvailability: Pick<FeatureModules, "bookshelf" | "memos"> = {
     bookshelf: false,
     memos: false,
   };
   private ribbonIcons: Partial<
-    Record<"bookshelf" | "memoReview", HTMLElement>
+    Record<
+      "home" | "library" | "search" | "organize" | "bookshelf" | "memoReview",
+      HTMLElement
+    >
   > = {};
   private bookDetailActions: BookDetailActionController | null = null;
 
@@ -202,7 +233,7 @@ export default class SeitonPlugin extends Plugin implements SeitonNavigator {
     if (migrated.changed) {
       await this.saveData(this.settings);
     }
-    const detectedLang = detectLang(navigator.language);
+    const detectedLang = detectLang(getLanguage());
     this.lang =
       this.settings.uiLanguage === "auto"
         ? detectedLang
@@ -229,7 +260,24 @@ export default class SeitonPlugin extends Plugin implements SeitonNavigator {
     }
     this.registerEditorExtension(
       createRichCardEditorExtension(
-        () => this.settings.modules.richCards,
+        (view) => {
+          const file = view.state.field(editorInfoField, false)?.file;
+          if (
+            !(
+              file &&
+              this.settings.modules.richCards &&
+              view.state.field(editorLivePreviewField, false)
+            )
+          ) {
+            return false;
+          }
+          const type =
+            this.app.metadataCache.getFileCache(file)?.frontmatter?.type;
+          return (
+            ITEM_TYPES.includes(type as ItemType) ||
+            isRichCardFolderTarget(file.path, this.settings.richCardFolders)
+          );
+        },
         this.createRichCardStore(),
         this.lang
       )
@@ -328,27 +376,23 @@ export default class SeitonPlugin extends Plugin implements SeitonNavigator {
         )
     );
     this.registerRibbonIcons();
-    this.addCommand({
+    this.addLocalizedCommand("home.open", {
       callback: () => void this.activateHome(),
       id: "open-home",
-      name: t(this.lang, "home.open"),
     });
-    this.addCommand({
+    this.addLocalizedCommand("library.open", {
       callback: () => void this.activateLibrary(),
       id: "open-library",
-      name: t(this.lang, "library.open"),
     });
-    this.addCommand({
+    this.addLocalizedCommand("search.open", {
       callback: () => void this.open("search"),
       id: "open-search",
-      name: t(this.lang, "search.open"),
     });
-    this.addCommand({
+    this.addLocalizedCommand("organize.open", {
       callback: () => void this.open("organize"),
       id: "open-organize",
-      name: t(this.lang, "organize.open"),
     });
-    this.addCommand({
+    this.addLocalizedCommand("memoReview.open", {
       checkCallback: (checking) => {
         if (!this.settings.modules.memos) {
           return false;
@@ -359,9 +403,8 @@ export default class SeitonPlugin extends Plugin implements SeitonNavigator {
         return true;
       },
       id: "open-memo-review",
-      name: t(this.lang, "memoReview.open"),
     });
-    this.addCommand({
+    this.addLocalizedCommand("bookshelf.open", {
       checkCallback: (checking) => {
         if (!this.settings.modules.bookshelf) {
           return false;
@@ -372,9 +415,8 @@ export default class SeitonPlugin extends Plugin implements SeitonNavigator {
         return true;
       },
       id: "open-bookshelf",
-      name: t(this.lang, "bookshelf.open"),
     });
-    this.addCommand({
+    this.addLocalizedCommand("book.addByIsbn", {
       checkCallback: (checking) => {
         if (!this.settings.modules.bookshelf) {
           return false;
@@ -385,7 +427,6 @@ export default class SeitonPlugin extends Plugin implements SeitonNavigator {
         return true;
       },
       id: "add-book-by-isbn",
-      name: t(this.lang, "book.addByIsbn"),
     });
     // 入力フロー3系統（spec §5）: URI / ブックマークレット（=URIと同一経路）/ 共有テキスト
     this.registerObsidianProtocolHandler("seiton-clip", (params) => {
@@ -461,7 +502,9 @@ export default class SeitonPlugin extends Plugin implements SeitonNavigator {
           return;
         }
         const host = previewRoot.createDiv({ cls: "seiton-rich-card-note" });
-        createRoot(host).render(
+        const root = createRoot(host);
+        ctx.addChild(new ReactCardRenderChild(host, root));
+        root.render(
           createElement(ReactRichCard, {
             lang: this.lang,
             store: this.createRichCardStore(),
@@ -478,7 +521,9 @@ export default class SeitonPlugin extends Plugin implements SeitonNavigator {
         return;
       }
       const host = el.createDiv({ cls: "seiton-rich-card-note" });
-      createRoot(host).render(
+      const root = createRoot(host);
+      ctx.addChild(new ReactCardRenderChild(host, root));
+      root.render(
         createElement(ReactRichCard, {
           lang: this.lang,
           store: this.createRichCardStore(),
@@ -582,7 +627,8 @@ export default class SeitonPlugin extends Plugin implements SeitonNavigator {
     }
     const platform = createObsidianProductionAdapter(
       this.app,
-      loadReactProductionData
+      loadReactProductionData,
+      () => this.lang
     );
     openReactAddBookDialog(
       platform.bookGateway,
@@ -645,6 +691,9 @@ export default class SeitonPlugin extends Plugin implements SeitonNavigator {
     this.moduleAvailability = nextAvailability;
     this.bookDetailActions?.update();
     if (moduleChanged || languageChanged) {
+      if (languageChanged) {
+        this.updateLocalizedChrome();
+      }
       this.closeDisabledModuleViews();
       this.updateRibbonIconVisibility();
       void this.refreshReactViews(true);
@@ -654,22 +703,22 @@ export default class SeitonPlugin extends Plugin implements SeitonNavigator {
   }
 
   private registerRibbonIcons(): void {
-    this.addRibbonNavigationIcon(
+    this.ribbonIcons.home = this.addRibbonNavigationIcon(
       "layout-dashboard",
       t(this.lang, "home.open"),
       () => void this.activateHome()
     );
-    this.addRibbonNavigationIcon(
+    this.ribbonIcons.search = this.addRibbonNavigationIcon(
       "search",
       t(this.lang, "search.open"),
       () => void this.open("search")
     );
-    this.addRibbonNavigationIcon(
+    this.ribbonIcons.library = this.addRibbonNavigationIcon(
       "library",
       t(this.lang, "library.open"),
       () => void this.activateLibrary()
     );
-    this.addRibbonNavigationIcon(
+    this.ribbonIcons.organize = this.addRibbonNavigationIcon(
       "inbox",
       t(this.lang, "organize.open"),
       () => void this.open("organize")
@@ -685,6 +734,39 @@ export default class SeitonPlugin extends Plugin implements SeitonNavigator {
       () => void this.open("bookshelf")
     );
     this.updateRibbonIconVisibility();
+  }
+
+  private addLocalizedCommand(
+    nameKey: MessageKey,
+    command: Omit<Command, "name">
+  ): void {
+    this.localizedCommands.push({
+      command: this.addCommand({ ...command, name: t(this.lang, nameKey) }),
+      nameKey,
+    });
+  }
+
+  private updateLocalizedChrome(): void {
+    for (const { command, nameKey } of this.localizedCommands) {
+      command.name = `${this.manifest.name}: ${t(this.lang, nameKey)}`;
+    }
+    const labels: Record<string, MessageKey> = {
+      bookshelf: "bookshelf.open",
+      home: "home.open",
+      library: "library.open",
+      memoReview: "memoReview.open",
+      organize: "organize.open",
+      search: "search.open",
+    };
+    for (const [key, element] of Object.entries(this.ribbonIcons)) {
+      const nameKey = labels[key as keyof typeof labels];
+      if (!(element && nameKey)) {
+        continue;
+      }
+      const title = t(this.lang, nameKey);
+      element.setAttribute("aria-label", title);
+      setTooltip(element, title);
+    }
   }
 
   private addRibbonNavigationIcon(
@@ -799,6 +881,7 @@ export default class SeitonPlugin extends Plugin implements SeitonNavigator {
   }
 
   onunload(): void {
+    closeProductionDialogs();
     if (this.refreshTimer !== null) {
       window.clearTimeout(this.refreshTimer);
     }
@@ -924,7 +1007,7 @@ class SeitonSettingTab extends PluginSettingTab {
               : "auto";
             this.plugin.lang =
               this.plugin.settings.uiLanguage === "auto"
-                ? detectLang(navigator.language)
+                ? detectLang(getLanguage())
                 : this.plugin.settings.uiLanguage;
             await this.plugin.saveSettings();
             this.display();

@@ -619,7 +619,16 @@ export function ReactOrganizeSurface({
                     </div>
                   </header>
                   {Boolean(current.source) && (
-                    <a className="react-organize-source" href={current.source}>
+                    <a
+                      className="react-organize-source"
+                      href={
+                        current.source && /^https?:\/\//i.test(current.source)
+                          ? current.source
+                          : undefined
+                      }
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
                       {current.source}
                     </a>
                   )}

@@ -10,6 +10,7 @@ import type { SeitonSettings } from "../../shared/types";
 import type { OnboardingDraft } from "../../ui/patterns/OnboardingFlow";
 import { ReactOnboardingFlow } from "../../ui/patterns/OnboardingFlow";
 import { openProductionDialog } from "../../ui/patterns/ProductionDialog";
+import { ensureFolder } from "./vaultUtils";
 
 export function ReactOnboardingForm({
   app,
@@ -54,9 +55,7 @@ export function ReactOnboardingForm({
     );
     if (plan.kind !== "none" && !app.vault.getAbstractFileByPath(plan.path)) {
       const root = settings.rootFolder.replace(/^\/+|\/+$/g, "");
-      if (!app.vault.getAbstractFileByPath(root)) {
-        await app.vault.createFolder(root);
-      }
+      await ensureFolder(app.vault, root);
       await app.vault.create(plan.path, plan.content);
     }
     await onDone(draft.lang);
@@ -87,6 +86,7 @@ export function openReactOnboardingDialog(
 ): () => void {
   return openProductionDialog({
     closeButtonLabel: t(detectedLang, "notify.close"),
+    lang: detectedLang,
     render: (close) => (
       <ReactOnboardingForm
         app={app}

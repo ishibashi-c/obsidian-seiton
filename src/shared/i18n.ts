@@ -250,6 +250,28 @@ export type MessageKey =
   | "onboarding.finish"
   | "onboarding.done"
   | "search.placeholder"
+  | "search.bodyMatch"
+  | "search.metadataMatch"
+  | "search.titleMatch"
+  | "search.matchLocations"
+  | "search.expandMatches"
+  | "search.collapseMatches"
+  | "search.openNote"
+  | "search.resultActions"
+  | "search.externalReadOnly"
+  | "search.memoEditHint"
+  | "search.tagsSaved"
+  | "search.typeChanged"
+  | "search.listsSaved"
+  | "search.changesSaveFailed"
+  | "search.pinUpdateFailed"
+  | "search.archiveSet"
+  | "search.archived"
+  | "search.archiveMoveFailed"
+  | "search.editTags"
+  | "search.changeType"
+  | "search.editLists"
+  | "search.noAvailableLists"
   | "memo.placeholder"
   | "memo.tags"
   | "memo.tagsNoOptions"
@@ -607,6 +629,7 @@ export type MessageKey =
   | "settings.excludeArchivedFromSearch"
   | "settings.restoreViewState"
   | "new.create"
+  | "new.createTitle"
   | "new.quickTypes"
   | "new.chooseType"
   | "new.catalogHint"
@@ -681,6 +704,9 @@ export type MessageKey =
   | "new.subfolderInvalidError"
   | "new.openFailed"
   | "toolbar.color"
+  | "toolbar.selectionFormat"
+  | "toolbar.italic"
+  | "toolbar.clearFormatting"
   | "toolbar.background"
   | "toolbar.bold"
   | "toolbar.heading"
@@ -721,11 +747,30 @@ export type MessageKey =
   | "settings.bookmarklet"
   | "settings.bookmarkletHint"
   | "action.copy"
+  | "adapter.noteNotFound"
+  | "adapter.bookNotFound"
+  | "adapter.coverNoteNotFound"
+  | "adapter.frontmatterMissing"
+  | "adapter.frontmatterInvalid"
+  | "adapter.shortcutInvalid"
+  | "adapter.shortcutGroupEmpty"
+  | "adapter.shortcutGroupExists"
+  | "adapter.listNameEmpty"
+  | "adapter.listNameExists"
+  | "adapter.memoMissing"
+  | "adapter.organizationItemMissing"
+  | "adapter.presetMissing"
+  | "adapter.presetTypeMismatch"
+  | "adapter.archiveNoteMissing"
+  | "adapter.archiveStatusInvalid"
+  | "adapter.metadataMissing"
+  | "adapter.proposalChanged"
   | "notify.copied"
   | "notify.invalidUrl"
   | "richCard.loading"
   | "common.default"
-  | "common.untitled";
+  | "common.untitled"
+  | "common.selectPlaceholder";
 
 type Dict = Partial<Record<MessageKey, string>>;
 
@@ -750,6 +795,25 @@ const ja: Dict = {
   "action.unarchive": "アーカイブ解除",
   "action.unpin": "ピン解除",
   "action.update": "更新",
+  "adapter.archiveNoteMissing": "復元するノートが見つかりません",
+  "adapter.archiveStatusInvalid": "旧アーカイブの状態を確認できません",
+  "adapter.bookNotFound": "編集する本が見つかりません",
+  "adapter.coverNoteNotFound": "表紙を設定するノートが見つかりません",
+  "adapter.frontmatterInvalid": "ノートのプロパティを更新できません",
+  "adapter.frontmatterMissing": "ノートにプロパティがありません",
+  "adapter.listNameEmpty": "リスト名を入力してください",
+  "adapter.listNameExists": "同じ名前のリストがあります",
+  "adapter.memoMissing": "一言メモの保存先が見つかりません",
+  "adapter.metadataMissing": "書誌情報が見つかりませんでした",
+  "adapter.noteNotFound": "編集対象が見つかりません",
+  "adapter.organizationItemMissing": "整理対象が見つかりません: {path}",
+  "adapter.presetMissing": "選択した保存先プリセットが見つかりません",
+  "adapter.presetTypeMismatch": "保存先プリセットとタイプが一致しません",
+  "adapter.proposalChanged":
+    "確認後に整理案が変更されています。再読み込みして確認してください。",
+  "adapter.shortcutGroupEmpty": "ショートカットフォルダ名を入力してください",
+  "adapter.shortcutGroupExists": "同じ名前のショートカットフォルダがあります",
+  "adapter.shortcutInvalid": "ショートカット名とURLを入力してください",
   "book.add": "本を追加",
   "book.addByIsbn": "ISBNで本を追加",
   "book.addMethod": "本の追加方法",
@@ -875,6 +939,7 @@ const ja: Dict = {
   "bookshelf.open": "本棚を開く",
   "bookshelf.title": "本棚",
   "common.default": "既定",
+  "common.selectPlaceholder": "選択してください",
   "common.untitled": "無題",
   "confirm.deleteList": "リスト「{name}」を削除しますか？",
   "confirm.deleteMemo": "この一言メモを削除しますか？",
@@ -930,7 +995,7 @@ const ja: Dict = {
   "home.openItem": "{title}を開きます",
   "home.orderDescription":
     "表示するセクションを選び、ドラッグまたは矢印で順序を調整します。ショートカットはグループも変更できます。",
-  "home.orderHidden": "表示",
+  "home.orderHidden": "非表示",
   "home.orderMoveDown": "{section}を下へ",
   "home.orderMoveUp": "{section}を上へ",
   "home.orderSaved": "表示順を保存しました",
@@ -949,7 +1014,7 @@ const ja: Dict = {
   "home.shortcutMovedToGroup": "ショートカットをグループに移動しました",
   "home.shortcutOrderSaved": "ショートカットの順序を保存しました",
   "home.shortcuts": "ショートカット",
-  "home.shortcutsEmpty": "ショートカットはありません（設定から追加）",
+  "home.shortcutsEmpty": "ショートカットはありません（ホーム画面から追加）",
   "home.title": "ホーム",
   "inbox.section": "未整理",
   "library.actionsFor": "{title}の操作",
@@ -1082,6 +1147,7 @@ const ja: Dict = {
   "new.chooseType": "何を書くか",
   "new.create": "+ 新規",
   "new.createFailed": "ノートの作成に失敗しました",
+  "new.createTitle": "新規作成",
   "new.editor": "ノートを編集",
   "new.folder": "保存先フォルダ",
   "new.folderHint":
@@ -1289,10 +1355,22 @@ const ja: Dict = {
   "search.after": "開始日",
   "search.allTags": "指定タグをすべて含む",
   "search.allTypes": "すべてのタイプ",
+  "search.archived": "アーカイブに移しました",
+  "search.archiveMoveFailed": "アーカイブに移せませんでした",
+  "search.archiveSet": "アーカイブを設定します",
   "search.before": "終了日",
+  "search.bodyMatch": "本文一致",
+  "search.changesSaveFailed": "変更を保存できませんでした",
+  "search.changeType": "タイプを変更",
   "search.clear": "条件をクリア",
   "search.clearHistory": "履歴をすべて削除",
+  "search.collapseMatches": "一致箇所と操作を閉じる",
+  "search.editLists": "リストを編集",
+  "search.editTags": "タグを編集",
+  "search.expandMatches": "一致箇所と操作を表示",
   "search.external": "外部ノート",
+  "search.externalReadOnly":
+    "追加検索フォルダのノートです。内容は変更せず、上のカードから元ファイルを開けます。",
   "search.history": "検索履歴",
   "search.historySaveFailed":
     "検索履歴を保存できませんでした。もう一度お試しください。",
@@ -1300,24 +1378,35 @@ const ja: Dict = {
   "search.indexCount": "検索対象: {count}件",
   "search.indexing": "検索対象を準備しています…",
   "search.invalidDateRange": "開始日は終了日以前の日付を選んでください。",
+  "search.listsSaved": "リストを保存しました",
   "search.manageExternal": "Seitonで管理",
+  "search.matchLocations": "一致した場所",
   "search.memo": "一言メモ",
+  "search.memoEditHint": "一言メモの編集は振り返り画面で行います。",
+  "search.metadataMatch": "メタデータ一致",
   "search.moreMatches": "一致箇所と操作",
+  "search.noAvailableLists": "利用できるリストがありません。",
   "search.noResults": "一致する項目がありません。",
   "search.noResultsHint":
     "検索語や絞り込み条件を変更するか、条件をクリアしてください。アーカイブは検索設定で除外されている場合があります。",
   "search.open": "検索を開く",
+  "search.openNote": "ノートを開く",
   "search.operatorExclude": "-語句",
   "search.operatorHint": "検索演算子",
   "search.operatorList": "list:リスト",
   "search.operatorPhrase": '"完全一致"',
   "search.operatorTag": "tag:タグ",
+  "search.pinUpdateFailed": "ピン留めを更新できませんでした",
   "search.placeholder": "検索（タイトル・本文・タグ・リスト）",
   "search.removeHistoryItem": "検索履歴「{query}」を削除",
+  "search.resultActions": "結果の操作",
   "search.results": "検索結果",
   "search.startHint":
     "語句やフィルターを入力すると、タイトル・本文・タグ・リストから検索します。",
+  "search.tagsSaved": "タグを保存しました",
   "search.title": "検索",
+  "search.titleMatch": "タイトル一致",
+  "search.typeChanged": "タイプを変更しました",
   "settings.addAlias": "別名を追加",
   "settings.addMapping": "正規タグを追加",
   "settings.addValue": "追加",
@@ -1487,10 +1576,13 @@ const ja: Dict = {
   "toolbar.alignRight": "右揃え",
   "toolbar.background": "背景色",
   "toolbar.bold": "太字",
+  "toolbar.clearFormatting": "書式を解除",
   "toolbar.color": "文字色",
   "toolbar.heading": "見出し",
+  "toolbar.italic": "斜体",
   "toolbar.placeholderHeading": "見出し",
   "toolbar.placeholderText": "テキスト",
+  "toolbar.selectionFormat": "選択範囲の書式",
   "toolbar.toggle": "トグル",
   "toolbar.toggleHeading": "トグル見出し",
   "toolbar.toggleSummary": "見出し",
@@ -1530,6 +1622,30 @@ const en: Dict = {
   "action.unarchive": "Unarchive",
   "action.unpin": "Unpin",
   "action.update": "Update",
+  "adapter.archiveNoteMissing": "The note to restore could not be found.",
+  "adapter.archiveStatusInvalid":
+    "The legacy archive status could not be verified.",
+  "adapter.bookNotFound": "The book to edit could not be found.",
+  "adapter.coverNoteNotFound": "The note for this cover could not be found.",
+  "adapter.frontmatterInvalid": "The note properties could not be updated.",
+  "adapter.frontmatterMissing": "This note has no properties.",
+  "adapter.listNameEmpty": "Enter a list name.",
+  "adapter.listNameExists": "A list with this name already exists.",
+  "adapter.memoMissing": "The saved location for this memo could not be found.",
+  "adapter.metadataMissing": "Book metadata could not be found.",
+  "adapter.noteNotFound": "The note to edit could not be found.",
+  "adapter.organizationItemMissing":
+    "The item to organize could not be found: {path}",
+  "adapter.presetMissing":
+    "The selected destination preset could not be found.",
+  "adapter.presetTypeMismatch":
+    "The destination preset does not match the item type.",
+  "adapter.proposalChanged":
+    "The proposal changed after confirmation. Reload it and review the changes.",
+  "adapter.shortcutGroupEmpty": "Enter a shortcut folder name.",
+  "adapter.shortcutGroupExists":
+    "A shortcut folder with this name already exists.",
+  "adapter.shortcutInvalid": "Enter a shortcut name and URL.",
   "book.add": "Add book",
   "book.addByIsbn": "Add book by ISBN",
   "book.addMethod": "Book entry method",
@@ -1660,6 +1776,7 @@ const en: Dict = {
   "bookshelf.open": "Open Bookshelf",
   "bookshelf.title": "Bookshelf",
   "common.default": "Default",
+  "common.selectPlaceholder": "Select an option",
   "common.untitled": "Untitled",
   "confirm.deleteList": 'Delete list "{name}"?',
   "confirm.deleteMemo": "Delete this memo?",
@@ -1734,7 +1851,7 @@ const en: Dict = {
   "home.shortcutMovedToGroup": "Shortcut moved to group",
   "home.shortcutOrderSaved": "Shortcut order saved",
   "home.shortcuts": "Shortcuts",
-  "home.shortcutsEmpty": "No shortcuts (add them in settings)",
+  "home.shortcutsEmpty": "No shortcuts (add them on Home)",
   "home.title": "Home",
   "inbox.section": "Inbox",
   "library.actionsFor": "Actions for {title}",
@@ -1868,6 +1985,7 @@ const en: Dict = {
   "new.chooseType": "What are you writing?",
   "new.create": "+ New",
   "new.createFailed": "Failed to create note",
+  "new.createTitle": "Create new",
   "new.editor": "Edit note",
   "new.folder": "Destination folder",
   "new.folderHint":
@@ -2075,34 +2193,57 @@ const en: Dict = {
   "search.after": "From",
   "search.allTags": "Match all specified tags",
   "search.allTypes": "All types",
+  "search.archived": "Moved to archive",
+  "search.archiveMoveFailed": "Could not move to archive",
+  "search.archiveSet": "Set archive status",
   "search.before": "To",
+  "search.bodyMatch": "Body match",
+  "search.changesSaveFailed": "Could not save changes",
+  "search.changeType": "Change type",
   "search.clear": "Clear filters",
   "search.clearHistory": "Clear all history",
+  "search.collapseMatches": "Hide matches and actions",
+  "search.editLists": "Edit lists",
+  "search.editTags": "Edit tags",
+  "search.expandMatches": "Show matches and actions",
   "search.external": "External note",
+  "search.externalReadOnly":
+    "This note is in an additional search folder. Its contents cannot be changed here; open the source file from the card above.",
   "search.history": "Search history",
   "search.historySaveFailed": "Could not save search history. Try again.",
   "search.includeArchived": "Include archived",
   "search.indexCount": "Search scope: {count} items",
   "search.indexing": "Preparing search index…",
   "search.invalidDateRange": "Choose a start date on or before the end date.",
+  "search.listsSaved": "Lists saved",
   "search.manageExternal": "Manage in Seiton",
+  "search.matchLocations": "Matched fields",
   "search.memo": "Memo",
+  "search.memoEditHint": "Edit quick notes in the reflection view.",
+  "search.metadataMatch": "Metadata match",
   "search.moreMatches": "Matches and actions",
+  "search.noAvailableLists": "No lists are available.",
   "search.noResults": "No matching items.",
   "search.noResultsHint":
     "Try a different query or filter, or clear the filters. Archived items may be excluded in Settings.",
   "search.open": "Open Search",
+  "search.openNote": "Open note",
   "search.operatorExclude": "-term",
   "search.operatorHint": "Search operators",
   "search.operatorList": "list:list",
   "search.operatorPhrase": '"exact phrase"',
   "search.operatorTag": "tag:tag",
+  "search.pinUpdateFailed": "Could not update the pin",
   "search.placeholder": "Search (title, body, tags, lists)",
   "search.removeHistoryItem": "Remove “{query}” from search history",
+  "search.resultActions": "Result actions",
   "search.results": "Search results",
   "search.startHint":
     "Enter a word or filter to search titles, body text, tags, and lists.",
+  "search.tagsSaved": "Tags saved",
   "search.title": "Search",
+  "search.titleMatch": "Title match",
+  "search.typeChanged": "Type changed",
   "settings.addAlias": "Add alias",
   "settings.addMapping": "Add canonical tag",
   "settings.addValue": "Add",
@@ -2269,10 +2410,13 @@ const en: Dict = {
   "toolbar.alignRight": "Align right",
   "toolbar.background": "Background color",
   "toolbar.bold": "Bold",
+  "toolbar.clearFormatting": "Clear formatting",
   "toolbar.color": "Text color",
   "toolbar.heading": "Heading",
+  "toolbar.italic": "Italic",
   "toolbar.placeholderHeading": "Heading",
   "toolbar.placeholderText": "Text",
+  "toolbar.selectionFormat": "Selection formatting",
   "toolbar.toggle": "Toggle",
   "toolbar.toggleHeading": "Toggle heading",
   "toolbar.toggleSummary": "Heading",
@@ -2312,6 +2456,24 @@ const zhCN: Dict = {
   "action.unarchive": "取消归档",
   "action.unpin": "取消置顶",
   "action.update": "更新",
+  "adapter.archiveNoteMissing": "找不到要恢复的笔记。",
+  "adapter.archiveStatusInvalid": "无法确认旧归档状态。",
+  "adapter.bookNotFound": "找不到要编辑的书籍。",
+  "adapter.coverNoteNotFound": "找不到要设置封面的笔记。",
+  "adapter.frontmatterInvalid": "无法更新笔记属性。",
+  "adapter.frontmatterMissing": "此笔记没有属性。",
+  "adapter.listNameEmpty": "请输入列表名称。",
+  "adapter.listNameExists": "已存在同名列表。",
+  "adapter.memoMissing": "找不到这条随手记的保存位置。",
+  "adapter.metadataMissing": "找不到书目信息。",
+  "adapter.noteNotFound": "找不到要编辑的笔记。",
+  "adapter.organizationItemMissing": "找不到要整理的项目：{path}",
+  "adapter.presetMissing": "找不到所选的保存位置预设。",
+  "adapter.presetTypeMismatch": "保存位置预设与项目类型不匹配。",
+  "adapter.proposalChanged": "确认后整理方案已更改。请重新加载并检查。",
+  "adapter.shortcutGroupEmpty": "请输入快捷方式文件夹名称。",
+  "adapter.shortcutGroupExists": "已存在同名快捷方式文件夹。",
+  "adapter.shortcutInvalid": "请输入快捷方式名称和 URL。",
   "book.add": "添加图书",
   "book.addByIsbn": "通过 ISBN 添加书籍",
   "book.addMethod": "添加方式",
@@ -2433,6 +2595,7 @@ const zhCN: Dict = {
   "bookshelf.open": "打开书架",
   "bookshelf.title": "书架",
   "common.default": "默认",
+  "common.selectPlaceholder": "请选择",
   "common.untitled": "无标题",
   "confirm.deleteList": "删除列表「{name}」？",
   "confirm.deleteMemo": "删除这条记录？",
@@ -2506,7 +2669,7 @@ const zhCN: Dict = {
   "home.shortcutMovedToGroup": "已将快捷方式移至分组",
   "home.shortcutOrderSaved": "快捷方式顺序已保存",
   "home.shortcuts": "快捷方式",
-  "home.shortcutsEmpty": "暂无快捷方式（在设置中添加）",
+  "home.shortcutsEmpty": "暂无快捷方式（请在主页中添加）",
   "home.title": "主页",
   "inbox.section": "收件箱",
   "library.actionsFor": "《{title}》的操作",
@@ -2636,6 +2799,7 @@ const zhCN: Dict = {
   "new.chooseType": "你要写什么？",
   "new.create": "+ 新建",
   "new.createFailed": "笔记创建失败",
+  "new.createTitle": "新建",
   "new.editor": "编辑笔记",
   "new.folder": "保存文件夹",
   "new.folderHint": "在该类型文件夹内选择可选的子文件夹。",
@@ -2828,33 +2992,56 @@ const zhCN: Dict = {
   "search.after": "开始日期",
   "search.allTags": "包含所有指定标签",
   "search.allTypes": "所有类型",
+  "search.archived": "已移至归档",
+  "search.archiveMoveFailed": "无法移至归档",
+  "search.archiveSet": "设置归档状态",
   "search.before": "结束日期",
+  "search.bodyMatch": "正文匹配",
+  "search.changesSaveFailed": "无法保存更改",
+  "search.changeType": "更改类型",
   "search.clear": "清除筛选条件",
   "search.clearHistory": "删除全部搜索历史",
+  "search.collapseMatches": "隐藏匹配项和操作",
+  "search.editLists": "编辑列表",
+  "search.editTags": "编辑标签",
+  "search.expandMatches": "显示匹配项和操作",
   "search.external": "外部笔记",
+  "search.externalReadOnly":
+    "此笔记位于额外搜索文件夹中，无法在此处修改。请从上方卡片打开源文件。",
   "search.history": "搜索历史",
   "search.historySaveFailed": "无法保存搜索历史，请重试。",
   "search.includeArchived": "包括归档",
   "search.indexCount": "搜索范围：{count} 条",
   "search.indexing": "正在准备搜索索引…",
   "search.invalidDateRange": "请选择不晚于结束日期的开始日期。",
+  "search.listsSaved": "列表已保存",
   "search.manageExternal": "在 Seiton 中管理",
+  "search.matchLocations": "匹配字段",
   "search.memo": "备忘",
+  "search.memoEditHint": "请在回顾页面编辑一言笔记。",
+  "search.metadataMatch": "元数据匹配",
   "search.moreMatches": "匹配位置和操作",
+  "search.noAvailableLists": "没有可用列表。",
   "search.noResults": "没有匹配项目。",
   "search.noResultsHint":
     "请更改关键词或筛选条件，或清除筛选条件。归档项也可能已在设置中排除。",
   "search.open": "打开搜索",
+  "search.openNote": "打开笔记",
   "search.operatorExclude": "-词语",
   "search.operatorHint": "搜索运算符",
   "search.operatorList": "list:列表",
   "search.operatorPhrase": '"精确短语"',
   "search.operatorTag": "tag:标签",
+  "search.pinUpdateFailed": "无法更新固定状态",
   "search.placeholder": "搜索（标题・正文・标签・列表）",
   "search.removeHistoryItem": "从搜索历史中删除“{query}”",
+  "search.resultActions": "结果操作",
   "search.results": "搜索结果",
   "search.startHint": "输入关键词或筛选条件，即可搜索标题、正文、标签和列表。",
+  "search.tagsSaved": "标签已保存",
   "search.title": "搜索",
+  "search.titleMatch": "标题匹配",
+  "search.typeChanged": "类型已更改",
   "settings.addAlias": "添加别名",
   "settings.addMapping": "添加标准标签",
   "settings.addValue": "添加",
@@ -3012,10 +3199,13 @@ const zhCN: Dict = {
   "toolbar.alignRight": "右对齐",
   "toolbar.background": "背景颜色",
   "toolbar.bold": "粗体",
+  "toolbar.clearFormatting": "清除格式",
   "toolbar.color": "文字颜色",
   "toolbar.heading": "标题",
+  "toolbar.italic": "斜体",
   "toolbar.placeholderHeading": "标题",
   "toolbar.placeholderText": "文本",
+  "toolbar.selectionFormat": "所选内容格式",
   "toolbar.toggle": "折叠",
   "toolbar.toggleHeading": "带标题的折叠",
   "toolbar.toggleSummary": "标题",
@@ -3055,6 +3245,26 @@ const ko: Dict = {
   "action.unarchive": "보관 해제",
   "action.unpin": "고정 해제",
   "action.update": "업데이트",
+  "adapter.archiveNoteMissing": "복원할 노트를 찾을 수 없습니다.",
+  "adapter.archiveStatusInvalid": "이전 보관 상태를 확인할 수 없습니다.",
+  "adapter.bookNotFound": "편집할 책을 찾을 수 없습니다.",
+  "adapter.coverNoteNotFound": "표지를 설정할 노트를 찾을 수 없습니다.",
+  "adapter.frontmatterInvalid": "노트 속성을 업데이트할 수 없습니다.",
+  "adapter.frontmatterMissing": "이 노트에 속성이 없습니다.",
+  "adapter.listNameEmpty": "목록 이름을 입력하세요.",
+  "adapter.listNameExists": "같은 이름의 목록이 이미 있습니다.",
+  "adapter.memoMissing": "한 줄 메모의 저장 위치를 찾을 수 없습니다.",
+  "adapter.metadataMissing": "서지 정보를 찾을 수 없습니다.",
+  "adapter.noteNotFound": "편집할 노트를 찾을 수 없습니다.",
+  "adapter.organizationItemMissing": "정리할 항목을 찾을 수 없습니다: {path}",
+  "adapter.presetMissing": "선택한 저장 위치 프리셋을 찾을 수 없습니다.",
+  "adapter.presetTypeMismatch":
+    "저장 위치 프리셋이 항목 유형과 일치하지 않습니다.",
+  "adapter.proposalChanged":
+    "확인 후 정리 제안이 변경되었습니다. 다시 불러와 확인하세요.",
+  "adapter.shortcutGroupEmpty": "바로 가기 폴더 이름을 입력하세요.",
+  "adapter.shortcutGroupExists": "같은 이름의 바로 가기 폴더가 이미 있습니다.",
+  "adapter.shortcutInvalid": "바로 가기 이름과 URL을 입력하세요.",
   "book.add": "책 추가",
   "book.addByIsbn": "ISBN으로 책 추가",
   "book.addMethod": "책 추가 방법",
@@ -3184,6 +3394,7 @@ const ko: Dict = {
   "bookshelf.open": "책장 열기",
   "bookshelf.title": "책장",
   "common.default": "기본값",
+  "common.selectPlaceholder": "선택하세요",
   "common.untitled": "제목 없음",
   "confirm.deleteList": "리스트 「{name}」을 삭제할까요?",
   "confirm.deleteMemo": "이 메모를 삭제할까요?",
@@ -3258,7 +3469,7 @@ const ko: Dict = {
   "home.shortcutMovedToGroup": "바로가기를 그룹으로 이동했습니다",
   "home.shortcutOrderSaved": "바로가기 순서를 저장했습니다",
   "home.shortcuts": "바로 가기",
-  "home.shortcutsEmpty": "바로 가기가 없습니다 (설정에서 추가)",
+  "home.shortcutsEmpty": "바로 가기가 없습니다 (홈 화면에서 추가)",
   "home.title": "홈",
   "inbox.section": "받은편지함",
   "library.actionsFor": "{title} 작업",
@@ -3391,6 +3602,7 @@ const ko: Dict = {
   "new.chooseType": "무엇을 작성하나요?",
   "new.create": "+ 새로 만들기",
   "new.createFailed": "노트를 만들지 못했습니다",
+  "new.createTitle": "새 항목 만들기",
   "new.editor": "노트 편집",
   "new.folder": "저장 폴더",
   "new.folderHint": "이 유형 폴더 안에서 선택적으로 하위 폴더를 지정합니다.",
@@ -3594,10 +3806,22 @@ const ko: Dict = {
   "search.after": "시작일",
   "search.allTags": "지정한 태그 모두 포함",
   "search.allTypes": "모든 유형",
+  "search.archived": "보관함으로 이동했습니다",
+  "search.archiveMoveFailed": "보관함으로 이동하지 못했습니다",
+  "search.archiveSet": "보관 상태 설정",
   "search.before": "종료일",
+  "search.bodyMatch": "본문 일치",
+  "search.changesSaveFailed": "변경 사항을 저장하지 못했습니다",
+  "search.changeType": "유형 변경",
   "search.clear": "필터 지우기",
   "search.clearHistory": "검색 기록 모두 삭제",
+  "search.collapseMatches": "일치 항목과 작업 닫기",
+  "search.editLists": "목록 편집",
+  "search.editTags": "태그 편집",
+  "search.expandMatches": "일치 항목과 작업 표시",
   "search.external": "외부 노트",
+  "search.externalReadOnly":
+    "추가 검색 폴더의 노트입니다. 여기서는 내용을 바꿀 수 없으며 위 카드에서 원본 파일을 열 수 있습니다.",
   "search.history": "검색 기록",
   "search.historySaveFailed":
     "검색 기록을 저장하지 못했습니다. 다시 시도하세요.",
@@ -3605,24 +3829,35 @@ const ko: Dict = {
   "search.indexCount": "검색 대상: {count}개",
   "search.indexing": "검색 색인을 준비 중…",
   "search.invalidDateRange": "종료일과 같거나 그 이전의 시작일을 선택하세요.",
+  "search.listsSaved": "목록을 저장했습니다",
   "search.manageExternal": "Seiton에서 관리",
+  "search.matchLocations": "일치한 항목",
   "search.memo": "메모",
+  "search.memoEditHint": "한 줄 메모는 회고 화면에서 편집할 수 있습니다.",
+  "search.metadataMatch": "메타데이터 일치",
   "search.moreMatches": "일치 위치 및 작업",
+  "search.noAvailableLists": "사용할 수 있는 목록이 없습니다.",
   "search.noResults": "일치하는 항목이 없습니다.",
   "search.noResultsHint":
     "검색어 또는 필터를 바꾸거나 초기화하세요. 보관 항목은 설정에서 제외했을 수 있습니다.",
   "search.open": "검색 열기",
+  "search.openNote": "노트 열기",
   "search.operatorExclude": "-단어",
   "search.operatorHint": "검색 연산자",
   "search.operatorList": "list:목록",
   "search.operatorPhrase": '"정확한 구문"',
   "search.operatorTag": "tag:태그",
+  "search.pinUpdateFailed": "고정을 업데이트하지 못했습니다",
   "search.placeholder": "검색 (제목·본문·태그·리스트)",
   "search.removeHistoryItem": "검색 기록에서 “{query}” 삭제",
+  "search.resultActions": "결과 작업",
   "search.results": "검색 결과",
   "search.startHint":
     "검색어 또는 필터를 입력하면 제목·본문·태그·리스트를 검색합니다.",
+  "search.tagsSaved": "태그를 저장했습니다",
   "search.title": "검색",
+  "search.titleMatch": "제목 일치",
+  "search.typeChanged": "유형을 변경했습니다",
   "settings.addAlias": "별칭 추가",
   "settings.addMapping": "표준 태그 추가",
   "settings.addValue": "추가",
@@ -3786,10 +4021,13 @@ const ko: Dict = {
   "toolbar.alignRight": "오른쪽 정렬",
   "toolbar.background": "배경 색상",
   "toolbar.bold": "굵게",
+  "toolbar.clearFormatting": "서식 지우기",
   "toolbar.color": "텍스트 색상",
   "toolbar.heading": "제목",
+  "toolbar.italic": "기울임꼴",
   "toolbar.placeholderHeading": "제목",
   "toolbar.placeholderText": "텍스트",
+  "toolbar.selectionFormat": "선택 영역 서식",
   "toolbar.toggle": "토글",
   "toolbar.toggleHeading": "제목 토글",
   "toolbar.toggleSummary": "제목",
@@ -3829,6 +4067,34 @@ const es: Dict = {
   "action.unarchive": "Desarchivar",
   "action.unpin": "Desfijar",
   "action.update": "Actualizar",
+  "adapter.archiveNoteMissing": "No se encontró la nota que se va a restaurar.",
+  "adapter.archiveStatusInvalid":
+    "No se pudo verificar el estado del archivo anterior.",
+  "adapter.bookNotFound": "No se encontró el libro que quieres editar.",
+  "adapter.coverNoteNotFound":
+    "No se encontró la nota a la que añadir la portada.",
+  "adapter.frontmatterInvalid":
+    "No se pudieron actualizar las propiedades de la nota.",
+  "adapter.frontmatterMissing": "Esta nota no tiene propiedades.",
+  "adapter.listNameEmpty": "Introduce un nombre para la lista.",
+  "adapter.listNameExists": "Ya existe una lista con ese nombre.",
+  "adapter.memoMissing": "No se encontró la ubicación de esta nota breve.",
+  "adapter.metadataMissing": "No se encontraron los datos bibliográficos.",
+  "adapter.noteNotFound": "No se encontró la nota que quieres editar.",
+  "adapter.organizationItemMissing":
+    "No se encontró el elemento que se va a organizar: {path}",
+  "adapter.presetMissing":
+    "No se encontró el destino preestablecido seleccionado.",
+  "adapter.presetTypeMismatch":
+    "El destino preestablecido no coincide con el tipo del elemento.",
+  "adapter.proposalChanged":
+    "La propuesta cambió después de confirmarla. Vuelve a cargarla y revísala.",
+  "adapter.shortcutGroupEmpty":
+    "Introduce un nombre para la carpeta de accesos directos.",
+  "adapter.shortcutGroupExists":
+    "Ya existe una carpeta de accesos directos con ese nombre.",
+  "adapter.shortcutInvalid":
+    "Introduce un nombre y una URL para el acceso directo.",
   "book.add": "Añadir libro",
   "book.addByIsbn": "Añadir libro por ISBN",
   "book.addMethod": "Método para añadir libros",
@@ -3958,6 +4224,7 @@ const es: Dict = {
   "bookshelf.open": "Abrir estantería",
   "bookshelf.title": "Estantería",
   "common.default": "Predeterminado",
+  "common.selectPlaceholder": "Selecciona una opción",
   "common.untitled": "Sin título",
   "confirm.deleteList": '¿Eliminar la lista "{name}"?',
   "confirm.deleteMemo": "¿Eliminar esta nota?",
@@ -4032,7 +4299,7 @@ const es: Dict = {
   "home.shortcutMovedToGroup": "Acceso movido al grupo",
   "home.shortcutOrderSaved": "Orden de accesos guardado",
   "home.shortcuts": "Accesos directos",
-  "home.shortcutsEmpty": "Sin accesos directos (añadir en ajustes)",
+  "home.shortcutsEmpty": "Sin accesos directos (añadir en Inicio)",
   "home.title": "Inicio",
   "inbox.section": "Bandeja de entrada",
   "library.actionsFor": "Acciones para {title}",
@@ -4166,6 +4433,7 @@ const es: Dict = {
   "new.chooseType": "¿Qué vas a escribir?",
   "new.create": "+ Nuevo",
   "new.createFailed": "No se pudo crear la nota",
+  "new.createTitle": "Crear nuevo",
   "new.editor": "Editar nota",
   "new.folder": "Carpeta de destino",
   "new.folderHint":
@@ -4377,10 +4645,22 @@ const es: Dict = {
   "search.after": "Desde",
   "search.allTags": "Incluir todas las etiquetas",
   "search.allTypes": "Todos los tipos",
+  "search.archived": "Movido al archivo",
+  "search.archiveMoveFailed": "No se pudo mover al archivo",
+  "search.archiveSet": "Marcar para archivar",
   "search.before": "Hasta",
+  "search.bodyMatch": "Coincidencia en el cuerpo",
+  "search.changesSaveFailed": "No se pudieron guardar los cambios",
+  "search.changeType": "Cambiar tipo",
   "search.clear": "Borrar filtros",
   "search.clearHistory": "Borrar todo el historial",
+  "search.collapseMatches": "Ocultar coincidencias y acciones",
+  "search.editLists": "Editar listas",
+  "search.editTags": "Editar etiquetas",
+  "search.expandMatches": "Mostrar coincidencias y acciones",
   "search.external": "Nota externa",
+  "search.externalReadOnly":
+    "Esta nota está en una carpeta de búsqueda adicional. No se puede modificar aquí; abre el archivo original desde la tarjeta superior.",
   "search.history": "Historial de búsqueda",
   "search.historySaveFailed":
     "No se pudo guardar el historial de búsqueda. Inténtalo de nuevo.",
@@ -4389,24 +4669,35 @@ const es: Dict = {
   "search.indexing": "Preparando índice…",
   "search.invalidDateRange":
     "Elige una fecha de inicio igual o anterior a la fecha de fin.",
+  "search.listsSaved": "Listas guardadas",
   "search.manageExternal": "Gestionar en Seiton",
+  "search.matchLocations": "Campos coincidentes",
   "search.memo": "Nota breve",
+  "search.memoEditHint": "Edita las notas breves en la vista de reflexión.",
+  "search.metadataMatch": "Coincidencia en metadatos",
   "search.moreMatches": "Coincidencias y acciones",
+  "search.noAvailableLists": "No hay listas disponibles.",
   "search.noResults": "No hay elementos coincidentes.",
   "search.noResultsHint":
     "Prueba otra búsqueda o filtro, o limpia los filtros. Es posible que los elementos archivados estén excluidos en Ajustes.",
   "search.open": "Abrir búsqueda",
+  "search.openNote": "Abrir nota",
   "search.operatorExclude": "-término",
   "search.operatorHint": "Operadores de búsqueda",
   "search.operatorList": "list:lista",
   "search.operatorPhrase": '"frase exacta"',
   "search.operatorTag": "tag:etiqueta",
+  "search.pinUpdateFailed": "No se pudo actualizar el anclaje",
   "search.placeholder": "Buscar (título, cuerpo, etiquetas, listas)",
   "search.removeHistoryItem": "Eliminar “{query}” del historial de búsqueda",
+  "search.resultActions": "Acciones del resultado",
   "search.results": "Resultados de búsqueda",
   "search.startHint":
     "Introduce un término o filtro para buscar en títulos, texto, etiquetas y listas.",
+  "search.tagsSaved": "Etiquetas guardadas",
   "search.title": "Buscar",
+  "search.titleMatch": "Coincidencia en el título",
+  "search.typeChanged": "Tipo cambiado",
   "settings.addAlias": "Añadir alias",
   "settings.addMapping": "Añadir etiqueta canónica",
   "settings.addValue": "Añadir",
@@ -4580,10 +4871,13 @@ const es: Dict = {
   "toolbar.alignRight": "Alinear a la derecha",
   "toolbar.background": "Color de fondo",
   "toolbar.bold": "Negrita",
+  "toolbar.clearFormatting": "Quitar formato",
   "toolbar.color": "Color del texto",
   "toolbar.heading": "Encabezado",
+  "toolbar.italic": "Cursiva",
   "toolbar.placeholderHeading": "Encabezado",
   "toolbar.placeholderText": "Texto",
+  "toolbar.selectionFormat": "Formato de la selección",
   "toolbar.toggle": "Desplegable",
   "toolbar.toggleHeading": "Desplegable con encabezado",
   "toolbar.toggleSummary": "Encabezado",
@@ -4623,6 +4917,33 @@ const ptBR: Dict = {
   "action.unarchive": "Desarquivar",
   "action.unpin": "Desafixar",
   "action.update": "Atualizar",
+  "adapter.archiveNoteMissing": "A nota para restaurar não foi encontrada.",
+  "adapter.archiveStatusInvalid":
+    "Não foi possível verificar o estado do arquivo antigo.",
+  "adapter.bookNotFound": "O livro que você quer editar não foi encontrado.",
+  "adapter.coverNoteNotFound":
+    "A nota para adicionar esta capa não foi encontrada.",
+  "adapter.frontmatterInvalid":
+    "Não foi possível atualizar as propriedades da nota.",
+  "adapter.frontmatterMissing": "Esta nota não tem propriedades.",
+  "adapter.listNameEmpty": "Informe um nome para a lista.",
+  "adapter.listNameExists": "Já existe uma lista com esse nome.",
+  "adapter.memoMissing":
+    "O local de salvamento desta anotação não foi encontrado.",
+  "adapter.metadataMissing": "Os dados bibliográficos não foram encontrados.",
+  "adapter.noteNotFound": "A nota que você quer editar não foi encontrada.",
+  "adapter.organizationItemMissing":
+    "O item para organizar não foi encontrado: {path}",
+  "adapter.presetMissing":
+    "O destino predefinido selecionado não foi encontrado.",
+  "adapter.presetTypeMismatch":
+    "O destino predefinido não corresponde ao tipo do item.",
+  "adapter.proposalChanged":
+    "A proposta mudou depois da confirmação. Carregue-a novamente e confira.",
+  "adapter.shortcutGroupEmpty": "Informe um nome para a pasta de atalhos.",
+  "adapter.shortcutGroupExists":
+    "Já existe uma pasta de atalhos com esse nome.",
+  "adapter.shortcutInvalid": "Informe um nome e uma URL para o atalho.",
   "book.add": "Adicionar livro",
   "book.addByIsbn": "Adicionar livro por ISBN",
   "book.addMethod": "Método de adição",
@@ -4753,6 +5074,7 @@ const ptBR: Dict = {
   "bookshelf.open": "Abrir estante",
   "bookshelf.title": "Estante de livros",
   "common.default": "Padrão",
+  "common.selectPlaceholder": "Selecione uma opção",
   "common.untitled": "Sem título",
   "confirm.deleteList": 'Excluir a lista "{name}"?',
   "confirm.deleteMemo": "Excluir esta nota?",
@@ -4827,7 +5149,7 @@ const ptBR: Dict = {
   "home.shortcutMovedToGroup": "Atalho movido para o grupo",
   "home.shortcutOrderSaved": "Ordem dos atalhos salva",
   "home.shortcuts": "Atalhos",
-  "home.shortcutsEmpty": "Sem atalhos (adicione nas configurações)",
+  "home.shortcutsEmpty": "Sem atalhos (adicione na página inicial)",
   "home.title": "Início",
   "inbox.section": "Caixa de entrada",
   "library.actionsFor": "Ações para {title}",
@@ -4961,6 +5283,7 @@ const ptBR: Dict = {
   "new.chooseType": "O que você vai escrever?",
   "new.create": "+ Novo",
   "new.createFailed": "Não foi possível criar a nota",
+  "new.createTitle": "Criar novo",
   "new.editor": "Editar nota",
   "new.folder": "Pasta de destino",
   "new.folderHint":
@@ -5170,10 +5493,22 @@ const ptBR: Dict = {
   "search.after": "De",
   "search.allTags": "Incluir todas as tags",
   "search.allTypes": "Todos os tipos",
+  "search.archived": "Movido para o arquivo",
+  "search.archiveMoveFailed": "Não foi possível mover para o arquivo",
+  "search.archiveSet": "Definir status de arquivado",
   "search.before": "Até",
+  "search.bodyMatch": "Correspondência no conteúdo",
+  "search.changesSaveFailed": "Não foi possível salvar as alterações",
+  "search.changeType": "Alterar tipo",
   "search.clear": "Limpar filtros",
   "search.clearHistory": "Limpar todo o histórico",
+  "search.collapseMatches": "Ocultar correspondências e ações",
+  "search.editLists": "Editar listas",
+  "search.editTags": "Editar tags",
+  "search.expandMatches": "Mostrar correspondências e ações",
   "search.external": "Nota externa",
+  "search.externalReadOnly":
+    "Esta nota está em uma pasta de pesquisa adicional. O conteúdo não pode ser alterado aqui; abra o arquivo original pelo cartão acima.",
   "search.history": "Histórico de pesquisa",
   "search.historySaveFailed":
     "Não foi possível salvar o histórico de pesquisa. Tente novamente.",
@@ -5182,24 +5517,35 @@ const ptBR: Dict = {
   "search.indexing": "Preparando índice…",
   "search.invalidDateRange":
     "Escolha uma data de início igual ou anterior à data de término.",
+  "search.listsSaved": "Listas salvas",
   "search.manageExternal": "Gerenciar no Seiton",
+  "search.matchLocations": "Campos correspondentes",
   "search.memo": "Nota breve",
+  "search.memoEditHint": "Edite as notas rápidas na tela de retrospectiva.",
+  "search.metadataMatch": "Correspondência nos metadados",
   "search.moreMatches": "Correspondências e ações",
+  "search.noAvailableLists": "Não há listas disponíveis.",
   "search.noResults": "Nenhum item correspondente.",
   "search.noResultsHint":
     "Tente outra busca ou filtro, ou limpe os filtros. Itens arquivados podem estar excluídos nas Configurações.",
   "search.open": "Abrir busca",
+  "search.openNote": "Abrir nota",
   "search.operatorExclude": "-termo",
   "search.operatorHint": "Operadores de busca",
   "search.operatorList": "list:lista",
   "search.operatorPhrase": '"frase exata"',
   "search.operatorTag": "tag:etiqueta",
+  "search.pinUpdateFailed": "Não foi possível atualizar o fixado",
   "search.placeholder": "Buscar (título, corpo, tags, listas)",
   "search.removeHistoryItem": "Remover “{query}” do histórico de pesquisa",
+  "search.resultActions": "Ações do resultado",
   "search.results": "Resultados da pesquisa",
   "search.startHint":
     "Digite um termo ou filtro para buscar em títulos, texto, tags e listas.",
+  "search.tagsSaved": "Tags salvas",
   "search.title": "Buscar",
+  "search.titleMatch": "Correspondência no título",
+  "search.typeChanged": "Tipo alterado",
   "settings.addAlias": "Adicionar apelido",
   "settings.addMapping": "Adicionar tag canônica",
   "settings.addValue": "Adicionar",
@@ -5372,10 +5718,13 @@ const ptBR: Dict = {
   "toolbar.alignRight": "Alinhar à direita",
   "toolbar.background": "Cor de fundo",
   "toolbar.bold": "Negrito",
+  "toolbar.clearFormatting": "Limpar formatação",
   "toolbar.color": "Cor do texto",
   "toolbar.heading": "Título",
+  "toolbar.italic": "Itálico",
   "toolbar.placeholderHeading": "Título",
   "toolbar.placeholderText": "Texto",
+  "toolbar.selectionFormat": "Formatação da seleção",
   "toolbar.toggle": "Alternância",
   "toolbar.toggleHeading": "Alternância com título",
   "toolbar.toggleSummary": "Título",
@@ -5415,6 +5764,31 @@ const fr: Dict = {
   "action.unarchive": "Désarchiver",
   "action.unpin": "Désépingler",
   "action.update": "Mettre à jour",
+  "adapter.archiveNoteMissing": "La note à restaurer est introuvable.",
+  "adapter.archiveStatusInvalid":
+    "Impossible de vérifier l’état de l’ancienne archive.",
+  "adapter.bookNotFound": "Le livre à modifier est introuvable.",
+  "adapter.coverNoteNotFound":
+    "La note à laquelle ajouter cette couverture est introuvable.",
+  "adapter.frontmatterInvalid":
+    "Impossible de mettre à jour les propriétés de la note.",
+  "adapter.frontmatterMissing": "Cette note ne contient pas de propriétés.",
+  "adapter.listNameEmpty": "Saisissez un nom pour la liste.",
+  "adapter.listNameExists": "Une liste porte déjà ce nom.",
+  "adapter.memoMissing": "L’emplacement de cette note rapide est introuvable.",
+  "adapter.metadataMissing": "Les données bibliographiques sont introuvables.",
+  "adapter.noteNotFound": "La note à modifier est introuvable.",
+  "adapter.organizationItemMissing": "Élément à organiser introuvable : {path}",
+  "adapter.presetMissing":
+    "La destination prédéfinie sélectionnée est introuvable.",
+  "adapter.presetTypeMismatch":
+    "La destination prédéfinie ne correspond pas au type de l’élément.",
+  "adapter.proposalChanged":
+    "La proposition a changé après confirmation. Rechargez-la et vérifiez les modifications.",
+  "adapter.shortcutGroupEmpty":
+    "Saisissez un nom pour le dossier de raccourcis.",
+  "adapter.shortcutGroupExists": "Un dossier de raccourcis porte déjà ce nom.",
+  "adapter.shortcutInvalid": "Saisissez un nom et une URL pour le raccourci.",
   "book.add": "Ajouter un livre",
   "book.addByIsbn": "Ajouter un livre par ISBN",
   "book.addMethod": "Méthode d’ajout",
@@ -5546,6 +5920,7 @@ const fr: Dict = {
   "bookshelf.open": "Ouvrir les livres",
   "bookshelf.title": "Bibliothèque de livres",
   "common.default": "Par défaut",
+  "common.selectPlaceholder": "Sélectionner une option",
   "common.untitled": "Sans titre",
   "confirm.deleteList": "Supprimer la liste « {name} » ?",
   "confirm.deleteMemo": "Supprimer cette note ?",
@@ -5622,7 +5997,7 @@ const fr: Dict = {
   "home.shortcutMovedToGroup": "Raccourci déplacé dans le groupe",
   "home.shortcutOrderSaved": "Ordre des raccourcis enregistré",
   "home.shortcuts": "Raccourcis",
-  "home.shortcutsEmpty": "Aucun raccourci (ajouter dans les réglages)",
+  "home.shortcutsEmpty": "Aucun raccourci (ajouter depuis l’accueil)",
   "home.title": "Accueil",
   "inbox.section": "Boîte de réception",
   "library.actionsFor": "Actions pour {title}",
@@ -5757,6 +6132,7 @@ const fr: Dict = {
   "new.chooseType": "Qu'allez-vous écrire ?",
   "new.create": "+ Nouveau",
   "new.createFailed": "Impossible de créer la note",
+  "new.createTitle": "Créer un élément",
   "new.editor": "Modifier la note",
   "new.folder": "Dossier de destination",
   "new.folderHint":
@@ -5970,10 +6346,22 @@ const fr: Dict = {
   "search.after": "Du",
   "search.allTags": "Inclure tous les tags",
   "search.allTypes": "Tous les types",
+  "search.archived": "Déplacé dans les archives",
+  "search.archiveMoveFailed": "Impossible de déplacer dans les archives",
+  "search.archiveSet": "Définir l’archivage",
   "search.before": "Au",
+  "search.bodyMatch": "Correspondance dans le texte",
+  "search.changesSaveFailed": "Impossible d’enregistrer les modifications",
+  "search.changeType": "Modifier le type",
   "search.clear": "Effacer les filtres",
   "search.clearHistory": "Effacer tout l’historique",
+  "search.collapseMatches": "Masquer les correspondances et actions",
+  "search.editLists": "Modifier les listes",
+  "search.editTags": "Modifier les tags",
+  "search.expandMatches": "Afficher les correspondances et actions",
   "search.external": "Note externe",
+  "search.externalReadOnly":
+    "Cette note se trouve dans un dossier de recherche supplémentaire. Son contenu ne peut pas être modifié ici ; ouvrez le fichier source depuis la carte ci-dessus.",
   "search.history": "Historique de recherche",
   "search.historySaveFailed":
     "Impossible d’enregistrer l’historique de recherche. Réessayez.",
@@ -5982,25 +6370,37 @@ const fr: Dict = {
   "search.indexing": "Préparation de l’index…",
   "search.invalidDateRange":
     "Choisissez une date de début antérieure ou égale à la date de fin.",
+  "search.listsSaved": "Listes enregistrées",
   "search.manageExternal": "Gérer dans Seiton",
+  "search.matchLocations": "Champs correspondants",
   "search.memo": "Mémo",
+  "search.memoEditHint":
+    "Modifiez les notes rapides dans la vue de rétrospective.",
+  "search.metadataMatch": "Correspondance dans les métadonnées",
   "search.moreMatches": "Correspondances et actions",
+  "search.noAvailableLists": "Aucune liste disponible.",
   "search.noResults": "Aucun élément correspondant.",
   "search.noResultsHint":
     "Modifiez la recherche ou les filtres, ou réinitialisez-les. Les éléments archivés peuvent être exclus dans les paramètres.",
   "search.open": "Ouvrir la recherche",
+  "search.openNote": "Ouvrir la note",
   "search.operatorExclude": "-terme",
   "search.operatorHint": "Opérateurs de recherche",
   "search.operatorList": "list:liste",
   "search.operatorPhrase": '"expression exacte"',
   "search.operatorTag": "tag:étiquette",
+  "search.pinUpdateFailed": "Impossible de mettre à jour l’épingle",
   "search.placeholder": "Rechercher (titre, corps, tags, listes)",
   "search.removeHistoryItem":
     "Supprimer « {query} » de l’historique de recherche",
+  "search.resultActions": "Actions du résultat",
   "search.results": "Résultats de recherche",
   "search.startHint":
     "Saisissez un terme ou un filtre pour rechercher dans les titres, le texte, les tags et les listes.",
+  "search.tagsSaved": "Tags enregistrés",
   "search.title": "Recherche",
+  "search.titleMatch": "Correspondance dans le titre",
+  "search.typeChanged": "Type modifié",
   "settings.addAlias": "Ajouter un alias",
   "settings.addMapping": "Ajouter un tag canonique",
   "settings.addValue": "Ajouter",
@@ -6174,10 +6574,13 @@ const fr: Dict = {
   "toolbar.alignRight": "Aligner à droite",
   "toolbar.background": "Couleur d'arrière-plan",
   "toolbar.bold": "Gras",
+  "toolbar.clearFormatting": "Effacer le format",
   "toolbar.color": "Couleur du texte",
   "toolbar.heading": "Titre",
+  "toolbar.italic": "Italique",
   "toolbar.placeholderHeading": "Titre",
   "toolbar.placeholderText": "Texte",
+  "toolbar.selectionFormat": "Format de la sélection",
   "toolbar.toggle": "Dépliable",
   "toolbar.toggleHeading": "Dépliable avec titre",
   "toolbar.toggleSummary": "Titre",
@@ -6217,6 +6620,35 @@ const de: Dict = {
   "action.unarchive": "Dearchivieren",
   "action.unpin": "Lösen",
   "action.update": "Aktualisieren",
+  "adapter.archiveNoteMissing":
+    "Die wiederherzustellende Notiz wurde nicht gefunden.",
+  "adapter.archiveStatusInvalid":
+    "Der Status des alten Archivs konnte nicht bestätigt werden.",
+  "adapter.bookNotFound": "Das zu bearbeitende Buch wurde nicht gefunden.",
+  "adapter.coverNoteNotFound":
+    "Die Notiz für dieses Cover wurde nicht gefunden.",
+  "adapter.frontmatterInvalid":
+    "Die Eigenschaften der Notiz konnten nicht aktualisiert werden.",
+  "adapter.frontmatterMissing": "Diese Notiz hat keine Eigenschaften.",
+  "adapter.listNameEmpty": "Gib einen Listennamen ein.",
+  "adapter.listNameExists":
+    "Eine Liste mit diesem Namen ist bereits vorhanden.",
+  "adapter.memoMissing": "Der Speicherort dieser Notiz wurde nicht gefunden.",
+  "adapter.metadataMissing":
+    "Die bibliografischen Angaben wurden nicht gefunden.",
+  "adapter.noteNotFound": "Die zu bearbeitende Notiz wurde nicht gefunden.",
+  "adapter.organizationItemMissing":
+    "Das zu organisierende Element wurde nicht gefunden: {path}",
+  "adapter.presetMissing": "Die ausgewählte Zielvorgabe wurde nicht gefunden.",
+  "adapter.presetTypeMismatch": "Die Zielvorgabe passt nicht zum Elementtyp.",
+  "adapter.proposalChanged":
+    "Der Vorschlag wurde nach der Bestätigung geändert. Lade ihn neu und überprüfe ihn.",
+  "adapter.shortcutGroupEmpty":
+    "Gib einen Namen für den Kurzbefehle-Ordner ein.",
+  "adapter.shortcutGroupExists":
+    "Ein Kurzbefehle-Ordner mit diesem Namen ist bereits vorhanden.",
+  "adapter.shortcutInvalid":
+    "Gib einen Namen und eine URL für den Kurzbefehl ein.",
   "book.add": "Buch hinzufügen",
   "book.addByIsbn": "Buch per ISBN hinzufügen",
   "book.addMethod": "Hinzufügemethode",
@@ -6347,6 +6779,7 @@ const de: Dict = {
   "bookshelf.open": "Bücherregal öffnen",
   "bookshelf.title": "Bücherregal",
   "common.default": "Standard",
+  "common.selectPlaceholder": "Bitte auswählen",
   "common.untitled": "Ohne Titel",
   "confirm.deleteList": "Liste „{name}“ löschen?",
   "confirm.deleteMemo": "Diese Notiz löschen?",
@@ -6422,7 +6855,7 @@ const de: Dict = {
   "home.shortcutMovedToGroup": "Kurzbefehl in die Gruppe verschoben",
   "home.shortcutOrderSaved": "Reihenfolge der Kurzbefehle gespeichert",
   "home.shortcuts": "Kurzbefehle",
-  "home.shortcutsEmpty": "Keine Kurzbefehle (in Einstellungen hinzufügen)",
+  "home.shortcutsEmpty": "Keine Kurzbefehle (auf der Startseite hinzufügen)",
   "home.title": "Startseite",
   "inbox.section": "Posteingang",
   "library.actionsFor": "Aktionen für {title}",
@@ -6558,6 +6991,7 @@ const de: Dict = {
   "new.chooseType": "Was möchtest du schreiben?",
   "new.create": "+ Neu",
   "new.createFailed": "Notiz konnte nicht erstellt werden",
+  "new.createTitle": "Neu erstellen",
   "new.editor": "Notiz bearbeiten",
   "new.folder": "Zielordner",
   "new.folderHint":
@@ -6770,10 +7204,22 @@ const de: Dict = {
   "search.after": "Von",
   "search.allTags": "Alle angegebenen Tags",
   "search.allTypes": "Alle Typen",
+  "search.archived": "Ins Archiv verschoben",
+  "search.archiveMoveFailed": "Verschieben ins Archiv fehlgeschlagen",
+  "search.archiveSet": "Archivstatus festlegen",
   "search.before": "Bis",
+  "search.bodyMatch": "Texttreffer",
+  "search.changesSaveFailed": "Änderungen konnten nicht gespeichert werden",
+  "search.changeType": "Typ ändern",
   "search.clear": "Filter löschen",
   "search.clearHistory": "Gesamten Suchverlauf löschen",
+  "search.collapseMatches": "Treffer und Aktionen ausblenden",
+  "search.editLists": "Listen bearbeiten",
+  "search.editTags": "Tags bearbeiten",
+  "search.expandMatches": "Treffer und Aktionen anzeigen",
   "search.external": "Externe Notiz",
+  "search.externalReadOnly":
+    "Diese Notiz liegt in einem zusätzlichen Suchordner. Sie kann hier nicht geändert werden; öffnen Sie die Quelldatei über die Karte oben.",
   "search.history": "Suchverlauf",
   "search.historySaveFailed":
     "Suchverlauf konnte nicht gespeichert werden. Bitte erneut versuchen.",
@@ -6782,24 +7228,36 @@ const de: Dict = {
   "search.indexing": "Suchindex wird vorbereitet…",
   "search.invalidDateRange":
     "Wählen Sie ein Startdatum am oder vor dem Enddatum.",
+  "search.listsSaved": "Listen gespeichert",
   "search.manageExternal": "In Seiton verwalten",
+  "search.matchLocations": "Trefferfelder",
   "search.memo": "Kurznotiz",
+  "search.memoEditHint":
+    "Kurze Notizen können in der Rückblickansicht bearbeitet werden.",
+  "search.metadataMatch": "Metadatentreffer",
   "search.moreMatches": "Treffer und Aktionen",
+  "search.noAvailableLists": "Keine Listen verfügbar.",
   "search.noResults": "Keine passenden Einträge.",
   "search.noResultsHint":
     "Ändere die Suche oder Filter, oder setze sie zurück. Archivierte Einträge können in den Einstellungen ausgeschlossen sein.",
   "search.open": "Suche öffnen",
+  "search.openNote": "Notiz öffnen",
   "search.operatorExclude": "-Begriff",
   "search.operatorHint": "Suchoperatoren",
   "search.operatorList": "list:Liste",
   "search.operatorPhrase": '"genaue Wortgruppe"',
   "search.operatorTag": "tag:Tag",
+  "search.pinUpdateFailed": "Anheften konnte nicht aktualisiert werden",
   "search.placeholder": "Suchen (Titel, Text, Tags, Listen)",
   "search.removeHistoryItem": "„{query}“ aus dem Suchverlauf entfernen",
+  "search.resultActions": "Aktionen zum Ergebnis",
   "search.results": "Suchergebnisse",
   "search.startHint":
     "Gib einen Begriff oder Filter ein, um Titel, Text, Tags und Listen zu durchsuchen.",
+  "search.tagsSaved": "Tags gespeichert",
   "search.title": "Suche",
+  "search.titleMatch": "Titeltreffer",
+  "search.typeChanged": "Typ geändert",
   "settings.addAlias": "Alias hinzufügen",
   "settings.addMapping": "Kanonischen Tag hinzufügen",
   "settings.addValue": "Hinzufügen",
@@ -6975,10 +7433,13 @@ const de: Dict = {
   "toolbar.alignRight": "Rechtsbündig",
   "toolbar.background": "Hintergrundfarbe",
   "toolbar.bold": "Fett",
+  "toolbar.clearFormatting": "Formatierung entfernen",
   "toolbar.color": "Textfarbe",
   "toolbar.heading": "Überschrift",
+  "toolbar.italic": "Kursiv",
   "toolbar.placeholderHeading": "Überschrift",
   "toolbar.placeholderText": "Inhalt",
+  "toolbar.selectionFormat": "Formatierung der Auswahl",
   "toolbar.toggle": "Aufklappbereich",
   "toolbar.toggleHeading": "Aufklappbereich mit Überschrift",
   "toolbar.toggleSummary": "Überschrift",

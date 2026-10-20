@@ -10,6 +10,7 @@ import {
 } from "../../shared/memoFile";
 import { memoFilePath, normalizeFolder, uniquePath } from "../../shared/paths";
 import type { MonthBodyLine, MonthFile } from "../../shared/types";
+import { ensureFolder } from "./vaultUtils";
 
 export interface MemoStoreOptions {
   memosFolder: string;
@@ -66,12 +67,7 @@ export async function saveMemo(
   } else {
     const root = normalizeFolder(options.rootFolder);
     const folder = `${root}/${normalizeFolder(options.memosFolder)}`;
-    if (!vault.getAbstractFileByPath(root)) {
-      await vault.createFolder(root);
-    }
-    if (!vault.getAbstractFileByPath(folder)) {
-      await vault.createFolder(folder);
-    }
+    await ensureFolder(vault, folder);
     await vault.create(path, next);
   }
 }
@@ -81,12 +77,61 @@ export async function editMemo(
   vault: Vault,
   file: TFile,
   entry: MemoEntry,
-  next: { day: string; time: string; text: string; tags: string[] }
-): Promise<void> {
-  await vault.modify(
-    file,
-    updateMemo(await vault.read(file), entry.lineIndex, next)
+  next: { day: string; time: string; text: string; tags: string[] },
+  options: MemoStoreOptions
+): Promise<string> {
+  const current = await vault.read(file);
+  const resolved = resolveMemoEntry(current, entry);
+  if (next.day.slice(0, 7) === resolved.file.month) {
+    await vault.modify(file, updateMemo(current, resolved.index, next));
+    return file.path;
+  }
+  const destinationPath = memoFilePath(
+    options.rootFolder,
+    options.memosFolder,
+    next.day.slice(0, 7)
   );
+  const destination = vault.getAbstractFileByPath(destinationPath);
+  const destinationMonth = next.day.slice(0, 7);
+  const destinationContent =
+    destination instanceof TFile
+      ? await vault.read(destination)
+      : buildMonthFrontmatter(destinationMonth);
+  const parsedDestination = parseMonthFile(destinationContent);
+  if (
+    destination instanceof TFile &&
+    parsedDestination?.month !== destinationMonth
+  ) {
+    throw new Error(
+      "移動先の月ファイルを読み取れません。元のメモは変更していません"
+    );
+  }
+  const moved = appendMemo(
+    destinationContent,
+    next.day,
+    next.time,
+    next.text,
+    next.tags
+  );
+  if (destination instanceof TFile) {
+    const latestDestination = await vault.read(destination);
+    if (latestDestination !== destinationContent) {
+      throw new Error(
+        "移動先の月ファイルが更新されています。元のメモは変更していません"
+      );
+    }
+    await vault.modify(destination, moved);
+  } else {
+    await ensureFolder(
+      vault,
+      `${normalizeFolder(options.rootFolder)}/${normalizeFolder(options.memosFolder)}`
+    );
+    await vault.create(destinationPath, moved);
+  }
+  const latestSource = await vault.read(file);
+  const latestResolved = resolveMemoEntry(latestSource, entry);
+  await vault.modify(file, removeMemo(latestSource, latestResolved.index));
+  return destinationPath;
 }
 
 /** つぶやきの削除 */

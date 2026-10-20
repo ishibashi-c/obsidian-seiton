@@ -5,6 +5,7 @@ import { createRoot } from "react-dom/client";
 import { type Lang, type MessageKey, t } from "../../shared/i18n";
 import {
   isSearchDateRangeReversed,
+  parseSearchQuery,
   type RankedSearchResult,
   rankDocuments,
   type SearchDocument,
@@ -187,10 +188,10 @@ function labelForResult(result: RankedSearchResult, lang: Lang): string {
 }
 
 function Highlight({ text, query }: { text: string; query: string }) {
-  const terms =
-    query
-      .match(/[\p{L}\p{N}_/-]{2,}/gu)
-      ?.filter((term) => !term.includes(":")) ?? [];
+  const parsed = parseSearchQuery(query);
+  const terms = [...parsed.include, ...parsed.phrases].filter((term) =>
+    /[\p{L}\p{N}]/u.test(term)
+  );
   if (!terms.length) {
     return <>{text}</>;
   }
@@ -213,14 +214,23 @@ function Highlight({ text, query }: { text: string; query: string }) {
   );
 }
 
-function ResultMatchBadges({ result }: { result: RankedSearchResult }) {
+function ResultMatchBadges({
+  lang,
+  result,
+}: {
+  lang: Lang;
+  result: RankedSearchResult;
+}) {
   const labels: Record<string, string> = {
-    body: "本文一致",
-    metadata: "メタデータ一致",
-    title: "タイトル一致",
+    body: t(lang, "search.bodyMatch"),
+    metadata: t(lang, "search.metadataMatch"),
+    title: t(lang, "search.titleMatch"),
   };
   return (
-    <section aria-label="一致した場所" className="react-search-match-badges">
+    <section
+      aria-label={t(lang, "search.matchLocations")}
+      className="react-search-match-badges"
+    >
       {result.matchedFields.map((field) => (
         <Badge
           color={field === "title" ? "accent" : "gray"}
@@ -302,9 +312,12 @@ function ResultCard({
           <Highlight query={query} text={document.title} />
         </h3>
         <div className="react-search-result-metadata">
-          <ResultMatchBadges result={result} />
+          <ResultMatchBadges lang={lang} result={result} />
           {document.tags.length > 0 && (
-            <section aria-label="タグ" className="react-search-result-tags">
+            <section
+              aria-label={t(lang, "tag.section")}
+              className="react-search-result-tags"
+            >
               {visibleTags.map((tag) => (
                 <span key={tag}>#{tag}</span>
               ))}
@@ -322,7 +335,7 @@ function ResultCard({
           <Highlight query={query} text={result.excerpt} />
         </p>
         <span aria-hidden="true" className="react-search-result-destination">
-          ノートを開く <span>→</span>
+          {t(lang, "search.openNote")} <span>→</span>
         </span>
       </button>
 
@@ -334,7 +347,10 @@ function ResultCard({
           type="button"
         >
           <span>
-            {expanded ? "一致箇所と操作を閉じる" : "一致箇所と操作を表示"}
+            {t(
+              lang,
+              expanded ? "search.collapseMatches" : "search.expandMatches"
+            )}
           </span>
           <span aria-hidden="true">{expanded ? "−" : "+"}</span>
         </button>
@@ -342,23 +358,23 @@ function ResultCard({
           <div className="react-search-detail-body">
             <div className="react-search-detail-copy">
               <Text fw={700} size="sm">
-                本文
+                {t(lang, "search.bodyMatch")}
               </Text>
               <p>
                 <Highlight query={query} text={document.body} />
               </p>
             </div>
             <section
-              aria-label="結果の操作"
+              aria-label={t(lang, "search.resultActions")}
               className="react-search-detail-actions"
             >
               {isExternal ? (
                 <Text className="react-search-muted" size="sm">
-                  追加検索フォルダのノートです。内容は変更せず、上のカードから元ファイルを開けます。
+                  {t(lang, "search.externalReadOnly")}
                 </Text>
               ) : isMemo ? (
                 <Text className="react-search-muted" size="sm">
-                  一言メモの編集は振り返り画面で行います。
+                  {t(lang, "search.memoEditHint")}
                 </Text>
               ) : (
                 <>
@@ -369,7 +385,7 @@ function ResultCard({
                     size="sm"
                     variant="default"
                   >
-                    タグ
+                    {t(lang, "organize.tags")}
                   </Button>
                   <Button
                     onClick={(event) =>
@@ -378,7 +394,7 @@ function ResultCard({
                     size="sm"
                     variant="default"
                   >
-                    タイプ
+                    {t(lang, "organize.type")}
                   </Button>
                   <Button
                     onClick={(event) =>
@@ -387,7 +403,7 @@ function ResultCard({
                     size="sm"
                     variant="default"
                   >
-                    リスト
+                    {t(lang, "organize.lists")}
                   </Button>
                   <IconButton
                     filled={Boolean(document.pinned)}
@@ -403,12 +419,12 @@ function ResultCard({
                     onClick={(event) =>
                       onArchive
                         ? onArchive(result, event.currentTarget)
-                        : onAction("アーカイブを設定します")
+                        : onAction(t(lang, "search.archiveSet"))
                     }
                     size="sm"
                     variant="default"
                   >
-                    アーカイブ
+                    {t(lang, "action.archive")}
                   </Button>
                 </>
               )}
@@ -688,13 +704,13 @@ export function ReactSearchSurface({
       setActiveAction(null);
       announce(
         activeAction.kind === "tags"
-          ? "タグを保存しました"
+          ? t(lang, "search.tagsSaved")
           : activeAction.kind === "type"
-            ? "タイプを変更しました"
-            : "リストを保存しました"
+            ? t(lang, "search.typeChanged")
+            : t(lang, "search.listsSaved")
       );
     } catch {
-      announce("変更を保存できませんでした");
+      announce(t(lang, "search.changesSaveFailed"));
     } finally {
       setActionSaving(false);
     }
@@ -718,7 +734,7 @@ export function ReactSearchSurface({
         `${t(lang, nextPinned ? "action.pin" : "action.unpin")}: ${result.document.title}`
       );
     } catch {
-      announce("ピン留めを更新できませんでした");
+      announce(t(lang, "search.pinUpdateFailed"));
     }
   };
 
@@ -773,7 +789,7 @@ export function ReactSearchSurface({
     trigger: HTMLButtonElement
   ): void => {
     if (!onArchive) {
-      announce("アーカイブを設定します");
+      announce(t(lang, "search.archiveSet"));
       return;
     }
     archiveTriggerRef.current = trigger;
@@ -805,11 +821,13 @@ export function ReactSearchSurface({
             : document
         )
       );
-      announce("アーカイブに移しました");
+      announce(t(lang, "search.archived"));
       setPendingArchive(null);
     } catch (error) {
       setArchiveError(
-        error instanceof Error ? error.message : "アーカイブに移せませんでした"
+        error instanceof Error
+          ? error.message
+          : t(lang, "search.archiveMoveFailed")
       );
     } finally {
       setArchiveSaving(false);
@@ -1096,8 +1114,9 @@ export function ReactSearchSurface({
             role="status"
           >
             <Alert
-              closeButtonLabel="閉じる"
+              closeButtonLabel={t(lang, "notify.close")}
               color="accent"
+              lang={lang}
               onClose={() => setFeedback("")}
               variant="light"
               withCloseButton
@@ -1115,17 +1134,18 @@ export function ReactSearchSurface({
             content: "react-search-action-modal-content",
             header: "react-search-action-modal-header",
           }}
-          closeButtonProps={{ "aria-label": "閉じる" }}
+          closeButtonProps={{ "aria-label": t(lang, "notify.close") }}
+          lang={lang}
           onClose={() => setActiveAction(null)}
           opened={Boolean(activeAction)}
           portalProps={{ target: portalTarget }}
           returnFocusRef={actionTriggerRef}
           title={
             activeAction?.kind === "tags"
-              ? "タグを編集"
+              ? t(lang, "search.editTags")
               : activeAction?.kind === "type"
-                ? "タイプを変更"
-                : "リストを編集"
+                ? t(lang, "search.changeType")
+                : t(lang, "search.editLists")
           }
           withinPortal
         >
@@ -1155,7 +1175,8 @@ export function ReactSearchSurface({
                   label: typeLabel(lang, value),
                   value,
                 }))}
-                label="タイプ"
+                label={t(lang, "organize.type")}
+                lang={lang}
                 onChange={(value) => setDraftType(value as ItemType | null)}
                 value={draftType}
               />
@@ -1179,13 +1200,13 @@ export function ReactSearchSurface({
                     />
                   ))
                 ) : (
-                  <Text size="sm">利用できるリストがありません。</Text>
+                  <Text size="sm">{t(lang, "search.noAvailableLists")}</Text>
                 )}
               </div>
             )}
             <Group justify="flex-end">
               <Button onClick={() => setActiveAction(null)} variant="default">
-                キャンセル
+                {t(lang, "action.cancel")}
               </Button>
               <Button
                 color="ink"
@@ -1195,7 +1216,7 @@ export function ReactSearchSurface({
                 loading={actionSaving}
                 onClick={() => void saveAction()}
               >
-                保存
+                {t(lang, "action.save")}
               </Button>
             </Group>
           </Stack>

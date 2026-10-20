@@ -64,6 +64,14 @@ Remote services are used as follows: the saved web page and its declared image h
 
 Library holdings search through Calil and municipality/address lookup through the Geospatial Information Authority of Japan (GSI) are available only in the Japanese UI and are intended for libraries in Japan. Calil requires your own API key. Switching to another UI language hides these library features; the Bookshelf and book metadata search remain available.
 
+### Rich-card domain restrictions
+
+When disabled domains are configured, automatic card and title requests use a
+redirect-rejecting browser transport. Redirects and responses unavailable through
+CORS fall back to URL-only cards; notes and saved URLs remain available. Images that cannot be fetched safely are omitted; local cached images are
+checked against the current domain setting. Remote favicons are omitted in this mode. Existing cards update when the policy changes.
+Settings lets you add or remove denied domains one at a time. Without a domain restriction, the usual Obsidian transport remains in use.
+
 ## Development
 
 | Command | Purpose |
@@ -79,11 +87,3 @@ Library holdings search through Calil and municipality/address lookup through th
 ## License and data sources
 
 MIT © 2026 IshibashiCustomize. See [LICENSE](LICENSE) and [third-party notices](THIRD_PARTY_NOTICES.md). Book data and cover sources: [openBD](https://openbd.jp/) and [Open Library](https://openlibrary.org/developers/api).
-
-### Rich-card domain restrictions
-
-When disabled domains are configured, automatic card and title requests use a
-redirect-rejecting browser transport. Redirects and responses unavailable through
-CORS fall back to URL-only cards; notes and saved URLs remain available. Images that cannot be fetched safely are omitted; local cached images are
-checked against the current domain setting. Remote favicons are omitted in this mode. Existing cards update when the policy changes.
-Without a domain restriction, the usual Obsidian transport remains in use.

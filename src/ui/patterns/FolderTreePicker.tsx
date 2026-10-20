@@ -104,7 +104,7 @@ export function FolderTreePicker({
         const optionButton = option ? (
           <button
             aria-pressed={isSelected}
-            className={`seiton-folder-tree-option${isSelected ? "is-selected" : ""}`}
+            className={`seiton-folder-tree-option ${isSelected ? "is-selected" : ""}`}
             onClick={() => selectValue(optionValue(option))}
             type="button"
           >
@@ -199,7 +199,7 @@ export function FolderTreePicker({
           {emptyOption ? (
             <button
               aria-pressed={emptySelected}
-              className={`seiton-folder-tree-empty${emptySelected ? "is-selected" : ""}`}
+              className={`seiton-folder-tree-empty ${emptySelected ? "is-selected" : ""}`}
               onClick={() => selectValue(emptyOption.value)}
               type="button"
             >
